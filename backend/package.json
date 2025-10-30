@@ -7,10 +7,12 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "db:test": "tsx src/db/test-connection.ts"
   },
   "dependencies": {
     "@memedo/shared": "workspace:*",
+    "@neondatabase/serverless": "^1.0.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
