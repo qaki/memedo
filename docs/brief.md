@@ -48,6 +48,7 @@ MemeDo eliminates tool fragmentation through an **intelligent multi-API orchestr
 ### Strategic Moat
 
 MemeDo gets stronger with scale through:
+
 - Proprietary API reliability index (continuous optimization)
 - Community trust scores (network effects)
 - Historical pattern recognition (ML-powered rug pull prediction)
@@ -140,13 +141,13 @@ MemeDo eliminates tool fragmentation through an **intelligent multi-API orchestr
 
 ### Why This Will Succeed: The 10x Advantage
 
-| Dimension | MemeDo | Competitors |
-|-----------|---------|-------------|
-| **Speed** | 30-60 seconds full analysis | 10-90 minutes manually |
-| **Coverage** | Multi-chain (ETH, BNB, Solana, Base) | 1-2 chains max |
-| **Reliability** | 99% uptime via multi-API fallback | Frequent gaps from single APIs |
-| **Data Depth** | Price + Liquidity + Security + Tokenomics + Social | Price + Liquidity only |
-| **Decision Support** | AI summary + Invest/Avoid score | Raw data, no synthesis |
+| Dimension            | MemeDo                                             | Competitors                    |
+| -------------------- | -------------------------------------------------- | ------------------------------ |
+| **Speed**            | 30-60 seconds full analysis                        | 10-90 minutes manually         |
+| **Coverage**         | Multi-chain (ETH, BNB, Solana, Base)               | 1-2 chains max                 |
+| **Reliability**      | 99% uptime via multi-API fallback                  | Frequent gaps from single APIs |
+| **Data Depth**       | Price + Liquidity + Security + Tokenomics + Social | Price + Liquidity only         |
+| **Decision Support** | AI summary + Invest/Avoid score                    | Raw data, no synthesis         |
 
 ### The "Magic Moment" User Experience
 
@@ -176,6 +177,7 @@ As MemeDo grows, it gets smarter through **network effects and proprietary data 
 ### Primary User Segment: "The Vigilant Degen" (Active Meme Coin Trader)
 
 **Demographics:**
+
 - Age: 22-38 years old, predominantly male (90%)
 - Location: U.S., EU, and SEA (Philippines, India, Turkey—meme coin hotspots)
 - Income: $25k-$100k annually
@@ -183,6 +185,7 @@ As MemeDo grows, it gets smarter through **network effects and proprietary data 
 - Technical Skill: Medium—comfortable with Etherscan, wallet connections, DEX trading
 
 **Behavioral Profile:**
+
 - **Trading Activity**: 5-15 meme coins per month, $300-$3,000 per position
 - **Holding Period**: Hours to days, not months (high-velocity trading)
 - **Time Investment**: 2-4 hours daily on crypto Twitter, Discord alpha groups, DexTools/DexScreener
@@ -190,6 +193,7 @@ As MemeDo grows, it gets smarter through **network effects and proprietary data 
 - **Past Experience**: Has been rugged 1-2 times; now paranoid but still FOMO-prone
 
 **Current Workflow (Manual Multi-Tool Process):**
+
 - **Morning**: Scrolls Twitter/Discord for "alpha" tips
 - **Afternoon**: Monitors new pairs on DexTools, watches trending tokens
 - **Evening**: Swaps into 1-2 trending coins, often skipping full due diligence due to time pressure
@@ -197,6 +201,7 @@ As MemeDo grows, it gets smarter through **network effects and proprietary data 
 - **Time Cost**: 20-30 minutes per token for proper verification
 
 **Core Pain Points:**
+
 1. **Time Pressure (FOMO)**: "By the time I verify legitimacy, the 3x gain is gone"
 2. **Fear of Loss**: "I lost $1.5k on fake locked liquidity—never again"
 3. **Information Overload**: "Even with 5 tools, I still don't know if it's safe"
@@ -206,6 +211,7 @@ As MemeDo grows, it gets smarter through **network effects and proprietary data 
 **The "Aha Moment" (Why They Switch):**
 
 When they paste a contract and see instant clarity in <10 seconds:
+
 - ✅ Liquidity $980k (Raydium)
 - ✅ Ownership renounced
 - ✅ No mint authority
@@ -213,14 +219,16 @@ When they paste a contract and see instant clarity in <10 seconds:
 - **Risk Score: 82/100 (Low Risk)**
 - **Recommended Action: Buy or Watchlist**
 
-*Mental calculation*: "This saves me 20 minutes every time and $2,000 per avoided bad trade."
+_Mental calculation_: "This saves me 20 minutes every time and $2,000 per avoided bad trade."
 
 **Value Proposition Math:**
+
 - Average annual loss to rug pulls: ~$2,000
 - MemeDo Premium: $29/month ($348/year)
 - **ROI if it prevents ONE bad trade: 10x**
 
 **Where They Hang Out:**
+
 - Twitter/X (#memecoins, #solana, #crypto)
 - Telegram/Discord alpha groups
 - Reddit (r/CryptoMoonShots, r/SatoshiStreetBets)
@@ -230,12 +238,12 @@ When they paste a contract and see instant clarity in <10 seconds:
 
 ### Secondary User Segments
 
-| Persona | Description | Primary Need | Monetization Opportunity |
-|---------|-------------|--------------|-------------------------|
-| **🧑‍💻 Alpha Group Leader** | Runs Telegram/Discord communities (1k-50k members), curates coins | Batch analysis + credibility protection | Team Plan ($99-299/mo) + Affiliate program |
-| **🚀 DeFi Project Developer** | Launches new meme tokens, needs credibility pre-launch | Third-party validation/"Verified by MemeDo" badge | One-time Audit Fee ($500-2k) or "LaunchSafe" subscription |
-| **🧒 Retail Newcomer** | Age 18-25, limited blockchain knowledge, wants "safe ape" | Simple color-coded risk indicator + AI plain-language summary | Low-cost Lite Tier ($9-15/mo) |
-| **📊 DeFi Analyst/Researcher** | Academic or institutional researcher studying meme coin patterns | Historical API data, lifecycle analysis, holder trends | Enterprise API Plan ($299-999/mo) |
+| Persona                        | Description                                                       | Primary Need                                                  | Monetization Opportunity                                  |
+| ------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------- |
+| **🧑‍💻 Alpha Group Leader**      | Runs Telegram/Discord communities (1k-50k members), curates coins | Batch analysis + credibility protection                       | Team Plan ($99-299/mo) + Affiliate program                |
+| **🚀 DeFi Project Developer**  | Launches new meme tokens, needs credibility pre-launch            | Third-party validation/"Verified by MemeDo" badge             | One-time Audit Fee ($500-2k) or "LaunchSafe" subscription |
+| **🧒 Retail Newcomer**         | Age 18-25, limited blockchain knowledge, wants "safe ape"         | Simple color-coded risk indicator + AI plain-language summary | Low-cost Lite Tier ($9-15/mo)                             |
+| **📊 DeFi Analyst/Researcher** | Academic or institutional researcher studying meme coin patterns  | Historical API data, lifecycle analysis, holder trends        | Enterprise API Plan ($299-999/mo)                         |
 
 ---
 
@@ -243,32 +251,35 @@ When they paste a contract and see instant clarity in <10 seconds:
 
 **North Star Goal (12-Month Vision):**
 
-*"Become the #1 trusted multi-chain meme coin intelligence platform, protecting 50,000 traders from rug pulls and saving them 1M+ hours of research time."*
+_"Become the #1 trusted multi-chain meme coin intelligence platform, protecting 50,000 traders from rug pulls and saving them 1M+ hours of research time."_
 
 ### Business Objectives
 
 **User Acquisition Targets:**
 
 | Timeline | Signups | Premium Conversion | Paying Users |
-|----------|---------|-------------------|--------------|
-| Month 1 | 1,000 | 10% | 100 |
-| Month 3 | 5,000 | 12-15% | 600-750 |
-| Month 6 | 15,000 | 15-18% | 2,250-2,700 |
-| Month 12 | 50,000 | 20% | 10,000 |
+| -------- | ------- | ------------------ | ------------ |
+| Month 1  | 1,000   | 10%                | 100          |
+| Month 3  | 5,000   | 12-15%             | 600-750      |
+| Month 6  | 15,000  | 15-18%             | 2,250-2,700  |
+| Month 12 | 50,000  | 20%                | 10,000       |
 
 **Revenue Milestones:**
+
 - **Month 3**: $2k MRR (early validation)
 - **Month 6**: $7.5k MRR (product-market fit)
 - **Month 9**: $15k MRR (expansion with Pro tier)
 - **Month 12**: $25k MRR (break-even milestone)
 
 **Market Position Goals:**
+
 - Top 3 Google ranking for "meme coin analysis tool" by Month 9
 - Recommended tool in 5+ major Discord/Telegram alpha groups by Month 6
 - Launch "Safe by MemeDo" verified badge by Month 8
 - Deploy AI Telegram Bot with 10k monthly uses by Month 10
 
 **Product Reliability Standards:**
+
 - **Uptime**: 99.9% (SaaS-grade reliability)
 - **API Data Completeness**: 95%+ (successful full analysis rate)
 - **Response Latency**: <6 seconds per analysis
@@ -277,18 +288,21 @@ When they paste a contract and see instant clarity in <10 seconds:
 ### User Success Metrics
 
 **Core Engagement Behaviors:**
+
 - **Active User Definition**: 5+ analyses per month
 - **Month 1 Retention**: 60% of signups
 - **DAU/MAU Ratio**: 25% (daily engagement)
 - **Avg Analyses per User**: 10+ per month
 
 **User Outcomes:**
+
 - Analysis time: 90 minutes → <1 minute (99% reduction)
 - Rug pull frequency: 1 every 3 months → <1 per year (67% reduction)
 - Confidence score (NPS): 40 → 75+ (strong advocacy)
 - User-reported savings: $2,000+ per year
 
 **Behavioral Indicators:**
+
 - Watchlist creation: 50%+ of users (stickiness)
 - Time to first analysis: <2 minutes (onboarding effectiveness)
 - Repeat usage (48hr): 40% return rate
@@ -305,6 +319,7 @@ When they paste a contract and see instant clarity in <10 seconds:
 ### Validation Criteria ("MemeDo is Validated")
 
 Product-market fit is achieved when:
+
 - ✅ $5k MRR sustained for 3 months
 - ✅ 60% Month 1 retention
 - ✅ 95% API reliability
@@ -314,6 +329,7 @@ Product-market fit is achieved when:
 ### Year 2 Investment Threshold
 
 Continue building if Year 1 ends with:
+
 - 10,000+ monthly active users
 - $10k+ MRR
 - 70%+ user satisfaction (CSAT)
@@ -330,12 +346,14 @@ Continue building if Year 1 ends with:
 ### Core Features (Must-Have for Launch)
 
 **1. Analysis Engine - 2 Chains Only**
+
 - ✅ **Ethereum** (via DexScreener, Etherscan, GoPlus, Covalent fallback)
 - ✅ **Solana** (via DexScreener, Helius, RugCheck, BirdEye fallback)
 - ✅ **Multi-layered fallback architecture** (MemeDo's moat—95%+ data completeness)
 - ✅ **5 core tabs**: Overview, Security, Tokenomics, Liquidity, Social (links only)
 
 **2. User Authentication & Tiers**
+
 - ✅ Email registration + JWT-based login
 - ✅ Email confirmation before access
 - ✅ Free tier: 20 analyses/month (hard limit)
@@ -343,6 +361,7 @@ Continue building if Year 1 ends with:
 - ✅ Database: Neon PostgreSQL + Drizzle ORM
 
 **3. Payment System**
+
 - ✅ Stripe integration (primary)
 - ✅ LemonSqueezy backup (Kosovo payment compatibility)
 - ✅ Single plan: $29/month, unlimited analyses (may test $9.99 initially)
@@ -350,6 +369,7 @@ Continue building if Year 1 ends with:
 - ✅ Basic subscription management (cancel/renew/status)
 
 **4. Minimal Dashboard**
+
 - ✅ Recent analyses (last 10)
 - ✅ Subscription status
 - ✅ Settings (password, email, cancel subscription)
@@ -357,6 +377,7 @@ Continue building if Year 1 ends with:
 ### Out of Scope for MVP (Phase 2+)
 
 **❌ Defer to Post-100 Paying Users:**
+
 - BSC and Base chain support (add after Ethereum + Solana validation)
 - AI-powered risk summaries (manual risk flags first)
 - Watchlist + real-time alerts
@@ -373,6 +394,7 @@ Continue building if Year 1 ends with:
 ### MVP Success Criteria
 
 **Launch is complete when:**
+
 - 95%+ API reliability in tests
 - All 5 tabs return data for Ethereum + Solana tokens
 - Stripe (or LemonSqueezy) webhook updates user role instantly
@@ -388,20 +410,24 @@ Continue building if Year 1 ends with:
 ### Phase 2 Features (Month 4-6)
 
 **Chain Expansion:**
+
 - Add Base and BSC support (EVM chains, easier integration)
 - Arbitrum and other L2s based on user demand
 
 **AI Enhancement:**
+
 - AI-powered risk summaries (plain-English explanations)
 - Historical pattern recognition (identify rug pull signals)
 - Confidence scoring displayed per data point
 
 **Engagement Features:**
+
 - Watchlist functionality with real-time alerts
 - Whale movement notifications
 - Liquidity change alerts
 
 **Dashboard Expansion:**
+
 - "Top 5 Bullish Coins This Week" widget
 - "Liquidity Leaders" leaderboard
 - "Market Radar" (trending new tokens)
@@ -437,21 +463,25 @@ Continue building if Year 1 ends with:
 ### Expansion Opportunities
 
 **Geographic Expansion:**
+
 - Multi-language support (Spanish, Portuguese, Turkish, Chinese)
 - Regional payment processors (crypto payments, local gateways)
 
 **Vertical Expansion:**
+
 - NFT collection analysis (floor price, holder distribution, scam detection)
 - DeFi protocol risk scoring (smart contract audits, TVL analysis)
 - DAO governance token analysis
 
 **Business Model Expansion:**
+
 - Affiliate partnerships with safe DEXs
 - White-label solutions for exchanges
 - Data resale (MemeDo Data API for researchers)
 - Sponsored listings (verified safe projects)
 
 **Exit Strategy:**
+
 - Acquisition by major crypto exchange (Coinbase, Binance, Kraken)
 - Acquisition by data/analytics provider (CoinGecko, CoinMarketCap, Nansen)
 - Strategic partnership with wallet provider (MetaMask, Phantom, Trust Wallet)
@@ -463,6 +493,7 @@ Continue building if Year 1 ends with:
 ### Financial Impact
 
 **MVP Development Investment (8-10 weeks):**
+
 - **Direct costs**: $360-1,050 over 3 months
   - APIs: $150-600 (DexScreener, GoPlus, Helius, Etherscan, RugCheck)
   - Hosting: $150-300 (Vercel, Render, Neon PostgreSQL)
@@ -471,6 +502,7 @@ Continue building if Year 1 ends with:
 - **Total MVP investment**: ~$1,000 cash + 300-400 hours of focused development time
 
 **Unit Economics:**
+
 - Premium plan: $29/month (may test $9.99 initially)
 - Customer Lifetime Value (LTV): $240 (12 months × 70% retention)
 - Customer Acquisition Cost (CAC): $2-5 per active user (organic + partnerships)
@@ -479,11 +511,11 @@ Continue building if Year 1 ends with:
 
 **Revenue Projections:**
 
-| Timeline | Paying Users | MRR | Monthly Profit |
-|----------|--------------|-----|----------------|
-| Month 3 | 100 | $2,900 | $2,350 |
-| Month 6 | 170-260 | $5,000-7,500 | $4,450-6,950 |
-| Month 12 | 850 | $25,000 | $22,500 |
+| Timeline | Paying Users | MRR          | Monthly Profit |
+| -------- | ------------ | ------------ | -------------- |
+| Month 3  | 100          | $2,900       | $2,350         |
+| Month 6  | 170-260      | $5,000-7,500 | $4,450-6,950   |
+| Month 12 | 850          | $25,000      | $22,500        |
 
 **Break-Even: Month 4-5** (cash-positive after covering MVP development costs)
 
@@ -492,18 +524,21 @@ Continue building if Year 1 ends with:
 ### Company Objectives Alignment
 
 **Primary Objectives:**
+
 1. **Financial Independence**: Build self-sustaining SaaS generating $20k+/month ($100k+/year minimum)
 2. **Product Validation**: Prove ability to build, scale, and maintain revenue-generating SaaS in crypto market
 3. **Portfolio Building**: Establish credibility for future AI + crypto products
 4. **Market Positioning**: Become recognized authority in meme coin safety and analysis
 
 **Strategic Fit:**
+
 - Deep crypto ecosystem knowledge
 - Full-stack development expertise (Vite, Express, TypeScript, Drizzle, Neon)
 - Personal passion for meme coins + real-time data systems
 - Intersection of crypto hype, security need, and AI trust gap
 
 **Success Path:**
+
 - **Month 6**: Product-market fit validation ($5k MRR)
 - **Month 9**: Feature expansion (AI summaries, BSC support)
 - **Month 12**: Funding decision point ($100k-250k seed round consideration)
@@ -511,6 +546,7 @@ Continue building if Year 1 ends with:
 - **Long-term**: Exit potential at $1-3M valuation (3-5x ARR multiple)
 
 **Risk Tolerance:**
+
 - Runway: 3-6 months with minimal income
 - Pull-plug threshold: <100 paying users after 6 months + weak demand signals
 - Otherwise: Iterate and persist based on user feedback
@@ -518,14 +554,17 @@ Continue building if Year 1 ends with:
 ### Strategic Initiatives
 
 **Phase 1 (Month 1-6)**: Validate core hypothesis and achieve product-market fit
+
 - Focus: Reliability moat, user acquisition, pricing optimization
 - Key metric: $5k MRR sustained for 3 months
 
 **Phase 2 (Month 6-12)**: Scale user acquisition and expand feature set
+
 - Focus: AI summaries, additional chains (BSC, Base), watchlist/alerts
 - Key metric: $25k MRR, 50k users
 
 **Phase 3 (Year 2)**: Build team, pursue partnerships, explore enterprise opportunities
+
 - Focus: API resale, institutional partnerships, potential acquisition
 - Key metric: $100k+ ARR, defensible moat through proprietary data
 
@@ -536,12 +575,14 @@ Continue building if Year 1 ends with:
 ### Platform Requirements
 
 **Deployment Architecture:**
+
 - Frontend: Vercel (auto-deploy from GitHub, edge caching)
 - Backend: Render (Node.js API hosting)
 - Database: Neon PostgreSQL (serverless, autoscaling)
 - Caching: Redis via Upstash (free tier for MVP)
 
 **Performance Targets:**
+
 - Analysis completion: <15 seconds per token
 - API response time: <6 seconds average
 - Uptime: 99.9% (SaaS-grade)
@@ -550,23 +591,27 @@ Continue building if Year 1 ends with:
 ### Technology Stack
 
 **Frontend:**
+
 - React + TypeScript + Vite (modern, lightweight SaaS dashboard)
 - Styling: Tailwind CSS
 - State Management: React Context or Zustand (lightweight)
 
 **Backend:**
+
 - Express + TypeScript (custom API orchestration)
 - Authentication: JWT + bcrypt
 - Email: Resend/Brevo/SendGrid (confirmation + password reset)
 - Payment: Stripe (primary) + LemonSqueezy backup (Kosovo compatibility)
 
 **Data Layer:**
+
 - Database: Neon PostgreSQL
 - ORM: Drizzle (type-safe, lightweight)
 - Caching: Redis (Upstash) - 24hr token data cache
 - Rate Limiting: `express-rate-limit` middleware + DB tracking
 
 **API Integration Architecture:**
+
 - **Chain-specific adapters**: `/server/adapters/[etherscan|helius|rugcheck|goplus|dexscreener|covalent].ts`
 - **Core orchestrator**: `/server/analyze.ts` manages fallback chains
 - **Timeout strategy**: 5 seconds per API, 15 seconds total analysis time
@@ -576,24 +621,27 @@ Continue building if Year 1 ends with:
 
 **API Reliability Strategy (Core Moat):**
 
-| Chain | Primary → Fallback Chain |
-|-------|--------------------------|
-| **Ethereum** | DexScreener → Etherscan (ABI scan) → GoPlus → Covalent |
-| **Solana** | DexScreener + Helius → RugCheck → BirdEye (volume/liquidity heuristics) |
+| Chain        | Primary → Fallback Chain                                                |
+| ------------ | ----------------------------------------------------------------------- |
+| **Ethereum** | DexScreener → Etherscan (ABI scan) → GoPlus → Covalent                  |
+| **Solana**   | DexScreener + Helius → RugCheck → BirdEye (volume/liquidity heuristics) |
 
 **Data Consistency & Conflict Resolution:**
+
 - **Trust hierarchy**: DexScreener (price) > Helius (supply) > RugCheck (security) > Etherscan (ABI)
 - **MVP approach**: First valid response wins
 - **Post-MVP**: Weighted confidence scoring stored per data point
 - **Transparency**: Display "Data from [Source]" tags in UI
 
 **Caching Strategy:**
+
 ```javascript
-cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
+cache.set('solana:BONK', result, 'EX', 86400); // 24hr TTL
 // Fallback: PostgreSQL cache if Redis unavailable
 ```
 
 **Security Measures:**
+
 - JWT with 24hr expiry + refresh tokens
 - Input validation via Zod
 - Helmet.js for Express security headers
@@ -602,16 +650,19 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 - Rate limiting: 20 analyses/month for free users, tracked in DB
 
 **Monitoring & Observability:**
+
 - **MVP Dashboard**: Internal admin panel tracking API success rates, latency, fallback triggers
 - **Logging**: Winston or console + log files (low-cost)
 - **Post-MVP**: Sentry (error tracking) + PostHog (product analytics)
 
 **Scalability Path:**
+
 - **MVP (0-1k users)**: Synchronous processing, Redis cache, Neon autoscale
 - **Growth (1k-10k users)**: Add BullMQ for background jobs, database indexes, edge caching
 - **Scale (10k+ users)**: Dedicated cache layer, queue-based processing, multi-region deployment
 
 **Development Workflow:**
+
 - Package manager: pnpm (consistent dependency resolution)
 - Testing: Integration tests for `/api/analyze`, auth flows, Stripe webhook
 - CI/CD: GitHub Actions → automated tests → deploy to Vercel + Render
@@ -624,21 +675,25 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### Constraints
 
 **Resource Constraints:**
+
 - Solo developer with 40 hrs/week capacity
 - Bootstrap budget: ~$1,000 for MVP phase
 - Launch deadline: 8-10 weeks (hard constraint for validation)
 
 **Technical Constraints:**
+
 - Third-party API dependency (DexScreener, Etherscan, Helius, GoPlus, RugCheck)
 - API rate limits scale with usage
 - No control over blockchain data quality or upstream provider availability
 
 **Market Constraints:**
+
 - High volatility in crypto user behavior (users come/go with market cycles)
 - Competitive landscape with frequent new tool launches
 - Payment friction: crypto community prefers crypto payments, but Stripe requires fiat
 
 **Geographic/Payment Constraints:**
+
 - Kosovo location may limit Stripe availability
 - Backup payment processors required (LemonSqueezy, Paddle, Coinbase Commerce)
 - Potential regulatory uncertainty around crypto analysis tools
@@ -646,28 +701,17 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### Key Assumptions
 
 **Market Assumptions:**
+
 1. Meme coin trading volume remains high (or grows) over next 12 months
 2. 10-15% of traders value reliability enough to pay $9-29/month
 3. Ethereum + Solana represent 75%+ of addressable market for MVP
 4. Organic growth via Twitter/Reddit/Discord viable without significant ad spend
 
-**Technical Assumptions:**
-5. External APIs remain stable and available (not deprecated/shut down)
-6. Fallback architecture achieves 95%+ reliability through multi-source orchestration
-7. Redis caching reduces API costs by 10x+, preventing cost explosion
-8. Solo developer can ship MVP in 8-10 weeks with AI development assistance
+**Technical Assumptions:** 5. External APIs remain stable and available (not deprecated/shut down) 6. Fallback architecture achieves 95%+ reliability through multi-source orchestration 7. Redis caching reduces API costs by 10x+, preventing cost explosion 8. Solo developer can ship MVP in 8-10 weeks with AI development assistance
 
-**User Behavior Assumptions:**
-9. Users trust AI-generated risk summaries combined with source transparency
-10. Free tier (20 analyses/month) provides enough value to convert without cannibalization
-11. Email verification creates acceptable friction (not significant drop-off)
-12. Users return weekly for ongoing analysis (not one-time usage + churn)
+**User Behavior Assumptions:** 9. Users trust AI-generated risk summaries combined with source transparency 10. Free tier (20 analyses/month) provides enough value to convert without cannibalization 11. Email verification creates acceptable friction (not significant drop-off) 12. Users return weekly for ongoing analysis (not one-time usage + churn)
 
-**Business Model Assumptions:**
-13. 15-20% free→premium conversion achievable with clear value demonstration
-14. 8% monthly churn manageable through engagement features
-15. $29/month price point acceptable for target user (may test $9.99 initially)
-16. Payment processing available via Stripe alternative (LemonSqueezy/Paddle) if needed
+**Business Model Assumptions:** 13. 15-20% free→premium conversion achievable with clear value demonstration 14. 8% monthly churn manageable through engagement features 15. $29/month price point acceptable for target user (may test $9.99 initially) 16. Payment processing available via Stripe alternative (LemonSqueezy/Paddle) if needed
 
 ---
 
@@ -678,6 +722,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 **🟥 Critical Risks:**
 
 **1. Market/Monetization Risk** ⚠️ **HIGHEST IMPACT**
+
 - **Risk**: Users unwilling to pay $29/month despite valuing the service
 - **Reality**: Degen traders are cheap but impulsive—will lose $200 on bad trades but hesitate to pay $20/month for prevention
 - **Mitigation**:
@@ -687,6 +732,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
   - Target 10-15% power users who will pay for reliability
 
 **2. API Cost/Reliability Risk** ⚠️ **HIGH IMPACT**
+
 - **Risk**: Key API shuts down, becomes prohibitively expensive, or causes cost explosion from user spam
 - **Impact**: Core product breaks, user trust destroyed, unsustainable costs
 - **Mitigation**:
@@ -697,6 +743,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
   - Budget for paid API tiers as usage scales
 
 **3. Payment Processing Risk** ⚠️ **MEDIUM-HIGH IMPACT**
+
 - **Risk**: Stripe unavailable for Kosovo, forcing mid-build payment processor switch
 - **Impact**: 1-2 week delay, integration complexity, potential revenue loss
 - **Mitigation**:
@@ -708,6 +755,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 **🟧 Medium Risks:**
 
 **4. User Acquisition Risk**
+
 - **Risk**: Organic channels don't generate 1,000 signups in Month 1-3
 - **Mitigation**:
   - Pre-launch community building on crypto Twitter
@@ -717,6 +765,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
   - Telegram/Discord bot as lead magnet
 
 **5. Competitive Response Risk**
+
 - **Risk**: DexScreener or GoPlus adds multi-chain + fallback reliability
 - **Mitigation**:
   - Build proprietary data moat (community trust scores, historical patterns)
@@ -724,6 +773,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
   - Brand trust through transparency ("Data from [Source]" tags)
 
 **6. Data Quality Risk**
+
 - **Risk**: API data frequently wrong/stale, users lose trust
 - **Mitigation**:
   - Confidence scoring per data point
@@ -734,26 +784,31 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 **🟨 Lower-Probability Risks:**
 
 **7. Regulatory Risk** (Low probability, high impact)
+
 - **Risk**: EU/US introduces crypto tool regulations requiring licenses
 - **Mitigation**: Position as "data aggregator" not "financial advice," add disclaimers
 
 **8. Market Timing Risk**
+
 - **Risk**: Meme coin hype cycle ends, trading volume collapses
 - **Mitigation**: Pivot to broader token analysis (DeFi, NFTs), diversify use cases
 
 ### Open Questions Requiring Validation
 
 **Product Questions:**
+
 - Is $29/month optimal, or should we start at $9.99?
 - Does email verification cause significant drop-off?
 - Are watchlists/alerts required for MVP, or deferrable to Phase 2?
 
 **Market Questions:**
+
 - How long will current meme coin cycle last?
 - Can we acquire 1,000 users organically in 90 days?
 - What's true willingness-to-pay in target segment?
 
 **Technical Questions:**
+
 - Will fallback complexity cause performance issues at scale?
 - Can Redis caching actually deliver 10x cost reduction?
 - When will API rate limits force expensive paid tiers?
@@ -761,15 +816,18 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### Areas Needing Further Research
 
 **Pre-Launch (Week 1-2):**
+
 - Validate Stripe availability or confirm LemonSqueezy integration
 - Survey 20-30 target users on pricing ($9.99 vs $29 willingness-to-pay)
 - Test API rate limits with simulated 100 daily analyses
 
 **During MVP Build (Week 3-8):**
+
 - Monitor API reliability in production (actual fallback trigger rates)
 - Collect qualitative feedback on must-have vs nice-to-have features
 
 **Post-Launch (Month 1-3):**
+
 - A/B test pricing with first 200 users
 - Track actual churn rates and identify drop-off points
 - Validate API cost assumptions at scale
@@ -781,6 +839,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### A. Research Summary
 
 **Industry Data Sources:**
+
 - **Rug Pull Statistics**: ~$3.4B lost to rug pulls in 2024 (CoinLaw, CertiK reports)
 - **Academic Research**: 1,000+ verified rug pull incidents documented (arXiv studies)
 - **Market Volume**: DexScreener data shows tens of thousands of new token launches daily across chains
@@ -788,6 +847,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 - **API Landscape**: Analysis of DexScreener, Helius, RugCheck, GoPlus, Covalent coverage and reliability
 
 **Key Findings:**
+
 1. Market inefficiency is real and measurable (time + financial losses)
 2. Existing tools lack multi-chain + multi-source reliability
 3. Target user segment exists and is growing with crypto adoption
@@ -797,12 +857,14 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### B. Stakeholder Input
 
 **Primary Stakeholder:** Qlirim Elezi (Founder/Developer)
+
 - **Vision**: Build sustainable SaaS in crypto space, establish credibility for future products
 - **Expertise**: Full-stack development, crypto ecosystem knowledge, AI-assisted development
 - **Commitment**: 40 hrs/week for 8-10 weeks MVP development
 - **Risk Tolerance**: 3-6 month runway, willing to pivot based on data
 
 **Future Stakeholders:**
+
 - Early beta testers (20-30 crypto traders for validation feedback)
 - Alpha group leaders (potential partnerships for user acquisition)
 - Potential investors (if seeking $100k-250k seed round post-PMF)
@@ -810,6 +872,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### C. References
 
 **Technical Documentation:**
+
 - DexScreener API Documentation
 - Etherscan/BscScan/BaseScan API v2
 - Helius RPC & API Documentation
@@ -819,6 +882,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 - BirdEye API Documentation
 
 **Market Research:**
+
 - CoinLaw: Crypto Crime Reports (2024 rug pull data)
 - CertiK: Security Incident Reports
 - Token Metrics: Manual Analysis Time Studies
@@ -826,6 +890,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 - Academic: arXiv rug pull incident databases
 
 **Technical Stack:**
+
 - React + TypeScript + Vite Documentation
 - Express.js Best Practices
 - Drizzle ORM Documentation
@@ -840,6 +905,7 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### Immediate Actions (Week 1)
 
 **Technical Setup:**
+
 1. Initialize monorepo structure (frontend + backend)
 2. Set up Neon PostgreSQL database + Drizzle ORM
 3. Configure Vercel (frontend) + Render (backend) deployments
@@ -847,11 +913,13 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 5. Set up Redis cache (Upstash free tier)
 
 **Market Validation:**
+
 1. Survey 20-30 target users on pricing ($9.99 vs $29)
 2. Test API rate limits with simulated load
 3. Create MemeDo Twitter/X account, start building pre-launch audience
 
 **Development Priorities:**
+
 1. Build chain-specific API adapters (Ethereum + Solana)
 2. Implement fallback orchestration logic
 3. Create authentication system (JWT + email verification)
@@ -860,26 +928,31 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### MVP Development Timeline (8-10 Weeks)
 
 **Weeks 1-2: Foundation**
+
 - Database schema + user authentication
 - API adapter architecture
 - Basic frontend scaffolding
 
 **Weeks 3-4: Core Engine**
+
 - Ethereum analysis engine + fallback logic
 - Solana analysis engine + fallback logic
 - Redis caching implementation
 
 **Weeks 5-6: User Features**
+
 - Dashboard + recent analyses
 - Payment integration (Stripe or LemonSqueezy)
 - Subscription management
 
 **Weeks 7-8: Polish & Testing**
+
 - Integration testing (API reliability, auth flows, payments)
 - Closed beta with 20 testers
 - Bug fixes + performance optimization
 
 **Weeks 9-10: Launch**
+
 - Public launch preparation
 - Marketing push (Twitter, Reddit, Discord)
 - Monitor metrics + collect feedback
@@ -887,16 +960,19 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 ### Post-Launch (Month 1-3)
 
 **Product:**
+
 - Monitor API reliability (track fallback trigger rates)
 - Collect user feedback on must-have features
 - A/B test pricing ($9.99 vs $29)
 
 **Growth:**
+
 - Organic marketing (Twitter threads, Reddit posts, Discord engagement)
 - Influencer partnerships ($300-500 budget)
 - Referral program launch
 
 **Validation:**
+
 - Track toward 100 paying users (Month 3 goal)
 - Measure retention, churn, engagement
 - Validate willingness-to-pay and pricing
@@ -908,4 +984,3 @@ cache.set("solana:BONK", result, "EX", 86400) // 24hr TTL
 **Prepared for:** AI-assisted development with Cursor  
 **Build Approach:** BMAD Method workflows for iterative, test-driven development  
 **Success Metric:** $5k MRR by Month 6 = Product-Market Fit Validation
-

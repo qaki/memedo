@@ -169,12 +169,8 @@
           "name": "analyses_user_id_users_id_fk",
           "tableFrom": "analyses",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -526,9 +522,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -687,12 +681,8 @@
           "name": "subscriptions_user_id_users_id_fk",
           "tableFrom": "subscriptions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -702,9 +692,7 @@
         "subscriptions_provider_subscription_id_unique": {
           "name": "subscriptions_provider_subscription_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "provider_subscription_id"
-          ]
+          "columns": ["provider_subscription_id"]
         }
       },
       "policies": {},

@@ -4,10 +4,7 @@ import type { ApiError } from '../schemas/api.schema';
 /**
  * Validates data against a Zod schema and returns parsed data or throws an error
  */
-export function validateData<T extends z.ZodTypeAny>(
-  schema: T,
-  data: unknown
-): z.infer<T> {
+export function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown): z.infer<T> {
   try {
     return schema.parse(data);
   } catch (error) {
@@ -37,7 +34,7 @@ export function safeValidateData<T extends z.ZodTypeAny>(
  */
 export function formatValidationErrors(error: z.ZodError): ApiError {
   const firstError = error.errors[0];
-  
+
   return {
     code: 'VALIDATION_ERROR',
     message: firstError.message,
@@ -75,4 +72,3 @@ export function normalizeAddress(address: string, chain: string): string {
   }
   return address.toLowerCase(); // Ethereum-like chains
 }
-

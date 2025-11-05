@@ -78,4 +78,3 @@ export type AddToWatchlistInput = z.infer<typeof addToWatchlistSchema>;
 export type RemoveFromWatchlistInput = z.infer<typeof removeFromWatchlistSchema>;
 export type UserQuota = z.infer<typeof userQuotaSchema>;
 export type UserProfile = z.infer<typeof userProfileSchema>;
-

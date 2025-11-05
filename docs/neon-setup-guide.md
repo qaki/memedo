@@ -24,6 +24,7 @@ postgresql://[user]:[password]@[host]/[database]?sslmode=require
 ```
 
 Example:
+
 ```
 postgresql://memedo_owner:ABC123xyz@ep-cool-cloud-123456.us-east-2.aws.neon.tech/memedo?sslmode=require
 ```
@@ -63,6 +64,7 @@ This will test the database connection.
 ## Production Notes
 
 For production (after MVP validation):
+
 - Upgrade to **Pro Plan** ($19/month)
   - Autoscaling compute (0.25-4 vCPU)
   - 10GB storage (expandable)
@@ -114,14 +116,17 @@ pnpm run db:seed
 ## Troubleshooting
 
 ### Error: "Connection timeout"
+
 - Check if your IP is allowed (Neon dashboard → Settings → IP Allow)
 - Verify `sslmode=require` is in the connection string
 
 ### Error: "Database does not exist"
+
 - Neon creates a default database named after your project
 - Ensure the database name in the connection string matches
 
 ### Error: "Too many connections"
+
 - Free tier limit: 100 concurrent connections
 - Use connection pooling (`?pooler=transaction`)
 
@@ -131,7 +136,6 @@ pnpm run db:seed
 
 ✅ **Story 1.5:** Database provisioned on Neon  
 ⏳ **Story 1.6:** Configure Drizzle ORM and define schema  
-⏳ **Story 1.7:** Run migrations to create tables  
+⏳ **Story 1.7:** Run migrations to create tables
 
 Once your `DATABASE_URL` is set in `backend/.env`, you're ready for Story 1.6!
-

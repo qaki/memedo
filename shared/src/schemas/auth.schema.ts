@@ -13,23 +13,21 @@ export const passwordSchema = z
 /**
  * Email validation schema
  */
-export const emailSchema = z
-  .string()
-  .email('Invalid email address')
-  .toLowerCase()
-  .trim();
+export const emailSchema = z.string().email('Invalid email address').toLowerCase().trim();
 
 /**
  * Register request schema
  */
-export const registerSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+export const registerSchema = z
+  .object({
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 /**
  * Login request schema
@@ -50,26 +48,30 @@ export const passwordResetRequestSchema = z.object({
 /**
  * Password reset confirm schema
  */
-export const passwordResetConfirmSchema = z.object({
-  token: z.string().min(1, 'Reset token is required'),
-  password: passwordSchema,
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+export const passwordResetConfirmSchema = z
+  .object({
+    token: z.string().min(1, 'Reset token is required'),
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 /**
  * Change password schema (for authenticated users)
  */
-export const changePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'Current password is required'),
-  newPassword: passwordSchema,
-  confirmNewPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmNewPassword, {
-  message: "Passwords don't match",
-  path: ['confirmNewPassword'],
-});
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword: passwordSchema,
+    confirmNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords don't match",
+    path: ['confirmNewPassword'],
+  });
 
 /**
  * 2FA setup schema (TOTP)
@@ -94,4 +96,3 @@ export type PasswordResetConfirmInput = z.infer<typeof passwordResetConfirmSchem
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type TotpSetupInput = z.infer<typeof totpSetupSchema>;
 export type TotpVerifyInput = z.infer<typeof totpVerifySchema>;
-

@@ -108,12 +108,14 @@ This foundation allows:
 **FR012:** The system shall auto-detect blockchain network from contract address format  
 **FR013:** The system shall execute parallel API calls to multiple data sources (DexScreener, Etherscan, Helius, GoPlus, RugCheck, Covalent, BirdEye) for each analysis request  
 **FR014:** The system shall implement chain-specific fallback cascades:
+
 - **Ethereum:** DexScreener → Etherscan (ABI scan) → GoPlus → Covalent
-- **Solana:** DexScreener + Helius → RugCheck → BirdEye  
+- **Solana:** DexScreener + Helius → RugCheck → BirdEye
 
 **FR015:** The system shall enforce 5-second timeout per external API call and 12-second maximum total analysis time  
 **FR016:** The system shall return analysis results within 12 seconds or provide timeout notification  
 **FR017:** The system shall display "No data available" when all API sources fail, showing:
+
 - Which sources were attempted
 - Timestamp of attempts
 - User-friendly explanation (never raw API errors)
@@ -133,8 +135,9 @@ This foundation allows:
 
 **FR026:** The system shall cache token analysis results in Redis with chain-prefixed keys (format: `sol:BONK`, `eth:0x...`)  
 **FR027:** The system shall implement tiered cache TTL policy:
+
 - **Price & quick metrics:** 1-5 minutes
-- **Token metadata, supply, security checks:** 24 hours  
+- **Token metadata, supply, security checks:** 24 hours
 
 **FR028:** The system shall serve cached results when available instead of re-fetching from APIs
 
@@ -166,16 +169,18 @@ This foundation allows:
 
 **FR044:** The system shall provide admin panel accessible to admin-role users only  
 **FR045:** The system shall display admin dashboard showing:
+
 - Total users (free vs premium breakdown)
 - Total analyses performed (daily/weekly/monthly)
-- Subscription status overview  
+- Subscription status overview
 
 **FR046:** The system shall allow admins to manually set user premium status for debugging/onboarding  
 **FR047:** The system shall display **API Health Dashboard** showing per-provider metrics:
+
 - Success rate (%)
 - Average latency (ms)
 - Last successful call timestamp
-- Fallback trigger frequency  
+- Fallback trigger frequency
 
 **FR048:** The system shall allow admins to view API consumer quota (heavy users) for trial offers or upsell opportunities
 
@@ -190,21 +195,24 @@ This foundation allows:
 
 ### Non-Functional Requirements
 
-**NFR001: Performance**  
+**NFR001: Performance**
+
 - Token analysis completion time: **≤12 seconds per request** (target: 6-8 seconds average)
 - Individual API call timeout: **5 seconds maximum**
 - API response time: <6 seconds average for cached results (1-5 min cache for price data)
 - Page load time: <2 seconds (frontend on Vercel edge)
 - Support for 100-200 concurrent analyses at scale (Month 12)
 
-**NFR002: Reliability & Availability**  
+**NFR002: Reliability & Availability**
+
 - System uptime: **99.5% for MVP** (allows ~3.6 hours downtime/month), **99.9% post-PMF** (allows ~43 minutes/month)
 - API data completeness: **95%+ successful full analysis rate** through fallback architecture
 - **Analysis completeness metric:** Record 0-100 score per analysis based on tab completion, track aggregate "% of analyses with full tabs" — **Goal: 95%+**
 - Error rate: <1% across all blockchain networks
 - Zero visible raw API failures to end users (graceful degradation with explanatory messaging only)
 
-**NFR003: Security**  
+**NFR003: Security**
+
 - All data transmission over HTTPS (enforced by Vercel/Render)
 - JWT tokens with secure httpOnly cookies
 - Input validation on all user-provided data (contract addresses, emails, passwords) using **Zod**
@@ -229,7 +237,8 @@ This foundation allows:
 - Password hashing using bcrypt with minimum 10 salt rounds
 - Secrets management: **Process.env validation** on startup; use production secret stores (Vercel Secrets, Render Env Vars)
 
-**NFR004: Scalability**  
+**NFR004: Scalability**
+
 - Support gradual growth from 0 → 1,000 → 10,000 → 50,000 users over 12 months
 - Database: Neon PostgreSQL with connection pooling and autoscaling
 - Caching: Redis (Upstash) with chain-prefixed keys (e.g., `sol:BONK`, `eth:0xABC123...`) to reduce API costs by 10x and handle scale
@@ -238,13 +247,15 @@ This foundation allows:
   - **Token metadata, supply, security checks:** 24 hours TTL
 - Horizontal scaling capability on Render (1 → 3 instances during traffic spikes)
 
-**NFR005: Data Quality & Consistency**  
+**NFR005: Data Quality & Consistency**
+
 - Implement trust hierarchy for conflicting data (DexScreener > Helius > RugCheck for price; Etherscan > GoPlus for security)
 - Display data source attribution for transparency ("Data from [Source]")
 - Show **transparency tooltips** on each metric: "Sourced from DexScreener — last fetched 3 minutes ago"
 - Confidence scoring (high/medium/low) for merged multi-source data (Post-MVP enhancement)
 
-**NFR006: Observability, Monitoring & Logging**  
+**NFR006: Observability, Monitoring & Logging**
+
 - **Structured logging:** Use Sentry (or equivalent) for error tracking and diagnostics
 - Log external API provider interactions:
   - Provider name
@@ -261,7 +272,8 @@ This foundation allows:
   - Alert on cache (Redis) unavailability
 - Internal admin dashboard displaying **API health metrics** (success rate, latency, fallback usage) in real-time
 
-**NFR007: Testing & Quality Assurance**  
+**NFR007: Testing & Quality Assurance**
+
 - **Integration tests:**
   - Analysis endpoint (happy path + fallback scenarios)
   - Multi-API orchestration with simulated failures
@@ -279,8 +291,9 @@ This foundation allows:
 
 ## User Journeys
 
-### **Journey 1: First-Time User Discovers and Analyzes a Token** 
-*(Primary Happy Path - The "Aha Moment")*
+### **Journey 1: First-Time User Discovers and Analyzes a Token**
+
+_(Primary Happy Path - The "Aha Moment")_
 
 **Persona:** Jake, 28, "Vigilant Degen" trader who just heard about MemeDo from crypto Twitter
 
@@ -325,7 +338,7 @@ This foundation allows:
 6. **Results Review (Core Value Delivery)**
    - System displays 5 tabs: Overview, Security, Tokenomics, Liquidity, Social
    - **Overview tab:** Price $0.0042, Liquidity $890k, 24h Volume $1.2M
-   - **Security tab:** 
+   - **Security tab:**
      - ✅ No mint authority
      - ✅ Ownership renounced
      - ⚠️ Freeze authority still active (flagged yellow)
@@ -347,7 +360,8 @@ This foundation allows:
 ---
 
 ### **Journey 2: Free User Hits Quota Limit and Upgrades to Premium**
-*(Conversion Path - Critical for Revenue)*
+
+_(Conversion Path - Critical for Revenue)_
 
 **Persona:** Sarah, 32, active trader analyzing 3-5 tokens daily
 
@@ -360,18 +374,19 @@ This foundation allows:
    - Clicks "Analyze"
    - System checks: `user.analyses_this_month >= 20`
    - **System blocks request**, displays modal:
+
      ```
      🚫 Monthly Analysis Limit Reached
-     
+
      You've used all 20 free analyses this month.
-     
+
      Upgrade to Premium for:
      ✅ Unlimited analyses
      ✅ Priority support
      ✅ Early access to new features
-     
+
      $29/month • Cancel anytime
-     
+
      [Upgrade Now] [Maybe Later]
      ```
 
@@ -396,9 +411,10 @@ This foundation allows:
    - System updates: `user.role = 'premium'`
    - System resets: `user.analyses_this_month = 0` (unlimited now)
    - Sarah redirected to dashboard with success message:
+
      ```
      🎉 Welcome to Premium!
-     
+
      You now have unlimited analyses.
      [Analyze Your Token Now]
      ```
@@ -421,7 +437,8 @@ This foundation allows:
 ---
 
 ### **Journey 3: Premium User Encounters API Failure and Experiences Fallback Reliability**
-*(Reliability Proof - Core Moat Demonstration)*
+
+_(Reliability Proof - Core Moat Demonstration)_
 
 **Persona:** Marcus, 35, premium user who analyzes 10-20 tokens daily, relies on MemeDo for trading decisions
 
@@ -439,7 +456,6 @@ This foundation allows:
    - **Decision Point:** DexScreener times out (internal error)
      - ❌ **Competitor behavior:** Would show "API Error - Try again later"
      - ✅ **MemeDo behavior:** Silently triggers fallback chain
-   
 3. **Automatic Fallback Cascade**
    - **System logs internally:** `DexScreener timeout (5.1s) → triggering fallback`
    - System attempts: **Etherscan API** (for contract verification + ABI scan)
@@ -484,7 +500,8 @@ This foundation allows:
 ---
 
 ### **Journey 4 (Bonus): Admin Detects API Provider Degradation and Takes Action**
-*(Operational Journey - Behind the Scenes)*
+
+_(Operational Journey - Behind the Scenes)_
 
 **Persona:** You (founder/admin) monitoring MemeDo health
 
@@ -531,6 +548,7 @@ This foundation allows:
 The following features and capabilities are explicitly **excluded from MVP** and deferred to Phase 2+ releases:
 
 ### **Phase 2 Features (Month 4-6)**
+
 - BSC (Binance Smart Chain) and Base network support
 - AI-powered risk summaries (natural language explanations beyond manual risk flags)
 - Watchlist functionality with real-time price/liquidity alerts
@@ -540,6 +558,7 @@ The following features and capabilities are explicitly **excluded from MVP** and
 - Historical pattern recognition and trend analysis
 
 ### **Phase 3+ Features (Month 7-12)**
+
 - "Safe by MemeDo" verified badge for legitimate projects
 - Whale movement tracking and alerts
 - Cross-chain clone detection (identify copycat tokens)
@@ -552,6 +571,7 @@ The following features and capabilities are explicitly **excluded from MVP** and
 - Multi-language support (Spanish, Portuguese, Turkish, Chinese)
 
 ### **Not Included in Any Phase**
+
 - Mobile native apps (iOS/Android) — web-first, responsive design only
 - Token name search (only contract address to prevent confusion)
 - Automated trading or bot functionality
@@ -562,6 +582,7 @@ The following features and capabilities are explicitly **excluded from MVP** and
 - Social trading or copy-trading features
 
 ### **Technical Limitations (Known Constraints)**
+
 - Chains not supported in MVP: Arbitrum, Polygon, Avalanche, Fantom (can be added post-PMF)
 - Historical price data beyond 24 hours (requires premium API tiers)
 - Real-time WebSocket price updates (polling only in MVP)
@@ -580,4 +601,3 @@ This PRD serves as the strategic foundation. The next phase is:
 
 **Prepared for:** AI-assisted development with Cursor + BMAD Method workflows  
 **Success Criteria:** 100 paying users by Month 3, $5k MRR by Month 6, $25k MRR by Month 12
-

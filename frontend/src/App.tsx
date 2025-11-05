@@ -2,12 +2,8 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to MemeDo 🚀
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Multi-chain crypto analysis platform
-        </p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to MemeDo 🚀</h1>
+        <p className="text-lg text-gray-600 mb-8">Multi-chain crypto analysis platform</p>
         <div className="space-x-4">
           <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
             React 18
@@ -24,7 +20,7 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

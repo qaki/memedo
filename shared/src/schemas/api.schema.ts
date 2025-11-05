@@ -111,4 +111,3 @@ export type PaginatedResponse<T> = {
   meta: PaginationMeta;
   timestamp?: string;
 };
-

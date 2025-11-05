@@ -34,6 +34,7 @@
 **So that** I can maintain code consistency and share validation logic between frontend and backend
 
 **Acceptance Criteria:**
+
 - [ ] Project root initialized with `pnpm` workspace
 - [ ] Three packages created: `frontend`, `backend`, `shared`
 - [ ] Each package has valid `package.json` with correct dependencies
@@ -115,6 +116,7 @@ tree -L 2 -a
 ```
 
 **Definition of Done:**
+
 - All directories created with correct structure
 - Git repository initialized with clean status
 - `pnpm-workspace.yaml` correctly references all packages
@@ -131,6 +133,7 @@ tree -L 2 -a
 **So that** I can build the UI with fast hot-reload and type safety
 
 **Acceptance Criteria:**
+
 - [ ] React 18.2.x + TypeScript 5.3.x installed
 - [ ] Vite 5.x configured as build tool
 - [ ] Tailwind CSS 3.4.x configured with PostCSS
@@ -311,6 +314,7 @@ pnpm run dev
 ```
 
 **Verification:**
+
 ```bash
 # In frontend directory
 pnpm run dev
@@ -319,6 +323,7 @@ pnpm run dev
 ```
 
 **Definition of Done:**
+
 - Frontend dev server starts without errors
 - Tailwind CSS classes render correctly
 - TypeScript compilation succeeds
@@ -336,6 +341,7 @@ pnpm run dev
 **So that** I can build REST endpoints with type safety and fast iteration
 
 **Acceptance Criteria:**
+
 - [ ] Express 4.18.x + TypeScript 5.3.x installed
 - [ ] Development server with hot-reload via `tsx`
 - [ ] CORS configured for frontend origin
@@ -459,8 +465,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     success: false,
     error: {
       code: 'INTERNAL_SERVER_ERROR',
-      message: process.env.NODE_ENV === 'production' 
-        ? 'An error occurred' 
+      message: process.env.NODE_ENV === 'production'
+        ? 'An error occurred'
         : err.message,
     },
     timestamp: new Date().toISOString(),
@@ -556,6 +562,7 @@ pnpm run dev
 ```
 
 **Verification:**
+
 ```bash
 # In backend directory
 pnpm run dev
@@ -569,6 +576,7 @@ curl http://localhost:3000/api
 ```
 
 **Definition of Done:**
+
 - Backend server starts without errors on port 3000
 - Health check endpoint returns 200 with correct JSON structure
 - CORS allows requests from frontend origin
@@ -587,6 +595,7 @@ curl http://localhost:3000/api
 **So that** frontend and backend use identical validation logic
 
 **Acceptance Criteria:**
+
 - [ ] Shared package initialized with TypeScript
 - [ ] Zod schemas for authentication exported
 - [ ] Frontend and backend can import from `@shared/*`
@@ -771,6 +780,7 @@ pnpm run build
 ```
 
 **Verification:**
+
 ```bash
 # In shared directory
 pnpm run build
@@ -782,6 +792,7 @@ ls -la dist/
 ```
 
 **Definition of Done:**
+
 - Shared package compiles to JavaScript with TypeScript declarations
 - All Zod schemas export correctly
 - Type inference works (TypeScript can infer types from Zod schemas)
@@ -798,6 +809,7 @@ ls -la dist/
 **So that** I can store user data and analysis results
 
 **Acceptance Criteria:**
+
 - [ ] Neon account created (or existing account used)
 - [ ] New database created: `memedo-dev`
 - [ ] Connection string obtained and stored in `.env`
@@ -874,6 +886,7 @@ pnpx tsx src/config/database.test.ts
 ```
 
 **Expected Output:**
+
 ```
 ✅ Database connection successful!
 📅 Server time: 2025-10-28T10:30:00.123Z
@@ -881,6 +894,7 @@ pnpx tsx src/config/database.test.ts
 ```
 
 **Definition of Done:**
+
 - Neon database created and accessible
 - Connection string stored securely in `.env`
 - Test connection script succeeds
@@ -897,6 +911,7 @@ pnpx tsx src/config/database.test.ts
 **So that** I can perform type-safe database operations
 
 **Acceptance Criteria:**
+
 - [ ] Drizzle ORM and Drizzle Kit installed
 - [ ] Database schema defined for all tables (users, analyses, subscriptions, api_logs)
 - [ ] Drizzle configuration file created
@@ -947,32 +962,32 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password_hash: text('password_hash').notNull(),
-  
+
   // Profile
   display_name: varchar('display_name', { length: 100 }),
-  
+
   // Role & Status
   role: varchar('role', { length: 20 }).notNull().default('free'), // 'free' | 'premium' | 'admin'
   email_verified: boolean('email_verified').notNull().default(false),
   email_verification_token: varchar('email_verification_token', { length: 255 }),
   email_verification_expires: timestamp('email_verification_expires'),
-  
+
   // Password Reset
   password_reset_token: varchar('password_reset_token', { length: 255 }),
   password_reset_expires: timestamp('password_reset_expires'),
-  
+
   // Usage Tracking (Free Tier)
   analyses_this_month: integer('analyses_this_month').notNull().default(0),
   analyses_reset_date: timestamp('analyses_reset_date').notNull().defaultNow(),
-  
+
   // Premium Features (Phase 2)
   saved_alerts_config: jsonb('saved_alerts_config').notNull().default('{}'),
-  
+
   // 2FA (Admin mandatory, Premium optional)
   totp_secret: text('totp_secret'), // Encrypted TOTP secret
   totp_enabled: boolean('totp_enabled').notNull().default(false),
   token_version: integer('token_version').notNull().default(0), // For JWT invalidation
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
@@ -992,25 +1007,25 @@ import { users } from './users';
 export const analyses = pgTable('analyses', {
   id: uuid('id').primaryKey().defaultRandom(),
   user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  
+
   // Token Identification
   chain: varchar('chain', { length: 20 }).notNull(), // 'ethereum' | 'solana' | 'base' | 'bsc'
   contract_address: varchar('contract_address', { length: 100 }).notNull(),
   token_name: varchar('token_name', { length: 100 }),
   token_symbol: varchar('token_symbol', { length: 20 }),
-  
+
   // Analysis Results (JSONB for flexibility)
   results: jsonb('results').notNull(),
-  
+
   // Data Quality Metrics
   completeness_score: integer('completeness_score').notNull(), // 0-100
   sources_used: jsonb('sources_used').notNull(),
   sources_failed: jsonb('sources_failed'),
-  
+
   // Performance Metrics
   analysis_duration_ms: integer('analysis_duration_ms').notNull(),
   cache_hit: boolean('cache_hit').notNull().default(false),
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   expires_at: timestamp('expires_at').notNull(), // Cache expiry
@@ -1030,24 +1045,24 @@ import { users } from './users';
 export const subscriptions = pgTable('subscriptions', {
   id: uuid('id').primaryKey().defaultRandom(),
   user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  
+
   // Provider Information
   provider: varchar('provider', { length: 20 }).notNull(), // 'stripe' | 'lemon_squeezy'
   provider_subscription_id: varchar('provider_subscription_id', { length: 255 }).notNull().unique(),
   provider_customer_id: varchar('provider_customer_id', { length: 255 }).notNull(),
-  
+
   // Subscription Details
   status: varchar('status', { length: 20 }).notNull(), // 'active' | 'canceled' | 'past_due' | 'expired'
   plan_name: varchar('plan_name', { length: 50 }).notNull(),
   amount_cents: integer('amount_cents').notNull(),
   currency: varchar('currency', { length: 3 }).notNull().default('USD'),
-  
+
   // Billing Cycle
   current_period_start: timestamp('current_period_start').notNull(),
   current_period_end: timestamp('current_period_end').notNull(),
   cancel_at_period_end: boolean('cancel_at_period_end').notNull().default(false),
   canceled_at: timestamp('canceled_at'),
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
@@ -1064,32 +1079,32 @@ import { pgTable, uuid, varchar, integer, boolean, timestamp, text, jsonb, index
 
 export const api_logs = pgTable('api_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
-  
+
   // Request Context
   analysis_id: uuid('analysis_id'), // References analyses.id (nullable if analysis failed)
   chain: varchar('chain', { length: 20 }).notNull(),
   contract_address: varchar('contract_address', { length: 100 }),
-  
+
   // API Provider
   provider: varchar('provider', { length: 50 }).notNull(),
   endpoint: varchar('endpoint', { length: 255 }),
-  
+
   // Performance & Status
   success: boolean('success').notNull(),
   response_time_ms: integer('response_time_ms').notNull(),
   http_status_code: integer('http_status_code'),
-  
+
   // Error Details
   error_message: text('error_message'),
   error_type: varchar('error_type', { length: 50 }),
-  
+
   // Fallback Tracking
   was_fallback: boolean('was_fallback').notNull().default(false),
   fallback_level: integer('fallback_level').default(0),
-  
+
   // Metadata
   request_metadata: jsonb('request_metadata'),
-  
+
   // Timestamp
   created_at: timestamp('created_at').notNull().defaultNow(),
 }, (table) => ({
@@ -1113,6 +1128,7 @@ EOF
 ```
 
 Update `backend/package.json` to add these scripts:
+
 ```json
 {
   "scripts": {
@@ -1129,6 +1145,7 @@ Update `backend/package.json` to add these scripts:
 ```
 
 **Verification:**
+
 ```bash
 # In backend directory
 
@@ -1143,6 +1160,7 @@ pnpm run db:studio
 ```
 
 **Definition of Done:**
+
 - All schema files compile without TypeScript errors
 - Drizzle config correctly references DATABASE_URL
 - Drizzle Studio successfully connects to Neon database
@@ -1159,6 +1177,7 @@ pnpm run db:studio
 **So that** all tables are created with correct schema and indexes
 
 **Acceptance Criteria:**
+
 - [ ] Initial migration generated from Drizzle schema
 - [ ] Migration includes all tables: users, analyses, subscriptions, api_logs
 - [ ] Migration includes all indexes and constraints
@@ -1208,23 +1227,23 @@ END;
 $$ language 'plpgsql';
 
 -- Apply trigger to users table
-CREATE TRIGGER update_users_updated_at 
+CREATE TRIGGER update_users_updated_at
   BEFORE UPDATE ON users
-  FOR EACH ROW 
+  FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
 -- Apply trigger to subscriptions table
-CREATE TRIGGER update_subscriptions_updated_at 
+CREATE TRIGGER update_subscriptions_updated_at
   BEFORE UPDATE ON subscriptions
-  FOR EACH ROW 
+  FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
 -- Create function to reset monthly analysis quota
 CREATE OR REPLACE FUNCTION reset_monthly_analyses()
 RETURNS void AS $$
 BEGIN
-  UPDATE users 
-  SET 
+  UPDATE users
+  SET
     analyses_this_month = 0,
     analyses_reset_date = NOW() + INTERVAL '1 month'
   WHERE analyses_reset_date <= NOW();
@@ -1285,7 +1304,7 @@ async function testSchema() {
       }).returning();
 
       console.log('✅ Test insert successful:', user.id);
-      
+
       // Rollback test data
       throw new Error('Rollback test data');
     }).catch(() => {
@@ -1308,6 +1327,7 @@ pnpx tsx src/db/test-schema.ts
 ```
 
 **Expected Output:**
+
 ```
 ✅ Database schema verified!
 📊 Users: 0
@@ -1319,6 +1339,7 @@ pnpx tsx src/db/test-schema.ts
 ```
 
 **Definition of Done:**
+
 - Initial migration generated and applied successfully
 - All 4 tables exist in Neon database
 - All indexes created correctly
@@ -1338,6 +1359,7 @@ pnpx tsx src/db/test-schema.ts
 **So that** code quality is maintained and merge conflicts are minimized
 
 **Acceptance Criteria:**
+
 - [ ] ESLint configured for TypeScript across all packages
 - [ ] Prettier configured with consistent rules
 - [ ] Husky git hooks prevent commits with linting errors
@@ -1510,6 +1532,7 @@ git commit -m "Test commit"
 ```
 
 **Definition of Done:**
+
 - ESLint runs without errors across all packages
 - Prettier formats code consistently
 - Pre-commit hook prevents commits with linting errors
@@ -1527,6 +1550,7 @@ git commit -m "Test commit"
 **So that** missing configuration is caught early
 
 **Acceptance Criteria:**
+
 - [ ] `.env.example` file is complete and documented
 - [ ] Backend validates required environment variables on startup
 - [ ] Validation script provides clear error messages
@@ -1786,8 +1810,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     success: false,
     error: {
       code: 'INTERNAL_SERVER_ERROR',
-      message: env.NODE_ENV === 'production' 
-        ? 'An error occurred' 
+      message: env.NODE_ENV === 'production'
+        ? 'An error occurred'
         : err.message,
     },
     timestamp: new Date().toISOString(),
@@ -1829,6 +1853,7 @@ git checkout .env
 ```
 
 **Definition of Done:**
+
 - `.env.example` is complete and well-documented
 - Environment validation catches missing or invalid variables
 - Backend fails fast with clear error messages
@@ -1846,6 +1871,7 @@ git checkout .env
 **So that** I can confidently begin building features
 
 **Acceptance Criteria:**
+
 - [ ] Frontend dev server runs without errors
 - [ ] Backend dev server runs without errors
 - [ ] Database connection is successful
@@ -1864,8 +1890,8 @@ cd /path/to/memedo
 cat > README.md << 'EOF'
 # MemeDo - Multi-Chain Crypto Analysis Platform
 
-**Status:** 🚧 In Development (Epic 1 Complete)  
-**Version:** 1.0.0-alpha  
+**Status:** 🚧 In Development (Epic 1 Complete)
+**Version:** 1.0.0-alpha
 **Tech Stack:** React + TypeScript + Express + PostgreSQL + Redis
 
 ---
@@ -1887,13 +1913,15 @@ MemeDo is a SaaS platform that provides comprehensive multi-chain token analysis
 ## Project Structure
 
 ```
+
 memedo/
-├── frontend/          # React + Vite + Tailwind CSS
-├── backend/           # Express + TypeScript API
-├── shared/            # Shared Zod validation schemas
-├── docs/              # Project documentation
-└── tools/             # Development utilities
-```
+├── frontend/ # React + Vite + Tailwind CSS
+├── backend/ # Express + TypeScript API
+├── shared/ # Shared Zod validation schemas
+├── docs/ # Project documentation
+└── tools/ # Development utilities
+
+````
 
 ---
 
@@ -1917,7 +1945,7 @@ cd memedo
 
 # Install all dependencies
 pnpm install
-```
+````
 
 ### 2. Environment Configuration
 
@@ -2037,14 +2065,14 @@ pnpm run build:frontend
 
 ## Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm run dev` | Start both frontend and backend servers |
-| `pnpm run build` | Build all packages for production |
-| `pnpm run lint` | Run ESLint across all packages |
-| `pnpm run format` | Format code with Prettier |
-| `pnpm run type-check` | TypeScript type checking |
-| `pnpm run db:studio` | Open Drizzle Studio (database GUI) |
+| Command               | Description                             |
+| --------------------- | --------------------------------------- |
+| `pnpm run dev`        | Start both frontend and backend servers |
+| `pnpm run build`      | Build all packages for production       |
+| `pnpm run lint`       | Run ESLint across all packages          |
+| `pnpm run format`     | Format code with Prettier               |
+| `pnpm run type-check` | TypeScript type checking                |
+| `pnpm run db:studio`  | Open Drizzle Studio (database GUI)      |
 
 ---
 
@@ -2055,6 +2083,7 @@ pnpm run build:frontend
 **Error:** `❌ Environment validation failed: DATABASE_URL is required`
 
 **Solution:**
+
 ```bash
 cd backend
 cp .env.example .env
@@ -2066,6 +2095,7 @@ cp .env.example .env
 **Error:** `Connection terminated unexpectedly`
 
 **Solution:**
+
 - Verify `DATABASE_URL` in `.env` is correct
 - Check Neon console that database is active
 - Ensure `?sslmode=require` is in connection string
@@ -2075,6 +2105,7 @@ cp .env.example .env
 **Error:** `EADDRINUSE: address already in use :::3000`
 
 **Solution:**
+
 ```bash
 # Find and kill process on port 3000
 lsof -ti:3000 | xargs kill -9
@@ -2098,6 +2129,7 @@ PORT=3001
 ## Contributing
 
 This project follows:
+
 - **Code Style**: ESLint + Prettier (enforced via git hooks)
 - **Commits**: Conventional commits recommended
 - **Branching**: Feature branches from `main`
@@ -2113,7 +2145,8 @@ Proprietary - © 2025 Qlirim Elezi
 **Epic 1 Status:** ✅ **COMPLETE**  
 **Next Epic:** Authentication System (JWT, Email Verification, Password Reset)
 EOF
-```
+
+````
 
 **Final Verification Script:**
 
@@ -2197,19 +2230,22 @@ echo ""
 echo "========================================"
 echo "Epic 1 Verification Complete!"
 echo "========================================"
-```
+````
 
 Make it executable:
+
 ```bash
 chmod +x tools/verify-epic-1.sh
 ```
 
 Run verification:
+
 ```bash
 ./tools/verify-epic-1.sh
 ```
 
 **Expected Output:**
+
 ```
 ========================================
 Epic 1 Verification Script
@@ -2238,6 +2274,7 @@ Epic 1 Verification Complete!
 ```
 
 **Definition of Done:**
+
 - All verification checks pass
 - README.md is comprehensive and up-to-date
 - Both dev servers run without errors
@@ -2280,19 +2317,19 @@ Epic 1 Verification Complete!
 
 ### Time Tracking
 
-| Story | Estimated | Actual | Status |
-|-------|-----------|--------|--------|
-| 1.1 | 0.5h | - | ⏳ Pending |
-| 1.2 | 1.0h | - | ⏳ Pending |
-| 1.3 | 1.5h | - | ⏳ Pending |
-| 1.4 | 1.0h | - | ⏳ Pending |
-| 1.5 | 0.5h | - | ⏳ Pending |
-| 1.6 | 2.0h | - | ⏳ Pending |
-| 1.7 | 1.5h | - | ⏳ Pending |
-| 1.8 | 1.0h | - | ⏳ Pending |
-| 1.9 | 1.0h | - | ⏳ Pending |
-| 1.10 | 1.0h | - | ⏳ Pending |
-| **Total** | **11.0h** | - | ⏳ Pending |
+| Story     | Estimated | Actual | Status     |
+| --------- | --------- | ------ | ---------- |
+| 1.1       | 0.5h      | -      | ⏳ Pending |
+| 1.2       | 1.0h      | -      | ⏳ Pending |
+| 1.3       | 1.5h      | -      | ⏳ Pending |
+| 1.4       | 1.0h      | -      | ⏳ Pending |
+| 1.5       | 0.5h      | -      | ⏳ Pending |
+| 1.6       | 2.0h      | -      | ⏳ Pending |
+| 1.7       | 1.5h      | -      | ⏳ Pending |
+| 1.8       | 1.0h      | -      | ⏳ Pending |
+| 1.9       | 1.0h      | -      | ⏳ Pending |
+| 1.10      | 1.0h      | -      | ⏳ Pending |
+| **Total** | **11.0h** | -      | ⏳ Pending |
 
 ---
 
@@ -2301,6 +2338,7 @@ Epic 1 Verification Complete!
 Upon completion of Epic 1, proceed to:
 
 **Epic 2: Authentication System**
+
 - User registration with email verification
 - JWT token generation and refresh
 - Password reset flow
@@ -2325,4 +2363,3 @@ If you encounter issues during Epic 1 setup:
 **Created:** October 28, 2025  
 **Last Updated:** October 28, 2025  
 **Status:** ✅ Ready for Implementation
-

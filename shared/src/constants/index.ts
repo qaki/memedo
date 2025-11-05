@@ -133,4 +133,3 @@ export const COMPLETENESS_THRESHOLDS = {
   ACCEPTABLE: 60, // Some APIs failed but analysis is still useful
   POOR: 40, // Many APIs failed
 } as const;
-

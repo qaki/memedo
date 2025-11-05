@@ -1,13 +1,40 @@
 {
   "name": "memedo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "MemeDo - Multi-chain crypto token analysis platform",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:frontend": "pnpm --filter memedo-frontend dev",
+    "dev:backend": "pnpm --filter memedo-backend dev",
+    "dev": "concurrently \"pnpm:dev:frontend\" \"pnpm:dev:backend\"",
+    "build:shared": "pnpm --filter @memedo/shared build",
+    "build:backend": "pnpm --filter memedo-backend build",
+    "build:frontend": "pnpm --filter memedo-frontend build",
+    "build": "pnpm build:shared && pnpm build:backend && pnpm build:frontend",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md,yml,yaml}\"",
+    "type-check": "pnpm --recursive run type-check",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
-  "keywords": [],
+  "keywords": [
+    "memedo",
+    "crypto",
+    "token-analysis",
+    "blockchain"
+  ],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.20.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.2"
+  }
 }

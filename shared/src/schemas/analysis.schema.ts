@@ -102,4 +102,3 @@ export type RiskFlag = z.infer<typeof riskFlagSchema>;
 export type ProviderStatus = z.infer<typeof providerStatusSchema>;
 export type AnalysisMetadata = z.infer<typeof analysisMetadataSchema>;
 export type TokenAnalysisResult = z.infer<typeof tokenAnalysisResultSchema>;
-

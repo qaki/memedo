@@ -25,7 +25,8 @@
 These core principles guide all design decisions for MemeDo:
 
 ### **1. Clarity Over Flash**
-*"Every element must serve the user's decision-making process"*
+
+_"Every element must serve the user's decision-making process"_
 
 - **No crypto gimmicks:** Avoid neon colors, moon emojis, or hype aesthetics
 - **Information hierarchy:** Most critical data (price, security, liquidity) always above the fold
@@ -37,7 +38,8 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 ### **2. Trust Through Transparency**
-*"Show your work — users trust what they can verify"*
+
+_"Show your work — users trust what they can verify"_
 
 - **Source attribution:** Every data point shows "Data from [Provider] — last fetched X minutes ago"
 - **Confidence indicators:** Clear visual distinction between high-confidence (multiple sources) and low-confidence (single source) data
@@ -49,7 +51,8 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 ### **3. Speed as a Feature**
-*"Every second saved = higher conversion"*
+
+_"Every second saved = higher conversion"_
 
 - **Instant feedback:** Loading states with progress indicators ("Fetching from DexScreener...")
 - **Progressive disclosure:** Show Overview tab results first, other tabs load in background
@@ -62,7 +65,8 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 ### **4. Mobile-Aware, Web-First**
-*"Optimize for desktop traders, ensure mobile usability"*
+
+_"Optimize for desktop traders, ensure mobile usability"_
 
 - **Primary viewport:** Desktop (1920x1080 and MacBook 1440x900)
 - **Secondary viewport:** Mobile (375x667 iPhone SE and 414x896 iPhone 11+)
@@ -75,7 +79,8 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 ### **5. Accessibility Without Compromise**
-*"Readable for all, but not at the expense of power users"*
+
+_"Readable for all, but not at the expense of power users"_
 
 - **WCAG AA compliance:** 4.5:1 contrast ratio for body text, 3:1 for large text
 - **Keyboard navigation:** All actions accessible via keyboard (Tab, Enter, Esc)
@@ -93,6 +98,7 @@ These core principles guide all design decisions for MemeDo:
 **Primary Platform:** Web (React + TypeScript + Vite)  
 **Target Browsers:** Chrome 90+, Firefox 88+, Safari 14+, Edge 90+  
 **Responsive Breakpoints:**
+
 - Desktop: 1024px+
 - Tablet: 768px - 1023px
 - Mobile: 320px - 767px
@@ -106,55 +112,55 @@ These core principles guide all design decisions for MemeDo:
 ### **Core Screen Structure**
 
 #### **1. Landing Page (Pre-Auth)**
+
 - Hero section with value prop: "90 minutes → 30 seconds"
 - Live example analysis (demo mode, no login required)
 - Social proof: "Used by 10,000+ traders" + testimonials
 - Clear CTA: "Try Free Analysis" → triggers registration
 
 #### **2. Registration/Login Flow**
+
 - Minimal fields: Email + Password (no "Confirm Password" — slows down degens)
 - Inline validation with clear error messages
 - "Resend verification email" prominent if email not received
 - Social login (optional future): "Continue with Google/Twitter"
 
 #### **3. Dashboard (Main Hub)**
+
 - **Top Nav:**
   - Logo (top left)
   - Search bar (center, always visible): "Paste contract address..."
   - User menu (top right): Settings, Subscription, Logout
   - Analysis quota indicator: "19 analyses remaining" (free) or "Unlimited" (premium)
-  
 - **Main Content:**
   - Recent analyses (cards with token name, chain, date, quick summary)
   - "Analyze New Token" prominent CTA
-  
 - **Future widgets** (Phase 2):
   - "Top 5 Bullish Coins This Week"
   - "Your Watchlist"
 
 #### **4. Analysis Results Page**
+
 - **Header:**
   - Token name + symbol (e.g., "Bonk • $BONK")
   - Chain badge (Solana / Ethereum / Base / BSC)
   - Quick status indicator: 🟢 Safe / 🟡 Caution / 🔴 High Risk
-  
 - **Tab Navigation:**
   - Horizontal tabs: Overview | Security | Tokenomics | Liquidity | Social
   - Active tab: Bold + underline
   - Each tab shows completeness icon (✅ Full data / ⚠️ Partial / ❌ No data)
-  
 - **Tab Content:**
   - Grid layout: 2-3 columns on desktop, single column on mobile
   - Data cards with clear labels, values, and source attribution
   - Tooltips on hover/tap: "Last fetched 3 minutes ago from DexScreener"
   - Copy-to-clipboard buttons for addresses
-  
 - **Action Bar (Bottom):**
   - "Share Analysis" button (social sharing for viral growth)
   - "Analyze Another Token" button
   - "Add to Watchlist" button (Phase 2)
 
 #### **5. Settings Page**
+
 - Sections: Profile, Security, Subscription, Danger Zone
 - Profile: Email (read-only after verification), display name (optional)
 - Security: Change password, view active sessions (future)
@@ -162,6 +168,7 @@ These core principles guide all design decisions for MemeDo:
 - Danger Zone: Export data, delete account (requires re-auth)
 
 #### **6. Admin Panel (Admin Role Only)**
+
 - Sidebar navigation: Users, Analyses, API Health, Settings
 - **API Health Dashboard:**
   - Per-provider success rate (real-time line charts)
@@ -176,9 +183,11 @@ These core principles guide all design decisions for MemeDo:
 ### **Micro-Refinements (Critical UX Improvements)**
 
 #### **1. Session Memory + Continuity**
+
 **Requirement:** When returning to the dashboard, the app should persist the last search and show cached results instantly, even if the user closes the browser.
 
 **Implementation:**
+
 - Store `lastAnalyzedToken` in localStorage: `{ address: "0x...", chain: "ethereum", timestamp: 1234567890 }`
 - On dashboard mount, check if `lastAnalyzedToken` exists and was analyzed <24 hours ago
 - If yes, display: "Your last analysis: [Token Name] on [Chain] — [View Results]" with prominent link
@@ -189,9 +198,11 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **2. Visual Data Integrity Indicator**
+
 **Requirement:** A small status dot in the header ("🟢 Live / 🟡 Cached / 🔴 Partial") should reflect API completeness for current analysis.
 
 **Implementation:**
+
 - Calculate `data_completeness_score` (0-100) based on which tabs returned full data:
   - Overview: 20 points
   - Security: 30 points (most important)
@@ -209,9 +220,11 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **3. UX Safety Guardrails**
+
 **Requirement:** If user pastes an invalid or unsupported contract, immediately show validation feedback ("Invalid or unsupported chain address").
 
 **Implementation:**
+
 - Client-side validation (before API call):
   - Ethereum: `/^0x[a-fA-F0-9]{40}$/` (42 chars, 0x prefix + 40 hex)
   - Solana: Base58, 32-44 chars, no special chars
@@ -224,9 +237,11 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **4. Micro-Conversion Hooks**
+
 **Requirement:** Every "⚠️ Caution" or "🔴 Risk" message should end with "Learn Why →" linking to a short internal help modal.
 
 **Implementation:**
+
 - For each risk flag (e.g., "Freeze authority present"), append clickable link: "Learn Why →"
 - Opens lightweight modal (not new page) with:
   - **Title:** "What is Freeze Authority?"
@@ -240,26 +255,30 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **5. Empty-State Monetization**
+
 **Requirement:** When free users hit quota (20 analyses/mo), replace "Analyze" button with "Upgrade to Unlimited →" modal.
 
 **Implementation:**
+
 - On analysis attempt when `user.analyses_this_month >= 20`:
   - **Button state:** "Analyze" becomes "Upgrade to Unlimited" (orange/premium color)
   - On click, show modal:
+
     ```
     🚫 Monthly Analysis Limit Reached
-    
+
     You've used all 20 free analyses this month.
-    
+
     Upgrade to Premium for:
     ✅ Unlimited analyses
     ✅ Priority support
     ✅ Early access to new features
-    
+
     $29/month • Cancel anytime
-    
+
     [Upgrade Now] [Maybe Later]
     ```
+
   - Track conversion funnel: Modal shown → "Upgrade Now" clicked → Payment completed
 
 **Why:** Converts frustration into revenue.
@@ -267,9 +286,11 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **6. Lightweight Help Overlay**
+
 **Requirement:** Include a "?" icon in header → opens 1-minute product tour or hotkey list (built with Intro.js or custom).
 
 **Implementation:**
+
 - Help icon (?) in top-right header (next to user menu)
 - On first login, auto-trigger tour (dismissible, never shown again)
 - Tour steps:
@@ -288,16 +309,17 @@ These core principles guide all design decisions for MemeDo:
 ---
 
 #### **7. Data Visualization**
+
 **Requirement:** Use minimal charts only where clarity beats tables — e.g., holder distribution pie (Tokenomics), liquidity over 24h sparkline (Liquidity tab).
 
 **Implementation:**
+
 - **Tokenomics tab → Holder Distribution:**
   - Pie chart (Chart.js or Recharts):
     - Top 10 holders: Individual slices
     - Others: Single "Others" slice
   - Legend: Address (truncated) + % held
   - Tooltip: Full address + exact token amount
-  
 - **Liquidity tab → Liquidity Over 24h:**
   - Sparkline (mini line chart, no axes):
     - X-axis: Time (hourly)
@@ -315,6 +337,7 @@ These core principles guide all design decisions for MemeDo:
 ### **Additional Behavioral Rules**
 
 #### **Analysis Input Behavior**
+
 - Global search bar (always accessible in top nav)
 - Paste contract address → auto-detect chain → show preview ("Ethereum: 0x123...")
 - "Analyze" button or press Enter
@@ -322,20 +345,24 @@ These core principles guide all design decisions for MemeDo:
 - Error handling: Clear message + suggested action ("Check address format" / "Try again in 1 minute")
 
 #### **Tooltips**
+
 - Hover (desktop) or tap (mobile) to reveal
 - Show data source, timestamp, confidence level
 - Example: "Data from GoPlus • Last fetched 2 minutes ago • High confidence (verified by 2 sources)"
 
 #### **Empty States**
+
 - "No recent analyses yet" → CTA to analyze first token
 - "No data available" → Explanation of sources attempted + suggestion to try again
 
 #### **Loading States**
+
 - Skeleton screens (not spinners) for predictable layout
 - Progressive loading: Show Overview tab first, then Security, then rest
 - Never block entire UI — show cached data with "Updating..." indicator
 
 #### **Error States**
+
 - Inline errors (form validation): Red text below input
 - Toast notifications (API errors): Top-right corner, auto-dismiss in 5s
 - Full-page errors (500): "Something went wrong" with "Try again" button
@@ -347,6 +374,7 @@ These core principles guide all design decisions for MemeDo:
 ### **Color Palette**
 
 **Primary Colors:**
+
 - **Primary:** Deep blue `#0066FF` — trustworthy, professional (buttons, links, focus states)
 - **Success:** Green `#10B981` — safe token indicators, positive feedback
 - **Warning:** Yellow `#F59E0B` — caution flags, partial data warnings
@@ -354,6 +382,7 @@ These core principles guide all design decisions for MemeDo:
 - **Neutral:** Gray scale `#F9FAFB` (lightest) → `#111827` (darkest) — background, text, borders
 
 **Semantic Colors:**
+
 - **Background:** `#FFFFFF` (white) for cards, `#F9FAFB` (off-white) for page background
 - **Text:**
   - Primary: `#111827` (near-black)
@@ -364,28 +393,32 @@ These core principles guide all design decisions for MemeDo:
 ### **Typography**
 
 **Font Family:**
+
 - **Sans-serif:** Inter (headings + body) — geometric, clean, excellent readability
 - **Monospace:** JetBrains Mono (contract addresses, code snippets)
 
 **Font Sizes:**
+
 ```css
---text-xs: 12px;    /* Small labels, timestamps */
---text-sm: 14px;    /* Body text, secondary info */
---text-base: 16px;  /* Primary body text, emphasis */
---text-lg: 18px;    /* Large body, subheadings */
---text-xl: 20px;    /* h3 */
---text-2xl: 24px;   /* h2 */
---text-3xl: 30px;   /* h1 (mobile) */
---text-4xl: 36px;   /* h1 (desktop) */
+--text-xs: 12px; /* Small labels, timestamps */
+--text-sm: 14px; /* Body text, secondary info */
+--text-base: 16px; /* Primary body text, emphasis */
+--text-lg: 18px; /* Large body, subheadings */
+--text-xl: 20px; /* h3 */
+--text-2xl: 24px; /* h2 */
+--text-3xl: 30px; /* h1 (mobile) */
+--text-4xl: 36px; /* h1 (desktop) */
 ```
 
 **Font Weights:**
+
 - Regular: 400 (body text)
 - Medium: 500 (emphasis, labels)
 - Semibold: 600 (subheadings, buttons)
 - Bold: 700 (headings, critical info)
 
 **Line Heights:**
+
 - Body text: 1.5 (24px for 16px text)
 - Headings: 1.2 (tighter for impact)
 
@@ -394,6 +427,7 @@ These core principles guide all design decisions for MemeDo:
 **Base Unit:** 4px (Tailwind default)
 
 **Common Spacing Values:**
+
 ```
 1 = 4px    (xs)
 2 = 8px    (sm)
@@ -406,6 +440,7 @@ These core principles guide all design decisions for MemeDo:
 ```
 
 **Component Padding:**
+
 - Cards: 16px (mobile), 24px (desktop)
 - Buttons: 12px horizontal, 8px vertical (md size)
 - Inputs: 12px horizontal, 10px vertical
@@ -436,55 +471,66 @@ These core principles guide all design decisions for MemeDo:
 ### **Buttons**
 
 **Primary Button:**
+
 ```tsx
 <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors">
   Analyze Token
 </button>
 ```
+
 - Use for primary actions (Analyze, Upgrade, Save)
 - Hover: Darken by 1 shade
 - Active: Darken by 2 shades + scale(0.98)
 - Disabled: Opacity 0.5, cursor not-allowed
 
 **Secondary Button:**
+
 ```tsx
 <button className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md">
   Cancel
 </button>
 ```
+
 - Use for secondary actions (Cancel, Maybe Later)
 
 **Danger Button:**
+
 ```tsx
 <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md">
   Delete Account
 </button>
 ```
+
 - Use for destructive actions (Delete, Remove)
 
 **Ghost Button:**
+
 ```tsx
 <button className="text-blue-600 hover:bg-blue-50 font-medium py-2 px-4 rounded-md">
   Learn More
 </button>
 ```
+
 - Use for tertiary actions (Learn More, View Details)
 
 ### **Inputs**
 
 **Text Input:**
+
 ```tsx
-<input 
-  type="text" 
+<input
+  type="text"
   placeholder="Paste contract address..."
   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 />
 ```
+
 - Focus: Blue ring (2px), remove default border color
 - Error: Red border + red ring
 - Disabled: Gray background, cursor not-allowed
 
 **Label + Input Combo:**
+
 ```tsx
 <div className="space-y-1">
   <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -495,14 +541,14 @@ These core principles guide all design decisions for MemeDo:
 ### **Cards**
 
 **Standard Card:**
+
 ```tsx
 <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
   <h3 className="text-lg font-semibold text-gray-900">Token Overview</h3>
-  <div className="space-y-2">
-    {/* Card content */}
-  </div>
+  <div className="space-y-2">{/* Card content */}</div>
 </div>
 ```
+
 - White background, subtle shadow
 - 12px border radius (lg)
 - 24px padding (desktop), 16px (mobile)
@@ -510,11 +556,13 @@ These core principles guide all design decisions for MemeDo:
 ### **Badges**
 
 **Status Badge:**
+
 ```tsx
 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
   ✅ Safe
 </span>
 ```
+
 - Variants: Green (safe), Yellow (caution), Red (danger)
 - Pill shape (9999px radius)
 - Small caps text (uppercase optional)
@@ -522,6 +570,7 @@ These core principles guide all design decisions for MemeDo:
 ### **Tabs**
 
 **Tab Navigation:**
+
 ```tsx
 <div className="border-b border-gray-200">
   <nav className="flex space-x-8">
@@ -534,6 +583,7 @@ These core principles guide all design decisions for MemeDo:
   </nav>
 </div>
 ```
+
 - Active: Blue underline (2px), blue text
 - Inactive: Transparent underline, gray text
 - Hover: Darker gray text
@@ -541,6 +591,7 @@ These core principles guide all design decisions for MemeDo:
 ### **Tooltips**
 
 **Tooltip (Headless UI):**
+
 ```tsx
 <Tooltip>
   <TooltipTrigger>
@@ -551,6 +602,7 @@ These core principles guide all design decisions for MemeDo:
   </TooltipContent>
 </Tooltip>
 ```
+
 - Dark background (gray-900), white text
 - Max width 300px
 - Arrow pointing to trigger (optional)
@@ -558,22 +610,30 @@ These core principles guide all design decisions for MemeDo:
 ### **Loading States**
 
 **Skeleton Screen:**
+
 ```tsx
 <div className="animate-pulse space-y-4">
   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
   <div className="h-4 bg-gray-200 rounded w-1/2"></div>
 </div>
 ```
+
 - Use for predictable layouts (cards, tables)
 - Gray background (200), subtle pulse animation
 
 **Spinner:**
+
 ```tsx
 <svg className="animate-spin h-5 w-5 text-blue-600" viewBox="0 0 24 24">
   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+  <path
+    className="opacity-75"
+    fill="currentColor"
+    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+  />
 </svg>
 ```
+
 - Use for indeterminate loading (API calls)
 
 ---
@@ -583,6 +643,7 @@ These core principles guide all design decisions for MemeDo:
 ### **1. Landing Page**
 
 **Layout:**
+
 ```
 ┌─────────────────────────────────────────┐
 │  [Logo]              [Login] [Sign Up]  │
@@ -604,6 +665,7 @@ These core principles guide all design decisions for MemeDo:
 ```
 
 **Components:**
+
 - Hero section: Centered, large heading (48px desktop, 32px mobile)
 - CTA button: Primary (blue), prominent, above fold
 - Demo: Live example analysis (read-only, no login required)
@@ -614,6 +676,7 @@ These core principles guide all design decisions for MemeDo:
 ### **2. Dashboard**
 
 **Layout:**
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ [Logo]  [Search: Paste contract...]  [👤 Menu] [19] │
@@ -632,6 +695,7 @@ These core principles guide all design decisions for MemeDo:
 ```
 
 **Components:**
+
 - Top nav: Fixed, sticky on scroll
 - Search bar: Always visible, auto-focus on `/` key
 - Quota indicator (top-right): "19 analyses remaining" badge
@@ -643,6 +707,7 @@ These core principles guide all design decisions for MemeDo:
 ### **3. Analysis Results**
 
 **Layout:**
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ BONK • $BONK [Solana] 🟢 Safe                       │
@@ -662,6 +727,7 @@ These core principles guide all design decisions for MemeDo:
 ```
 
 **Components:**
+
 - Header: Token name, chain badge, status dot
 - Tabs: Horizontal (desktop), accordion (mobile)
 - Tab content: 2-3 col grid, responsive
@@ -675,17 +741,20 @@ These core principles guide all design decisions for MemeDo:
 ### **Copy to Clipboard**
 
 **Pattern:**
+
 ```tsx
 <button onClick={() => copyToClipboard(address)} className="...">
-  {copied ? "✓ Copied" : "📋 Copy"}
+  {copied ? '✓ Copied' : '📋 Copy'}
 </button>
 ```
+
 - On click: Copy to clipboard, show "Copied!" for 2 seconds
 - Toast notification (optional): "Address copied to clipboard"
 
 ### **Progressive Disclosure**
 
 **Pattern:**
+
 - Load Overview tab first (most important)
 - Show skeleton for other tabs
 - Load Security → Tokenomics → Liquidity → Social in background
@@ -714,6 +783,7 @@ These core principles guide all design decisions for MemeDo:
 ### **Accessibility Standards**
 
 **WCAG 2.1 Level AA Compliance:**
+
 - **Color contrast:** 4.5:1 for body text, 3:1 for large text/icons
 - **Semantic HTML:** `<nav>`, `<main>`, `<article>`, `<section>`
 - **ARIA labels:** Dynamic content announced to screen readers
@@ -727,19 +797,20 @@ These core principles guide all design decisions for MemeDo:
 ### **Responsive Design**
 
 **Breakpoints:**
+
 ```css
 /* Mobile: 320px - 767px */
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
   /* Single column, stacked layout */
 }
 
 /* Tablet: 768px - 1023px */
-@media (min-width: 768px) and (max-width: 1023px) { 
+@media (min-width: 768px) and (max-width: 1023px) {
   /* 2-column layout, compact nav */
 }
 
 /* Desktop: 1024px+ */
-@media (min-width: 1024px) { 
+@media (min-width: 1024px) {
   /* 3-column layout, full nav */
 }
 ```
@@ -758,13 +829,13 @@ Even if not implemented in MVP, design with dark mode in mind:
 
 /* Define CSS variables */
 :root[data-theme="light"] {
-  --color-bg: #FFFFFF;
+  --color-bg: #ffffff;
   --color-text: #111827;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --color-bg: #111827;
-  --color-text: #F9FAFB;
+  --color-text: #f9fafb;
 }
 ```
 
@@ -812,4 +883,3 @@ These will be created during dedicated UX workflow (post-PRD):
 
 **Prepared for:** Frontend development team using React + TypeScript + Tailwind  
 **Success Criteria:** Beautiful, fast, accessible UI that converts free → premium at 15-20% rate
-

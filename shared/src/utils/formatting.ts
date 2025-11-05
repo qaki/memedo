@@ -97,9 +97,5 @@ export function capitalize(str: string): string {
  * Converts snake_case to Title Case
  */
 export function snakeToTitle(str: string): string {
-  return str
-    .split('_')
-    .map(capitalize)
-    .join(' ');
+  return str.split('_').map(capitalize).join(' ');
 }
-

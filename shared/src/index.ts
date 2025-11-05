@@ -1,6 +1,6 @@
 /**
  * MemeDo Shared Package
- * 
+ *
  * This package contains shared validation schemas, types, constants, and utilities
  * used across the frontend and backend of the MemeDo platform.
  */
@@ -20,4 +20,3 @@ export * from './utils/formatting';
 
 // Re-export zod for convenience
 export { z } from 'zod';
-

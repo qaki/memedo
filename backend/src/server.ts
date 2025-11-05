@@ -10,10 +10,12 @@ const PORT = process.env.PORT || 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // Middleware
-app.use(cors({
-  origin: FRONTEND_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -63,15 +65,13 @@ app.use((req: Request, res: Response) => {
 });
 
 // Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error('Error:', err);
   res.status(500).json({
     success: false,
     error: {
       code: 'INTERNAL_SERVER_ERROR',
-      message: process.env.NODE_ENV === 'production' 
-        ? 'An error occurred' 
-        : err.message,
+      message: process.env.NODE_ENV === 'production' ? 'An error occurred' : err.message,
     },
     timestamp: new Date().toISOString(),
   });
@@ -85,4 +85,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-

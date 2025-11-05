@@ -1,7 +1,7 @@
 /**
  * Database connection test script
  * Run this after setting up your Neon PostgreSQL database
- * 
+ *
  * Usage: pnpm run db:test
  */
 import { neon } from '@neondatabase/serverless';
@@ -15,7 +15,7 @@ async function testConnection() {
 
   // Check if DATABASE_URL is set
   const databaseUrl = process.env.DATABASE_URL;
-  
+
   if (!databaseUrl) {
     console.error('❌ ERROR: DATABASE_URL is not set in .env file');
     console.log('\nPlease follow these steps:');
@@ -38,7 +38,9 @@ async function testConnection() {
     console.log('Test 1: Running basic query...');
     const result = await sql`SELECT version(), current_database(), current_user`;
     console.log('✅ Connection successful!');
-    console.log(`   PostgreSQL version: ${result[0].version.split(' ')[0]} ${result[0].version.split(' ')[1]}`);
+    console.log(
+      `   PostgreSQL version: ${result[0].version.split(' ')[0]} ${result[0].version.split(' ')[1]}`
+    );
     console.log(`   Database: ${result[0].current_database}`);
     console.log(`   User: ${result[0].current_user}\n`);
 
@@ -49,7 +51,7 @@ async function testConnection() {
       FROM information_schema.tables 
       WHERE table_schema = 'public'
     `;
-    
+
     if (tables.length === 0) {
       console.log('ℹ️  No tables found yet (expected for fresh database)');
       console.log('   Tables will be created when you run migrations (Story 1.7)\n');
@@ -84,7 +86,7 @@ async function testConnection() {
     console.error('❌ Database connection FAILED\n');
     console.error('Error details:');
     console.error(`   Message: ${error.message}`);
-    
+
     if (error.message.includes('timeout')) {
       console.log('\n💡 Troubleshooting:');
       console.log('   - Check if your IP is allowed in Neon dashboard');
@@ -98,7 +100,7 @@ async function testConnection() {
       console.log('   - Verify the database name in your connection string');
       console.log('   - Check if the project exists in your Neon dashboard');
     }
-    
+
     console.log('\nSee docs/neon-setup-guide.md for more help.');
     process.exit(1);
   }
@@ -106,4 +108,3 @@ async function testConnection() {
 
 // Run the test
 testConnection();
-

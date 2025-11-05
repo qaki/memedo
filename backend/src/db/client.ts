@@ -1,6 +1,6 @@
 /**
  * Database Client Configuration
- * 
+ *
  * This file creates and exports the Drizzle ORM database client
  * using the Neon serverless Postgres driver.
  */
@@ -22,4 +22,3 @@ export const db = drizzle(sql, { schema });
 
 // Export schema for use in queries
 export { schema };
-

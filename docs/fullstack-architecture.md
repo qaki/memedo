@@ -21,6 +21,7 @@ The architecture is designed around three strategic imperatives:
 3. **Developer Velocity**: Bootstrap-compatible stack (Render backend, Vercel frontend, Neon PostgreSQL) optimized for solo developer with AI-assisted development. All decisions minimize DevOps overhead while maintaining production-grade quality.
 
 **Architecture Highlights:**
+
 - **Frontend**: React + TypeScript + Vite + Tailwind CSS (deployed to Vercel edge)
 - **Backend**: Express + TypeScript with chain-specific API adapters (deployed to Render)
 - **Database**: Neon PostgreSQL (serverless, autoscaling) with Drizzle ORM
@@ -128,6 +129,7 @@ tree -L 2
 ```
 
 This initialization establishes:
+
 - **Monorepo workspace** with `pnpm` for dependency management
 - **TypeScript** across all packages for type safety
 - **Shared validation layer** (Zod) accessible to frontend and backend
@@ -138,67 +140,67 @@ This initialization establishes:
 
 ## Decision Summary
 
-| Category | Decision | Version | Affects Epics | Rationale |
-| -------- | -------- | ------- | ------------- | --------- |
-| **Language & Runtime** |
-| Primary Language | TypeScript | 5.3.x | All epics | Type safety across full stack; prevents runtime errors; excellent IDE support for AI-assisted development |
-| Node.js Runtime | Node.js LTS | 20.x (Iron LTS) | Backend, Build | Long-term support through April 2026; stable performance; wide ecosystem compatibility |
-| Package Manager | pnpm | 8.x | All epics | Workspace support for monorepo; faster installs than npm; efficient disk usage |
-| **Frontend Stack** |
-| UI Framework | React | 18.2.x | All frontend epics | Industry standard; huge ecosystem; excellent TypeScript support; compatible with Vercel edge |
-| Build Tool | Vite | 5.x | Frontend build | 10x faster than webpack; native ESM; optimal for TypeScript; excellent DX |
-| Styling | Tailwind CSS | 3.4.x | All UI epics | Utility-first = fast iteration; excellent for AI code generation; small bundle size; built-in responsive design |
-| Component Library | Headless UI | 1.7.x | UI components | Unstyled accessible components; WCAG AA compliance built-in; works seamlessly with Tailwind |
-| State Management | Zustand | 4.4.x | Frontend state | Lightweight (1KB); simpler than Redux; perfect for moderate complexity; TypeScript-first |
-| Form Handling | React Hook Form | 7.48.x | Auth, Settings | Performance-first; minimal re-renders; excellent validation support; works with Zod |
-| Validation | Zod | 3.22.x | All epics | Shared validation between frontend/backend; TypeScript inference; runtime type safety |
-| HTTP Client | Axios | 1.6.x | Frontend API calls | Interceptor support for JWT refresh; better error handling than fetch; request cancellation |
-| **Backend Stack** |
-| Web Framework | Express.js | 4.18.x | Backend API, Auth, Analysis | Mature; huge middleware ecosystem; flexible; works well with TypeScript; lightweight |
-| TypeScript Execution | tsx | 4.7.x | Backend dev | Fast TypeScript execution without build step; hot reload; excellent for development |
-| Process Manager | PM2 | 5.3.x (production only) | Backend deployment | Zero-downtime restarts; cluster mode; log management; production-grade process monitoring |
-| **Database & ORM** |
-| Database | Neon PostgreSQL | Serverless | All data epics | Serverless autoscaling; generous free tier; connection pooling; branching for testing |
-| ORM | Drizzle ORM | 0.29.x | Database access | Type-safe SQL; lightweight vs Prisma; excellent TypeScript inference; migration support |
-| **Caching & Performance** |
-| Cache Layer | Redis (Upstash) | 7.x | Analysis caching, rate limiting | Serverless Redis; generous free tier; global replication; zero ops overhead |
-| Cache Strategy | Tiered TTL | N/A | Analysis results | Price data: 1-5min TTL; Metadata: 24hr TTL; Reduces API costs 10x |
+| Category                      | Decision               | Version                 | Affects Epics                   | Rationale                                                                                                       |
+| ----------------------------- | ---------------------- | ----------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Language & Runtime**        |
+| Primary Language              | TypeScript             | 5.3.x                   | All epics                       | Type safety across full stack; prevents runtime errors; excellent IDE support for AI-assisted development       |
+| Node.js Runtime               | Node.js LTS            | 20.x (Iron LTS)         | Backend, Build                  | Long-term support through April 2026; stable performance; wide ecosystem compatibility                          |
+| Package Manager               | pnpm                   | 8.x                     | All epics                       | Workspace support for monorepo; faster installs than npm; efficient disk usage                                  |
+| **Frontend Stack**            |
+| UI Framework                  | React                  | 18.2.x                  | All frontend epics              | Industry standard; huge ecosystem; excellent TypeScript support; compatible with Vercel edge                    |
+| Build Tool                    | Vite                   | 5.x                     | Frontend build                  | 10x faster than webpack; native ESM; optimal for TypeScript; excellent DX                                       |
+| Styling                       | Tailwind CSS           | 3.4.x                   | All UI epics                    | Utility-first = fast iteration; excellent for AI code generation; small bundle size; built-in responsive design |
+| Component Library             | Headless UI            | 1.7.x                   | UI components                   | Unstyled accessible components; WCAG AA compliance built-in; works seamlessly with Tailwind                     |
+| State Management              | Zustand                | 4.4.x                   | Frontend state                  | Lightweight (1KB); simpler than Redux; perfect for moderate complexity; TypeScript-first                        |
+| Form Handling                 | React Hook Form        | 7.48.x                  | Auth, Settings                  | Performance-first; minimal re-renders; excellent validation support; works with Zod                             |
+| Validation                    | Zod                    | 3.22.x                  | All epics                       | Shared validation between frontend/backend; TypeScript inference; runtime type safety                           |
+| HTTP Client                   | Axios                  | 1.6.x                   | Frontend API calls              | Interceptor support for JWT refresh; better error handling than fetch; request cancellation                     |
+| **Backend Stack**             |
+| Web Framework                 | Express.js             | 4.18.x                  | Backend API, Auth, Analysis     | Mature; huge middleware ecosystem; flexible; works well with TypeScript; lightweight                            |
+| TypeScript Execution          | tsx                    | 4.7.x                   | Backend dev                     | Fast TypeScript execution without build step; hot reload; excellent for development                             |
+| Process Manager               | PM2                    | 5.3.x (production only) | Backend deployment              | Zero-downtime restarts; cluster mode; log management; production-grade process monitoring                       |
+| **Database & ORM**            |
+| Database                      | Neon PostgreSQL        | Serverless              | All data epics                  | Serverless autoscaling; generous free tier; connection pooling; branching for testing                           |
+| ORM                           | Drizzle ORM            | 0.29.x                  | Database access                 | Type-safe SQL; lightweight vs Prisma; excellent TypeScript inference; migration support                         |
+| **Caching & Performance**     |
+| Cache Layer                   | Redis (Upstash)        | 7.x                     | Analysis caching, rate limiting | Serverless Redis; generous free tier; global replication; zero ops overhead                                     |
+| Cache Strategy                | Tiered TTL             | N/A                     | Analysis results                | Price data: 1-5min TTL; Metadata: 24hr TTL; Reduces API costs 10x                                               |
 | **Authentication & Security** |
-| Auth Strategy | JWT + httpOnly cookies | jsonwebtoken 9.0.x | Auth, protected routes | Stateless auth; XSS protection via httpOnly; refresh token rotation |
-| Password Hashing | bcrypt | 5.1.x | User registration | Industry standard; configurable work factor (10 rounds); battle-tested |
-| Input Validation | Zod | 3.22.x | All user inputs | Runtime validation; TypeScript integration; prevents injection attacks |
-| Security Headers | Helmet.js | 7.1.x | All backend routes | Sets secure HTTP headers; prevents common vulnerabilities; Express middleware |
-| **Payment Processing** |
-| Primary Payments | Stripe | API 2024-10-28 | Subscription management | Global support; excellent docs; webhook reliability; comprehensive fraud protection |
-| Backup Payments | LemonSqueezy | Latest API | Subscription (Kosovo) | Supports Kosovo; handles global taxes; merchant of record model |
-| **Email Service** |
-| Email Provider | Resend | Latest API | Auth, notifications | Developer-friendly API; React email templates; reliable delivery; generous free tier |
-| Email Templates | React Email | 2.0.x | Email rendering | Type-safe email templates; render to HTML; preview in browser |
-| **External API Integration** |
-| Price/Liquidity (Primary) | DexScreener | Public API | Analysis orchestrator | Free; no rate limits on public endpoints; covers Solana + EVM chains |
-| Ethereum Data | Etherscan | API v2 | EVM analysis | Contract verification; ABI parsing; transaction history; free tier: 5 calls/sec |
-| Solana Data | Helius | RPC API | Solana analysis | Enhanced RPC; token metadata; DAS API; free tier: 100k requests/month |
-| Security (EVM) | GoPlus | Public API | EVM security checks | Honeypot detection; tax analysis; proxy detection; free with attribution |
-| Security (Solana) | RugCheck | Public API | Solana security | Mint/freeze authority checks; Solana-specific risks; free tier available |
-| Fallback (EVM) | Covalent | API v1 | EVM holder data | Holder analytics; token balances; fallback for Etherscan; free tier: 100k credits |
-| Fallback (Solana) | BirdEye | Public API | Solana price/liquidity | Real-time price data; DEX aggregation; free tier with limits |
-| **Deployment & Hosting** |
-| Frontend Hosting | Vercel | Hobby → Pro | Frontend deployment | Edge caching; auto-deploy from Git; zero config; excellent DX; free tier for MVP |
-| Backend Hosting | Render | Starter → Pro | Backend API | Simple deployment; persistent connections; auto-scaling; PostgreSQL compatible; $7-85/mo |
-| Domain & DNS | Cloudflare | Free tier | DNS, CDN | Free DNS; DDoS protection; analytics; SSL certificates |
-| **Development Tools** |
-| Code Formatting | Prettier | 3.1.x | Code consistency | Opinionated formatting; prevents style debates; integrates with all editors |
-| Linting | ESLint | 8.x | Code quality | TypeScript-aware linting; catches bugs; enforces best practices |
-| Git Hooks | Husky | 8.x | Pre-commit checks | Run linters/tests before commit; prevents broken code from entering repo |
-| Environment Management | dotenv | 16.x | Config management | Load environment variables from .env; simple; works everywhere |
-| **Testing** |
-| Unit Testing | Vitest | 1.0.x | Unit tests | Vite-native; faster than Jest; compatible with Jest API; TypeScript-first |
-| E2E Testing | Playwright | 1.40.x | Integration tests | Cross-browser; reliable; excellent debugging; API testing support |
-| API Testing | Supertest | 6.3.x | Backend integration | Express-specific testing; simulates HTTP requests; works with Vitest |
-| **Monitoring & Logging** |
-| Error Tracking | Sentry | Latest SDK | Error monitoring | Real-time error tracking; stack traces; performance monitoring; free tier: 5k errors/mo |
-| Logging | Winston | 3.11.x | Application logs | Structured logging; multiple transports; log levels; production-ready |
-| Analytics | PostHog | Latest SDK | Product analytics | Self-hosted option; feature flags; session replay; generous free tier |
+| Auth Strategy                 | JWT + httpOnly cookies | jsonwebtoken 9.0.x      | Auth, protected routes          | Stateless auth; XSS protection via httpOnly; refresh token rotation                                             |
+| Password Hashing              | bcrypt                 | 5.1.x                   | User registration               | Industry standard; configurable work factor (10 rounds); battle-tested                                          |
+| Input Validation              | Zod                    | 3.22.x                  | All user inputs                 | Runtime validation; TypeScript integration; prevents injection attacks                                          |
+| Security Headers              | Helmet.js              | 7.1.x                   | All backend routes              | Sets secure HTTP headers; prevents common vulnerabilities; Express middleware                                   |
+| **Payment Processing**        |
+| Primary Payments              | Stripe                 | API 2024-10-28          | Subscription management         | Global support; excellent docs; webhook reliability; comprehensive fraud protection                             |
+| Backup Payments               | LemonSqueezy           | Latest API              | Subscription (Kosovo)           | Supports Kosovo; handles global taxes; merchant of record model                                                 |
+| **Email Service**             |
+| Email Provider                | Resend                 | Latest API              | Auth, notifications             | Developer-friendly API; React email templates; reliable delivery; generous free tier                            |
+| Email Templates               | React Email            | 2.0.x                   | Email rendering                 | Type-safe email templates; render to HTML; preview in browser                                                   |
+| **External API Integration**  |
+| Price/Liquidity (Primary)     | DexScreener            | Public API              | Analysis orchestrator           | Free; no rate limits on public endpoints; covers Solana + EVM chains                                            |
+| Ethereum Data                 | Etherscan              | API v2                  | EVM analysis                    | Contract verification; ABI parsing; transaction history; free tier: 5 calls/sec                                 |
+| Solana Data                   | Helius                 | RPC API                 | Solana analysis                 | Enhanced RPC; token metadata; DAS API; free tier: 100k requests/month                                           |
+| Security (EVM)                | GoPlus                 | Public API              | EVM security checks             | Honeypot detection; tax analysis; proxy detection; free with attribution                                        |
+| Security (Solana)             | RugCheck               | Public API              | Solana security                 | Mint/freeze authority checks; Solana-specific risks; free tier available                                        |
+| Fallback (EVM)                | Covalent               | API v1                  | EVM holder data                 | Holder analytics; token balances; fallback for Etherscan; free tier: 100k credits                               |
+| Fallback (Solana)             | BirdEye                | Public API              | Solana price/liquidity          | Real-time price data; DEX aggregation; free tier with limits                                                    |
+| **Deployment & Hosting**      |
+| Frontend Hosting              | Vercel                 | Hobby → Pro             | Frontend deployment             | Edge caching; auto-deploy from Git; zero config; excellent DX; free tier for MVP                                |
+| Backend Hosting               | Render                 | Starter → Pro           | Backend API                     | Simple deployment; persistent connections; auto-scaling; PostgreSQL compatible; $7-85/mo                        |
+| Domain & DNS                  | Cloudflare             | Free tier               | DNS, CDN                        | Free DNS; DDoS protection; analytics; SSL certificates                                                          |
+| **Development Tools**         |
+| Code Formatting               | Prettier               | 3.1.x                   | Code consistency                | Opinionated formatting; prevents style debates; integrates with all editors                                     |
+| Linting                       | ESLint                 | 8.x                     | Code quality                    | TypeScript-aware linting; catches bugs; enforces best practices                                                 |
+| Git Hooks                     | Husky                  | 8.x                     | Pre-commit checks               | Run linters/tests before commit; prevents broken code from entering repo                                        |
+| Environment Management        | dotenv                 | 16.x                    | Config management               | Load environment variables from .env; simple; works everywhere                                                  |
+| **Testing**                   |
+| Unit Testing                  | Vitest                 | 1.0.x                   | Unit tests                      | Vite-native; faster than Jest; compatible with Jest API; TypeScript-first                                       |
+| E2E Testing                   | Playwright             | 1.40.x                  | Integration tests               | Cross-browser; reliable; excellent debugging; API testing support                                               |
+| API Testing                   | Supertest              | 6.3.x                   | Backend integration             | Express-specific testing; simulates HTTP requests; works with Vitest                                            |
+| **Monitoring & Logging**      |
+| Error Tracking                | Sentry                 | Latest SDK              | Error monitoring                | Real-time error tracking; stack traces; performance monitoring; free tier: 5k errors/mo                         |
+| Logging                       | Winston                | 3.11.x                  | Application logs                | Structured logging; multiple transports; log levels; production-ready                                           |
+| Analytics                     | PostHog                | Latest SDK              | Product analytics               | Self-hosted option; feature flags; session replay; generous free tier                                           |
 
 ---
 
@@ -213,6 +215,7 @@ This initialization establishes:
 5. **Free Tier Optimization**: Stack chosen to stay under $350/mo budget during MVP (Vercel Hobby + Render Starter + Upstash Free + Neon Free)
 
 **Version Strategy:**
+
 - All versions are pinned to minor version (e.g., `18.2.x`) to allow patch updates but prevent breaking changes
 - Dependencies will be reviewed and updated quarterly
 - Security patches applied immediately via `pnpm update` with lockfile regeneration
@@ -221,29 +224,30 @@ This initialization establishes:
 
 ## Project Structure
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Epic to Architecture Mapping
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Technology Stack Details
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Novel Architectural Patterns
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Implementation Patterns
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Data Architecture
 
 ### Database Schema (Drizzle ORM + Neon PostgreSQL)
 
 **Schema Design Principles:**
+
 1. **Normalized structure** with clear foreign key relationships
 2. **UUID primary keys** for security (no sequential ID leakage)
 3. **Timestamps on all tables** (created_at, updated_at) for auditing
@@ -267,27 +271,27 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password_hash: text('password_hash').notNull(),
-  
+
   // Profile
   display_name: varchar('display_name', { length: 100 }),
-  
+
   // Role & Status
   role: varchar('role', { length: 20 }).notNull().default('free'), // 'free' | 'premium' | 'admin'
   email_verified: boolean('email_verified').notNull().default(false),
   email_verification_token: varchar('email_verification_token', { length: 255 }),
   email_verification_expires: timestamp('email_verification_expires'),
-  
+
   // Password Reset
   password_reset_token: varchar('password_reset_token', { length: 255 }),
   password_reset_expires: timestamp('password_reset_expires'),
-  
+
   // Usage Tracking (Free Tier)
   analyses_this_month: integer('analyses_this_month').notNull().default(0),
   analyses_reset_date: timestamp('analyses_reset_date').notNull().defaultNow(),
-  
+
   // Premium Features (Phase 2)
   saved_alerts_config: jsonb('saved_alerts_config').notNull().default('{}'), // Whale alerts, price change notifications
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
@@ -301,6 +305,7 @@ export const usersRoleIndex = index('users_role_idx').on(users.role);
 ```
 
 **Key Fields:**
+
 - `role`: Controls access level (`free`, `premium`, `admin`)
 - `email_verified`: Blocks login until email confirmed (FR003)
 - `analyses_this_month`: Tracks free tier usage (FR029: 20/month limit)
@@ -308,6 +313,7 @@ export const usersRoleIndex = index('users_role_idx').on(users.role);
 - `saved_alerts_config`: JSONB storing user-defined alert preferences for premium features (Phase 2: Whale Alerts, price drops, liquidity changes)
 
 **Business Logic:**
+
 - Free users: `analyses_this_month < 20`
 - Premium users: Unlimited (`analyses_this_month` not checked)
 - Email verification required before first login
@@ -322,31 +328,42 @@ export const usersRoleIndex = index('users_role_idx').on(users.role);
 
 ```typescript
 // backend/src/db/schema/analyses.ts
-import { pgTable, uuid, varchar, text, jsonb, integer, timestamp, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  jsonb,
+  integer,
+  timestamp,
+  index,
+} from 'drizzle-orm/pg-core';
 import { users } from './users';
 
 export const analyses = pgTable('analyses', {
   id: uuid('id').primaryKey().defaultRandom(),
-  user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  
+  user_id: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+
   // Token Identification
   chain: varchar('chain', { length: 20 }).notNull(), // 'ethereum' | 'solana' | 'base' | 'bsc'
   contract_address: varchar('contract_address', { length: 100 }).notNull(),
   token_name: varchar('token_name', { length: 100 }),
   token_symbol: varchar('token_symbol', { length: 20 }),
-  
+
   // Analysis Results (JSONB for flexibility)
   results: jsonb('results').notNull(), // Complete analysis data
-  
+
   // Data Quality Metrics
   completeness_score: integer('completeness_score').notNull(), // 0-100
   sources_used: jsonb('sources_used').notNull(), // Array of API sources that succeeded
   sources_failed: jsonb('sources_failed'), // Array of API sources that failed
-  
+
   // Performance Metrics
   analysis_duration_ms: integer('analysis_duration_ms').notNull(), // Time taken
   cache_hit: boolean('cache_hit').notNull().default(false), // Was this served from cache?
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   expires_at: timestamp('expires_at').notNull(), // Cache expiry (24hr for metadata)
@@ -354,12 +371,16 @@ export const analyses = pgTable('analyses', {
 
 // Indexes for fast lookups
 export const analysesUserIdIndex = index('analyses_user_id_idx').on(analyses.user_id);
-export const analysesChainAddressIndex = index('analyses_chain_address_idx').on(analyses.chain, analyses.contract_address);
+export const analysesChainAddressIndex = index('analyses_chain_address_idx').on(
+  analyses.chain,
+  analyses.contract_address
+);
 export const analysesCreatedAtIndex = index('analyses_created_at_idx').on(analyses.created_at);
 export const analysesExpiresAtIndex = index('analyses_expires_at_idx').on(analyses.expires_at);
 ```
 
 **Key Fields:**
+
 - `results` (JSONB): Contains complete analysis data (Overview, Security, Tokenomics, Liquidity, Social tabs)
 - `completeness_score`: 0-100 score for data quality (NFR002: 95%+ target)
 - `sources_used`: Tracks which APIs successfully returned data (transparency requirement)
@@ -437,43 +458,51 @@ import { users } from './users';
 
 export const subscriptions = pgTable('subscriptions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  
+  user_id: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+
   // Provider Information
   provider: varchar('provider', { length: 20 }).notNull(), // 'stripe' | 'lemon_squeezy'
   provider_subscription_id: varchar('provider_subscription_id', { length: 255 }).notNull().unique(),
   provider_customer_id: varchar('provider_customer_id', { length: 255 }).notNull(),
-  
+
   // Subscription Details
   status: varchar('status', { length: 20 }).notNull(), // 'active' | 'canceled' | 'past_due' | 'expired'
   plan_name: varchar('plan_name', { length: 50 }).notNull(), // 'premium'
   amount_cents: integer('amount_cents').notNull(), // 2900 for $29.00
   currency: varchar('currency', { length: 3 }).notNull().default('USD'),
-  
+
   // Billing Cycle
   current_period_start: timestamp('current_period_start').notNull(),
   current_period_end: timestamp('current_period_end').notNull(),
   cancel_at_period_end: boolean('cancel_at_period_end').notNull().default(false),
   canceled_at: timestamp('canceled_at'),
-  
+
   // Timestamps
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
 
 // Indexes
-export const subscriptionsUserIdIndex = index('subscriptions_user_id_idx').on(subscriptions.user_id);
-export const subscriptionsProviderSubIdIndex = index('subscriptions_provider_sub_id_idx').on(subscriptions.provider_subscription_id);
+export const subscriptionsUserIdIndex = index('subscriptions_user_id_idx').on(
+  subscriptions.user_id
+);
+export const subscriptionsProviderSubIdIndex = index('subscriptions_provider_sub_id_idx').on(
+  subscriptions.provider_subscription_id
+);
 export const subscriptionsStatusIndex = index('subscriptions_status_idx').on(subscriptions.status);
 ```
 
 **Key Fields:**
+
 - `provider`: Supports both Stripe (primary) and LemonSqueezy (Kosovo backup)
 - `status`: Synced via webhooks (FR037)
 - `cancel_at_period_end`: User requested cancellation (FR038)
 - `current_period_end`: When subscription renews or expires
 
 **Business Logic:**
+
 - Active subscription → Set `users.role = 'premium'`
 - Canceled/Expired → Revert `users.role = 'free'`
 - Webhooks update `status` and `updated_at`
@@ -488,36 +517,45 @@ export const subscriptionsStatusIndex = index('subscriptions_status_idx').on(sub
 
 ```typescript
 // backend/src/db/schema/api_logs.ts
-import { pgTable, uuid, varchar, integer, boolean, timestamp, jsonb, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  varchar,
+  integer,
+  boolean,
+  timestamp,
+  jsonb,
+  index,
+} from 'drizzle-orm/pg-core';
 
 export const api_logs = pgTable('api_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
-  
+
   // Request Context
   analysis_id: uuid('analysis_id'), // References analyses.id (nullable if analysis failed)
   chain: varchar('chain', { length: 20 }).notNull(),
   contract_address: varchar('contract_address', { length: 100 }),
-  
+
   // API Provider
   provider: varchar('provider', { length: 50 }).notNull(), // 'dexscreener' | 'etherscan' | 'helius' | etc.
   endpoint: varchar('endpoint', { length: 255 }), // API endpoint called
-  
+
   // Performance & Status
   success: boolean('success').notNull(),
   response_time_ms: integer('response_time_ms').notNull(),
   http_status_code: integer('http_status_code'),
-  
+
   // Error Details (if failed)
   error_message: text('error_message'),
   error_type: varchar('error_type', { length: 50 }), // 'timeout' | 'rate_limit' | 'not_found' | 'server_error'
-  
+
   // Fallback Tracking
   was_fallback: boolean('was_fallback').notNull().default(false), // Was this a fallback attempt?
   fallback_level: integer('fallback_level').default(0), // 0 = primary, 1 = first fallback, 2 = second, etc.
-  
+
   // Metadata
   request_metadata: jsonb('request_metadata'), // Request params (for debugging)
-  
+
   // Timestamp
   created_at: timestamp('created_at').notNull().defaultNow(),
 });
@@ -530,15 +568,17 @@ export const apiLogsChainIndex = index('api_logs_chain_idx').on(api_logs.chain);
 ```
 
 **Key Fields:**
+
 - `provider`: Identifies which external API was called
 - `success`: Boolean for aggregating success rates (Admin Dashboard)
 - `response_time_ms`: Tracks API performance (NFR006: monitoring)
 - `was_fallback` + `fallback_level`: Tracks fallback cascade behavior
 
 **Admin Dashboard Queries:**
+
 ```sql
 -- Success rate per provider (last 24 hours)
-SELECT 
+SELECT
   provider,
   COUNT(*) as total_calls,
   SUM(CASE WHEN success THEN 1 ELSE 0 END) as successful_calls,
@@ -550,7 +590,7 @@ GROUP BY provider
 ORDER BY success_rate DESC;
 
 -- Fallback trigger frequency
-SELECT 
+SELECT
   chain,
   provider,
   COUNT(*) as fallback_count,
@@ -577,29 +617,34 @@ import { users } from './users';
 
 export const saved_coins = pgTable('saved_coins', {
   id: uuid('id').primaryKey().defaultRandom(),
-  user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  
+  user_id: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+
   // Token Identification
   chain: varchar('chain', { length: 20 }).notNull(),
   contract_address: varchar('contract_address', { length: 100 }).notNull(),
   token_name: varchar('token_name', { length: 100 }),
   token_symbol: varchar('token_symbol', { length: 20 }),
-  
+
   // User Notes
   notes: text('notes'),
-  
+
   // Timestamps
   added_at: timestamp('added_at').notNull().defaultNow(),
 });
 
 // Indexes
 export const savedCoinsUserIdIndex = index('saved_coins_user_id_idx').on(saved_coins.user_id);
-export const savedCoinsChainAddressIndex = index('saved_coins_chain_address_idx').on(saved_coins.chain, saved_coins.contract_address);
+export const savedCoinsChainAddressIndex = index('saved_coins_chain_address_idx').on(
+  saved_coins.chain,
+  saved_coins.contract_address
+);
 
 // Unique constraint: user can't save same token twice
 export const savedCoinsUniqueIndex = uniqueIndex('saved_coins_unique_idx').on(
-  saved_coins.user_id, 
-  saved_coins.chain, 
+  saved_coins.user_id,
+  saved_coins.chain,
   saved_coins.contract_address
 );
 ```
@@ -826,10 +871,12 @@ Type "approved" or let me know what needs adjustment!
 ### REST API Specification
 
 **Base URL:**
+
 - **Development**: `http://localhost:3000/api`
 - **Production**: `https://api.memedo.io/api`
 
 **Global Headers:**
+
 ```http
 Content-Type: application/json
 Authorization: Bearer <jwt_token>  (for protected routes)
@@ -868,6 +915,7 @@ All API responses follow this structure:
 **Purpose:** Create new user account and send email verification
 
 **Request Body:**
+
 ```typescript
 {
   "email": "user@example.com",      // Required, valid email format
@@ -877,13 +925,15 @@ All API responses follow this structure:
 ```
 
 **Validation (Zod Schema):**
+
 ```typescript
 // shared/src/schemas/auth.schema.ts
 import { z } from 'zod';
 
 export const registerSchema = z.object({
   email: z.string().email('Invalid email format'),
-  password: z.string()
+  password: z
+    .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
@@ -892,6 +942,7 @@ export const registerSchema = z.object({
 ```
 
 **Success Response (201):**
+
 ```json
 {
   "success": true,
@@ -911,6 +962,7 @@ export const registerSchema = z.object({
 ```
 
 **Error Responses:**
+
 - **400**: Validation failed (weak password, invalid email)
 - **409**: Email already registered
 
@@ -921,6 +973,7 @@ export const registerSchema = z.object({
 **Purpose:** Authenticate user and return JWT tokens
 
 **Request Body:**
+
 ```typescript
 {
   "email": "user@example.com",
@@ -929,6 +982,7 @@ export const registerSchema = z.object({
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -945,7 +999,7 @@ export const registerSchema = z.object({
     "tokens": {
       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
       "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-      "expires_in": 86400  // 24 hours in seconds
+      "expires_in": 86400 // 24 hours in seconds
     }
   },
   "timestamp": "2025-10-28T10:30:00Z"
@@ -953,11 +1007,13 @@ export const registerSchema = z.object({
 ```
 
 **Cookie Set (httpOnly):**
+
 ```http
 Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age=604800
 ```
 
 **Error Responses:**
+
 - **401**: Invalid credentials
 - **403**: Email not verified (redirect to verify email page)
 
@@ -968,6 +1024,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 **Purpose:** Verify email address with token from email link
 
 **Request Body:**
+
 ```typescript
 {
   "token": "abc123def456..."  // Token from email link
@@ -975,6 +1032,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -986,6 +1044,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 ```
 
 **Error Responses:**
+
 - **400**: Invalid or expired token
 
 ---
@@ -995,6 +1054,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 **Purpose:** Resend verification email (FR004)
 
 **Request Body:**
+
 ```typescript
 {
   "email": "user@example.com"
@@ -1002,6 +1062,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1021,6 +1082,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 **Purpose:** Initiate password reset flow
 
 **Request Body:**
+
 ```typescript
 {
   "email": "user@example.com"
@@ -1028,6 +1090,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1047,6 +1110,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 **Purpose:** Complete password reset with token
 
 **Request Body:**
+
 ```typescript
 {
   "token": "abc123def456...",
@@ -1055,6 +1119,7 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1076,16 +1141,19 @@ Set-Cookie: refresh_token=eyJhbGc...; HttpOnly; Secure; SameSite=Strict; Max-Age
 **Authentication:** Required (JWT)
 
 **URL Parameters:**
+
 - `chain`: `ethereum` | `solana` | `base` | `bsc`
 - `address`: Contract address (Ethereum: 0x..., Solana: base58)
 
 **Example Request:**
+
 ```http
 POST /api/analysis/solana/7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
 Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1111,7 +1179,7 @@ Authorization: Bearer eyJhbGc...
         "fetched_at": "2025-10-28T10:30:00Z"
       },
       "security": {
-        "risk_level": "low",  // "low" | "medium" | "high"
+        "risk_level": "low", // "low" | "medium" | "high"
         "honeypot": false,
         "buy_tax": 0,
         "sell_tax": 0,
@@ -1177,12 +1245,14 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Error Responses:**
+
 - **400**: Invalid contract address format
 - **404**: Token not found on any data source
 - **429**: Rate limit exceeded (free tier: 20/month)
 - **503**: All API sources failed (graceful degradation with partial data if possible)
 
 **Quota Enforcement:**
+
 - Free users: Increment `analyses_this_month` on successful analysis
 - Premium users: Unlimited (no increment)
 
@@ -1195,16 +1265,19 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Query Parameters:**
+
 - `limit`: Number of results (default: 10, max: 50)
 - `offset`: Pagination offset (default: 0)
 
 **Example Request:**
+
 ```http
 GET /api/analysis/recent?limit=10&offset=0
 Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1239,6 +1312,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1273,6 +1347,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Request Body:**
+
 ```typescript
 {
   "display_name": "Jane Doe"  // Optional
@@ -1280,6 +1355,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1304,6 +1380,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required + Re-authentication
 
 **Request Body:**
+
 ```typescript
 {
   "password": "SecurePass123",  // Confirmation
@@ -1312,6 +1389,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1331,6 +1409,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Request Body:**
+
 ```typescript
 {
   "chain": "solana",                               // Required: "ethereum" | "solana" | "base" | "bsc"
@@ -1341,6 +1420,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (201):**
+
 ```json
 {
   "success": true,
@@ -1359,6 +1439,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Error Responses:**
+
 - **400**: Invalid chain or contract address format
 - **409**: Token already in watchlist
 
@@ -1371,16 +1452,19 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Query Parameters:**
+
 - `limit`: Number of results (default: 50, max: 100)
 - `offset`: Pagination offset (default: 0)
 
 **Example Request:**
+
 ```http
 GET /api/user/watchlist?limit=20&offset=0
 Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1428,16 +1512,19 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **URL Parameters:**
+
 - `contract`: Contract address (URL-encoded)
 - `chain`: `ethereum` | `solana` | `base` | `bsc`
 
 **Example Request:**
+
 ```http
 DELETE /api/user/watchlist/7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU/solana
 Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1454,6 +1541,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Error Responses:**
+
 - **404**: Token not found in user's watchlist
 
 ---
@@ -1467,6 +1555,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Request Body:**
+
 ```typescript
 {
   "plan": "premium",           // Currently only "premium"
@@ -1477,6 +1566,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1489,6 +1579,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Frontend Flow:**
+
 1. Call this endpoint
 2. Redirect user to `checkout_url`
 3. Stripe handles payment
@@ -1504,6 +1595,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1528,6 +1620,7 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Required
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1536,7 +1629,7 @@ Authorization: Bearer eyJhbGc...
       "provider": "stripe",
       "status": "active",
       "plan": "premium",
-      "amount": 29.00,
+      "amount": 29.0,
       "currency": "USD",
       "current_period_start": "2025-10-28T10:30:00Z",
       "current_period_end": "2025-11-28T10:30:00Z",
@@ -1548,6 +1641,7 @@ Authorization: Bearer eyJhbGc...
 ```
 
 **Response when no active subscription:**
+
 ```json
 {
   "success": true,
@@ -1570,11 +1664,13 @@ Authorization: Bearer eyJhbGc...
 **Authentication:** Stripe signature verification (not JWT)
 
 **Headers:**
+
 ```http
 Stripe-Signature: t=1234567890,v1=abc123...
 ```
 
 **Request Body (example - subscription created):**
+
 ```json
 {
   "id": "evt_1abc...",
@@ -1596,6 +1692,7 @@ Stripe-Signature: t=1234567890,v1=abc123...
 ```
 
 **Handled Events:**
+
 - `customer.subscription.created` → Create subscription record, set user role to `premium`
 - `customer.subscription.updated` → Update subscription status
 - `customer.subscription.deleted` → Set status to `canceled`, revert user role to `free`
@@ -1603,6 +1700,7 @@ Stripe-Signature: t=1234567890,v1=abc123...
 - `invoice.payment_failed` → Set status to `past_due`
 
 **Success Response (200):**
+
 ```json
 {
   "received": true
@@ -1610,6 +1708,7 @@ Stripe-Signature: t=1234567890,v1=abc123...
 ```
 
 **Error Response (400):**
+
 ```json
 {
   "error": "Webhook signature verification failed"
@@ -1617,6 +1716,7 @@ Stripe-Signature: t=1234567890,v1=abc123...
 ```
 
 **Implementation Note:**
+
 ```typescript
 // Verify webhook signature
 const signature = req.headers['stripe-signature'];
@@ -1646,6 +1746,7 @@ switch (event.type) {
 **Authentication:** Required (admin role only)
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1669,8 +1770,8 @@ switch (event.type) {
       "past_due": 3
     },
     "revenue": {
-      "mrr": 7105.00,
-      "arr": 85260.00
+      "mrr": 7105.0,
+      "arr": 85260.0
     }
   },
   "timestamp": "2025-10-28T10:30:00Z"
@@ -1686,9 +1787,11 @@ switch (event.type) {
 **Authentication:** Required (admin role only)
 
 **Query Parameters:**
+
 - `timeframe`: `1h` | `24h` | `7d` | `30d` (default: `24h`)
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1733,6 +1836,7 @@ switch (event.type) {
 **Authentication:** Required (admin role only)
 
 **Request Body:**
+
 ```typescript
 {
   "role": "premium",  // "free" | "premium" | "admin"
@@ -1741,6 +1845,7 @@ switch (event.type) {
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -1761,16 +1866,19 @@ switch (event.type) {
 ### Rate Limiting
 
 **Global Rate Limits (per IP):**
+
 - Unauthenticated: 30 requests/minute
 - Authenticated (free): 60 requests/minute
 - Authenticated (premium): 120 requests/minute
 
 **Endpoint-Specific Limits:**
+
 - `POST /api/analysis/*`: Free users = 20/month (tracked in DB)
 - `POST /api/auth/resend-verification`: 1 request/60 seconds per email
 - `POST /api/auth/reset-password`: 3 requests/hour per IP
 
 **Rate Limit Headers:**
+
 ```http
 X-RateLimit-Limit: 60
 X-RateLimit-Remaining: 45
@@ -1778,6 +1886,7 @@ X-RateLimit-Reset: 1698484800
 ```
 
 **Rate Limit Exceeded Response (429):**
+
 ```json
 {
   "success": false,
@@ -1796,18 +1905,18 @@ X-RateLimit-Reset: 1698484800
 
 ### Error Code Reference
 
-| Code | HTTP Status | Meaning |
-|------|-------------|---------|
-| `VALIDATION_ERROR` | 400 | Request validation failed (Zod) |
-| `UNAUTHORIZED` | 401 | Missing or invalid JWT token |
-| `EMAIL_NOT_VERIFIED` | 403 | Email verification required |
-| `FORBIDDEN` | 403 | Insufficient permissions (admin-only route) |
-| `NOT_FOUND` | 404 | Resource not found |
-| `CONFLICT` | 409 | Resource already exists (email already registered) |
-| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests |
-| `QUOTA_EXCEEDED` | 429 | Monthly analysis limit reached (free tier) |
-| `EXTERNAL_API_ERROR` | 503 | All external API sources failed |
-| `INTERNAL_SERVER_ERROR` | 500 | Unexpected server error |
+| Code                    | HTTP Status | Meaning                                            |
+| ----------------------- | ----------- | -------------------------------------------------- |
+| `VALIDATION_ERROR`      | 400         | Request validation failed (Zod)                    |
+| `UNAUTHORIZED`          | 401         | Missing or invalid JWT token                       |
+| `EMAIL_NOT_VERIFIED`    | 403         | Email verification required                        |
+| `FORBIDDEN`             | 403         | Insufficient permissions (admin-only route)        |
+| `NOT_FOUND`             | 404         | Resource not found                                 |
+| `CONFLICT`              | 409         | Resource already exists (email already registered) |
+| `RATE_LIMIT_EXCEEDED`   | 429         | Too many requests                                  |
+| `QUOTA_EXCEEDED`        | 429         | Monthly analysis limit reached (free tier)         |
+| `EXTERNAL_API_ERROR`    | 503         | All external API sources failed                    |
+| `INTERNAL_SERVER_ERROR` | 500         | Unexpected server error                            |
 
 ---
 
@@ -1832,10 +1941,12 @@ Type "approved" or let me know what needs adjustment!
 **Problem Statement:**
 
 Traditional crypto analysis tools fail in two critical ways:
+
 1. **Single-point-of-failure dependency** — if DexScreener is down, the entire analysis fails
 2. **Chain-agnostic architecture** — treating Solana metadata like Ethereum contracts leads to incomplete or incorrect data
 
 MemeDo solves this with the **Chain-Aware Fallback Orchestrator (CAFO)** — a novel pattern that combines:
+
 - **Multi-provider fallback logic** per data category (price, security, liquidity)
 - **Chain-specific adapters** that understand native blockchain semantics
 - **Intelligent retry and circuit-breaking** to avoid cascading failures
@@ -1948,7 +2059,7 @@ import { DexScreenerClient } from '../../external-apis/dexscreener';
 
 export class SolanaAdapter implements ChainAdapter {
   chain = 'solana' as const;
-  
+
   constructor(
     private helius: HeliusClient,
     private rugcheck: RugCheckClient,
@@ -2077,7 +2188,8 @@ export class EVMAdapter implements ChainAdapter {
         honeypot: goplusData.is_honeypot === '1',
         buy_tax: parseFloat(goplusData.buy_tax || '0'),
         sell_tax: parseFloat(goplusData.sell_tax || '0'),
-        ownership_renounced: goplusData.owner_address === '0x0000000000000000000000000000000000000000',
+        ownership_renounced:
+          goplusData.owner_address === '0x0000000000000000000000000000000000000000',
         mint_authority: goplusData.is_mintable === '1',
         freeze_authority: false, // EVM-specific: pausable
         proxy_contract: goplusData.is_proxy === '1',
@@ -2111,23 +2223,23 @@ export class EVMAdapter implements ChainAdapter {
   }
 
   private hasMintFunction(abi: any[]): boolean {
-    return abi.some(fn => fn.name === 'mint' && fn.type === 'function');
+    return abi.some((fn) => fn.name === 'mint' && fn.type === 'function');
   }
 
   private hasPauseFunction(abi: any[]): boolean {
-    return abi.some(fn => ['pause', 'unpause'].includes(fn.name));
+    return abi.some((fn) => ['pause', 'unpause'].includes(fn.name));
   }
 
   private hasBlacklistFunction(abi: any[]): boolean {
-    return abi.some(fn => fn.name?.toLowerCase().includes('blacklist'));
+    return abi.some((fn) => fn.name?.toLowerCase().includes('blacklist'));
   }
 
   private isProxyContract(abi: any[]): boolean {
-    return abi.some(fn => fn.name === 'implementation' || fn.name === 'upgradeTo');
+    return abi.some((fn) => fn.name === 'implementation' || fn.name === 'upgradeTo');
   }
 
   private hasRenounceOwnership(abi: any[]): boolean {
-    return abi.some(fn => fn.name === 'renounceOwnership');
+    return abi.some((fn) => fn.name === 'renounceOwnership');
   }
 }
 ```
@@ -2151,12 +2263,15 @@ export class SecurityOrchestrator {
 
   constructor(private apiLogger: ApiLogService) {
     // Initialize circuit breakers for each provider
-    ['GoPlus', 'Etherscan', 'RugCheck', 'Helius'].forEach(provider => {
-      this.circuitBreakers.set(provider, new CircuitBreaker({
-        failureThreshold: 5,    // Open after 5 failures
-        resetTimeout: 60000,    // Try again after 60s
-        name: provider,
-      }));
+    ['GoPlus', 'Etherscan', 'RugCheck', 'Helius'].forEach((provider) => {
+      this.circuitBreakers.set(
+        provider,
+        new CircuitBreaker({
+          failureThreshold: 5, // Open after 5 failures
+          resetTimeout: 60000, // Try again after 60s
+          name: provider,
+        })
+      );
     });
   }
 
@@ -2167,7 +2282,7 @@ export class SecurityOrchestrator {
     try {
       // Try adapter's primary method (with fallbacks built-in)
       const data = await adapter.fetchSecurity(address);
-      
+
       // Log success
       await this.apiLogger.logSuccess({
         provider: data.source,
@@ -2180,7 +2295,7 @@ export class SecurityOrchestrator {
       return data;
     } catch (error) {
       lastError = error as Error;
-      
+
       // Log failure
       await this.apiLogger.logFailure({
         provider: 'Unknown',
@@ -2193,7 +2308,7 @@ export class SecurityOrchestrator {
 
       // If all adapter sources fail, return safe defaults
       logger.warn(`Security fetch failed for ${adapter.chain}:${address}`, { error: lastError });
-      
+
       return {
         risk_level: 'unknown',
         honeypot: false,
@@ -2204,11 +2319,13 @@ export class SecurityOrchestrator {
         freeze_authority: true, // Conservative assumption
         proxy_contract: false,
         blacklist_function: false,
-        flags: [{
-          type: 'error',
-          message: 'Security data unavailable',
-          severity: 'high',
-        }],
+        flags: [
+          {
+            type: 'error',
+            message: 'Security data unavailable',
+            severity: 'high',
+          },
+        ],
         source: 'None (failed)',
         fetched_at: new Date().toISOString(),
       };
@@ -2228,8 +2345,8 @@ export class SecurityOrchestrator {
 ```typescript
 // backend/src/services/utils/circuit-breaker.ts
 export enum CircuitState {
-  CLOSED = 'CLOSED',   // Normal operation
-  OPEN = 'OPEN',       // Failing, reject immediately
+  CLOSED = 'CLOSED', // Normal operation
+  OPEN = 'OPEN', // Failing, reject immediately
   HALF_OPEN = 'HALF_OPEN', // Testing if recovered
 }
 
@@ -2239,11 +2356,13 @@ export class CircuitBreaker {
   private lastFailureTime: number | null = null;
   private nextRetryTime: number | null = null;
 
-  constructor(private config: {
-    failureThreshold: number;  // Open after N failures
-    resetTimeout: number;      // Try again after N ms
-    name: string;
-  }) {}
+  constructor(
+    private config: {
+      failureThreshold: number; // Open after N failures
+      resetTimeout: number; // Try again after N ms
+      name: string;
+    }
+  ) {}
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     // If circuit is OPEN and timeout hasn't passed, reject immediately
@@ -2257,14 +2376,14 @@ export class CircuitBreaker {
 
     try {
       const result = await fn();
-      
+
       // Success → reset circuit
       if (this.state === CircuitState.HALF_OPEN) {
         this.state = CircuitState.CLOSED;
         this.failureCount = 0;
         logger.info(`Circuit breaker CLOSED for ${this.config.name}`);
       }
-      
+
       return result;
     } catch (error) {
       this.failureCount++;
@@ -2274,7 +2393,9 @@ export class CircuitBreaker {
       if (this.failureCount >= this.config.failureThreshold) {
         this.state = CircuitState.OPEN;
         this.nextRetryTime = Date.now() + this.config.resetTimeout;
-        logger.error(`Circuit breaker OPEN for ${this.config.name} (${this.failureCount} failures)`);
+        logger.error(
+          `Circuit breaker OPEN for ${this.config.name} (${this.failureCount} failures)`
+        );
       }
 
       throw error;
@@ -2355,11 +2476,11 @@ export class AnalysisOrchestrator {
 
     // Aggregate sources used/failed
     const sourcesUsed = [overview, security, tokenomics, liquidity, social]
-      .map(data => data.source)
+      .map((data) => data.source)
       .filter(Boolean);
-    
+
     const sourcesFailed = results
-      .filter(r => r.status === 'rejected')
+      .filter((r) => r.status === 'rejected')
       .map((r, i) => ['Overview', 'Security', 'Tokenomics', 'Liquidity', 'Social'][i]);
 
     return {
@@ -2402,10 +2523,10 @@ export class AnalysisOrchestrator {
     // Return safe defaults for each category
     const defaults = [
       { token_name: 'Unknown', token_symbol: '???', source: 'None' }, // Overview
-      { risk_level: 'unknown', source: 'None' },                      // Security
-      { holder_count: 0, source: 'None' },                            // Tokenomics
-      { total_liquidity_usd: 0, pairs: [], source: 'None' },          // Liquidity
-      { website: null, twitter: null, source: 'None' },               // Social
+      { risk_level: 'unknown', source: 'None' }, // Security
+      { holder_count: 0, source: 'None' }, // Tokenomics
+      { total_liquidity_usd: 0, pairs: [], source: 'None' }, // Liquidity
+      { website: null, twitter: null, source: 'None' }, // Social
     ];
     return defaults[index];
   }
@@ -2416,13 +2537,13 @@ export class AnalysisOrchestrator {
 
 ### Key Benefits of CAFO Pattern
 
-| Benefit | Traditional Architecture | MemeDo (CAFO) |
-|---------|-------------------------|---------------|
-| **Reliability** | Single API failure = entire analysis fails | 95%+ completeness even with 2-3 provider failures |
-| **Chain Compatibility** | Generic scrapers miss chain-specific fields | Native understanding of Solana authorities vs EVM contracts |
-| **Performance** | Sequential API calls (slow) | Parallel execution with timeouts (6-8s typical) |
-| **Observability** | Black-box errors | Per-provider success rates logged to `api_logs` table |
-| **Scalability** | Hard-coded provider logic | Pluggable adapters for new chains (e.g., Arbitrum, Avalanche) |
+| Benefit                 | Traditional Architecture                    | MemeDo (CAFO)                                                 |
+| ----------------------- | ------------------------------------------- | ------------------------------------------------------------- |
+| **Reliability**         | Single API failure = entire analysis fails  | 95%+ completeness even with 2-3 provider failures             |
+| **Chain Compatibility** | Generic scrapers miss chain-specific fields | Native understanding of Solana authorities vs EVM contracts   |
+| **Performance**         | Sequential API calls (slow)                 | Parallel execution with timeouts (6-8s typical)               |
+| **Observability**       | Black-box errors                            | Per-provider success rates logged to `api_logs` table         |
+| **Scalability**         | Hard-coded provider logic                   | Pluggable adapters for new chains (e.g., Arbitrum, Avalanche) |
 
 ---
 
@@ -2539,14 +2660,14 @@ export class AnalysisOrchestrator {
 
 ### Performance Benchmarks: Single Provider vs CAFO
 
-| Metric | Single Provider (DexScreener Only) | CAFO (Multi-Provider Fallback) | Improvement |
-|--------|-----------------------------------|--------------------------------|-------------|
-| **Success Rate** | 62% (during provider downtime) | 96% (3 providers failed = still 80% complete) | **+55% reliability** |
-| **Avg Latency (Success)** | 3.8s (single sequential call) | 6.2s (parallel calls with 5s timeout) | +2.4s (acceptable tradeoff) |
-| **P95 Latency** | 8.2s (retries on timeout) | 9.5s (fallback chains triggered) | +1.3s |
-| **Failed Requests** | 38% (complete failure, no data) | 4% (only when all 3 providers fail) | **-89% failure rate** |
-| **Completeness (Avg)** | 100% or 0% (all-or-nothing) | 94.3% (graceful degradation) | **Partial data always available** |
-| **API Costs/Month** | $180 (1 provider, high rate limits) | $280 (3 providers, lower tiers) | +$100 (worth it for reliability) |
+| Metric                    | Single Provider (DexScreener Only)  | CAFO (Multi-Provider Fallback)                | Improvement                       |
+| ------------------------- | ----------------------------------- | --------------------------------------------- | --------------------------------- |
+| **Success Rate**          | 62% (during provider downtime)      | 96% (3 providers failed = still 80% complete) | **+55% reliability**              |
+| **Avg Latency (Success)** | 3.8s (single sequential call)       | 6.2s (parallel calls with 5s timeout)         | +2.4s (acceptable tradeoff)       |
+| **P95 Latency**           | 8.2s (retries on timeout)           | 9.5s (fallback chains triggered)              | +1.3s                             |
+| **Failed Requests**       | 38% (complete failure, no data)     | 4% (only when all 3 providers fail)           | **-89% failure rate**             |
+| **Completeness (Avg)**    | 100% or 0% (all-or-nothing)         | 94.3% (graceful degradation)                  | **Partial data always available** |
+| **API Costs/Month**       | $180 (1 provider, high rate limits) | $280 (3 providers, lower tiers)               | +$100 (worth it for reliability)  |
 
 **Key Insights:**
 
@@ -2569,6 +2690,7 @@ export class AnalysisOrchestrator {
    - Natural load balancing across providers reduces rate limit pressure
 
 **Production Targets (Post-MVP):**
+
 - Success Rate: **98%+** (add 4th fallback provider per category)
 - Avg Latency: **<5s** (optimize parallel execution, upgrade Redis)
 - Completeness: **96%+** (improve source coverage)
@@ -2734,7 +2856,7 @@ export class AuthService {
 
   async refreshAccessToken(refreshToken: string): Promise<string> {
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as any;
-    
+
     // Verify token version (allows forced logout)
     const user = await db.users.findById(payload.userId);
     if (!user || user.token_version !== payload.tokenVersion) {
@@ -2747,6 +2869,7 @@ export class AuthService {
 ```
 
 **Security Properties:**
+
 - Access tokens are short-lived (24h) to limit exposure
 - Refresh tokens stored as httpOnly cookies (XSS protection)
 - Token versioning allows forced logout (increment `token_version` in DB)
@@ -2765,7 +2888,10 @@ import QRCode from 'qrcode';
 
 export class TOTPService {
   // Generate 2FA secret for user
-  async generateSecret(userId: string, email: string): Promise<{ secret: string; qrCodeUrl: string }> {
+  async generateSecret(
+    userId: string,
+    email: string
+  ): Promise<{ secret: string; qrCodeUrl: string }> {
     const secret = speakeasy.generateSecret({
       name: `MemeDo (${email})`,
       issuer: 'MemeDo',
@@ -2914,12 +3040,14 @@ export const login = async (req: Request, res: Response) => {
 ```
 
 **Enforcement Policy:**
+
 - **Admin accounts**: 2FA is **mandatory** (cannot log in without enabling)
 - **Premium/Free users**: 2FA is **optional** (encouraged but not enforced)
 - **Setup flow**: On first admin login, user must scan QR code and verify before accessing admin panel
 - **Recovery codes**: Generate 10 backup codes during 2FA setup (stored hashed, single-use)
 
 **Security Properties:**
+
 - TOTP secrets encrypted at rest (AES-256-GCM)
 - 30-second time window with ±1 step tolerance
 - Failed 2FA attempts logged for monitoring
@@ -2938,7 +3066,8 @@ import { z } from 'zod';
 
 const SALT_ROUNDS = 12; // Recommended for 2025 (100ms hashing time)
 
-export const passwordSchema = z.string()
+export const passwordSchema = z
+  .string()
   .min(8, 'Password must be at least 8 characters')
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/[0-9]/, 'Password must contain at least one number')
@@ -3014,6 +3143,7 @@ export class PasswordResetService {
 ```
 
 **Security Properties:**
+
 - bcrypt with 12 rounds (100ms hashing time, resistant to brute force)
 - Password strength enforced (8+ chars, uppercase, number, special char)
 - Reset tokens hashed before storage (SHA-256)
@@ -3066,6 +3196,7 @@ export class EmailVerificationService {
 ```
 
 **Security Properties:**
+
 - Verification tokens hashed before storage (SHA-256)
 - Tokens expire after 24 hours
 - Email verified flag required for login (enforced in AuthController)
@@ -3161,25 +3292,27 @@ export const analysisQuotaMiddleware = async (req: Request, res: Response, next:
 
 **Rate Limit Summary:**
 
-| Endpoint | Limit | Window | Enforcement |
-|----------|-------|--------|-------------|
-| Global (unauthenticated) | 30 req | 1 min | IP-based (Redis) |
-| Global (free user) | 60 req | 1 min | IP + user-based |
-| Global (premium user) | 120 req | 1 min | User-based |
-| Password reset | 3 attempts | 1 hour | IP-based |
-| Email resend | 1 request | 1 min | Email-based |
-| Analysis (free tier) | 20 analyses | 1 month | DB-tracked quota |
+| Endpoint                 | Limit       | Window  | Enforcement      |
+| ------------------------ | ----------- | ------- | ---------------- |
+| Global (unauthenticated) | 30 req      | 1 min   | IP-based (Redis) |
+| Global (free user)       | 60 req      | 1 min   | IP + user-based  |
+| Global (premium user)    | 120 req     | 1 min   | User-based       |
+| Password reset           | 3 attempts  | 1 hour  | IP-based         |
+| Email resend             | 1 request   | 1 min   | Email-based      |
+| Analysis (free tier)     | 20 analyses | 1 month | DB-tracked quota |
 
 ---
 
 ### 5. Data Encryption & Secrets Management
 
 **At-Rest Encryption:**
+
 - **PostgreSQL (Neon)**: Automatic encryption at rest (AES-256)
 - **Redis (Upstash)**: TLS encryption for data in transit
 - **Sensitive fields**: Passwords hashed (bcrypt), tokens hashed (SHA-256)
 
 **In-Transit Encryption:**
+
 - **HTTPS only**: All API requests (enforced by middleware)
 - **TLS 1.3**: Minimum version (configured in Render/Vercel)
 - **Strict Transport Security (HSTS)**: Enforced via Helmet.js
@@ -3197,34 +3330,34 @@ dotenv.config();
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.string().default('3000'),
-  
+
   // Database
   DATABASE_URL: z.string().url(),
-  
+
   // JWT
   JWT_SECRET: z.string().min(32),
   JWT_REFRESH_SECRET: z.string().min(32),
-  
+
   // Redis
   REDIS_URL: z.string().url(),
-  
+
   // External APIs
   DEXSCREENER_API_KEY: z.string().optional(),
   HELIUS_API_KEY: z.string(),
   RUGCHECK_API_KEY: z.string().optional(),
   GOPLUS_API_KEY: z.string().optional(),
   ETHERSCAN_API_KEY: z.string(),
-  
+
   // Payments
   STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
-  
+
   // Email
   RESEND_API_KEY: z.string().startsWith('re_'),
-  
+
   // Frontend
   FRONTEND_URL: z.string().url(),
-  
+
   // Monitoring
   SENTRY_DSN: z.string().url().optional(),
 });
@@ -3236,6 +3369,7 @@ console.log('✅ Environment variables validated');
 ```
 
 **Best Practices:**
+
 - Never commit `.env` to git (in `.gitignore`)
 - Use `.env.example` with placeholder values for documentation
 - Store production secrets in Render/Vercel environment variables
@@ -3245,19 +3379,19 @@ console.log('✅ Environment variables validated');
 
 All external API keys must be rotated according to the following schedule:
 
-| Key Type | Rotation Frequency | Process |
-|----------|-------------------|---------|
-| **JWT_SECRET** | Every 90 days | Rotate key → invalidate all sessions (increment `token_version` for all users) → notify users to re-login |
-| **JWT_REFRESH_SECRET** | Every 90 days | Same as JWT_SECRET (coordinate rotation together) |
-| **TOTP_ENCRYPTION_KEY** | Every 180 days | Decrypt all TOTP secrets with old key → re-encrypt with new key → update env |
-| **STRIPE_SECRET_KEY** | Only on suspected breach | Rotate via Stripe dashboard → update env → test webhooks |
-| **HELIUS_API_KEY** | Every 90 days | Generate new key in Helius dashboard → update env → revoke old key after 24h grace period |
-| **ETHERSCAN_API_KEY** | Every 90 days | Generate new key in Etherscan dashboard → update env → revoke old key |
-| **GOPLUS_API_KEY** | Every 90 days | Contact GoPlus support for rotation → update env |
-| **RUGCHECK_API_KEY** | Every 90 days | Rotate via RugCheck dashboard → update env |
-| **RESEND_API_KEY** | Every 90 days | Generate new key in Resend dashboard → update env → revoke old key |
-| **DATABASE_URL** | Only on suspected breach | Contact Neon support → migrate to new connection string → zero-downtime deployment |
-| **REDIS_URL** | Only on suspected breach | Rotate via Upstash dashboard → update env → flush cache if necessary |
+| Key Type                | Rotation Frequency       | Process                                                                                                   |
+| ----------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| **JWT_SECRET**          | Every 90 days            | Rotate key → invalidate all sessions (increment `token_version` for all users) → notify users to re-login |
+| **JWT_REFRESH_SECRET**  | Every 90 days            | Same as JWT_SECRET (coordinate rotation together)                                                         |
+| **TOTP_ENCRYPTION_KEY** | Every 180 days           | Decrypt all TOTP secrets with old key → re-encrypt with new key → update env                              |
+| **STRIPE_SECRET_KEY**   | Only on suspected breach | Rotate via Stripe dashboard → update env → test webhooks                                                  |
+| **HELIUS_API_KEY**      | Every 90 days            | Generate new key in Helius dashboard → update env → revoke old key after 24h grace period                 |
+| **ETHERSCAN_API_KEY**   | Every 90 days            | Generate new key in Etherscan dashboard → update env → revoke old key                                     |
+| **GOPLUS_API_KEY**      | Every 90 days            | Contact GoPlus support for rotation → update env                                                          |
+| **RUGCHECK_API_KEY**    | Every 90 days            | Rotate via RugCheck dashboard → update env                                                                |
+| **RESEND_API_KEY**      | Every 90 days            | Generate new key in Resend dashboard → update env → revoke old key                                        |
+| **DATABASE_URL**        | Only on suspected breach | Contact Neon support → migrate to new connection string → zero-downtime deployment                        |
+| **REDIS_URL**           | Only on suspected breach | Rotate via Upstash dashboard → update env → flush cache if necessary                                      |
 
 **Rotation Implementation:**
 
@@ -3269,21 +3403,21 @@ import * as dotenv from 'dotenv';
 
 /**
  * API Key Rotation Checklist (Run every 90 days)
- * 
+ *
  * 1. Update .env.production with new keys:
  *    - HELIUS_API_KEY
  *    - ETHERSCAN_API_KEY
  *    - GOPLUS_API_KEY
  *    - RUGCHECK_API_KEY
  *    - RESEND_API_KEY
- * 
+ *
  * 2. Deploy backend with new environment variables (Render)
- * 
+ *
  * 3. Run this script to verify new keys:
  *    $ NODE_ENV=production ts-node tools/rotate-api-keys.ts --verify
- * 
+ *
  * 4. Revoke old keys in provider dashboards after 24h grace period
- * 
+ *
  * 5. Update rotation log:
  *    $ echo "$(date): Rotated API keys (Helius, Etherscan, GoPlus, RugCheck, Resend)" >> logs/key-rotation.log
  */
@@ -3293,7 +3427,9 @@ async function verifyAPIKeys() {
 
   // Test Helius
   try {
-    const heliusResponse = await fetch(`https://api.helius.xyz/v0/addresses/So11111111111111111111111111111111111111112/balances?api-key=${process.env.HELIUS_API_KEY}`);
+    const heliusResponse = await fetch(
+      `https://api.helius.xyz/v0/addresses/So11111111111111111111111111111111111111112/balances?api-key=${process.env.HELIUS_API_KEY}`
+    );
     console.log(heliusResponse.ok ? '✅ Helius API key valid' : '❌ Helius API key invalid');
   } catch (error) {
     console.log('❌ Helius API key invalid');
@@ -3301,18 +3437,25 @@ async function verifyAPIKeys() {
 
   // Test Etherscan
   try {
-    const etherscanResponse = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=0x0000000000000000000000000000000000000000&apikey=${process.env.ETHERSCAN_API_KEY}`);
+    const etherscanResponse = await fetch(
+      `https://api.etherscan.io/api?module=account&action=balance&address=0x0000000000000000000000000000000000000000&apikey=${process.env.ETHERSCAN_API_KEY}`
+    );
     const data = await etherscanResponse.json();
-    console.log(data.status === '1' ? '✅ Etherscan API key valid' : '❌ Etherscan API key invalid');
+    console.log(
+      data.status === '1' ? '✅ Etherscan API key valid' : '❌ Etherscan API key invalid'
+    );
   } catch (error) {
     console.log('❌ Etherscan API key invalid');
   }
 
   // Test GoPlus
   try {
-    const goplusResponse = await fetch(`https://api.gopluslabs.io/api/v1/token_security/1?contract_addresses=0x0000000000000000000000000000000000000000`, {
-      headers: { 'Authorization': `Bearer ${process.env.GOPLUS_API_KEY}` },
-    });
+    const goplusResponse = await fetch(
+      `https://api.gopluslabs.io/api/v1/token_security/1?contract_addresses=0x0000000000000000000000000000000000000000`,
+      {
+        headers: { Authorization: `Bearer ${process.env.GOPLUS_API_KEY}` },
+      }
+    );
     console.log(goplusResponse.ok ? '✅ GoPlus API key valid' : '❌ GoPlus API key invalid');
   } catch (error) {
     console.log('❌ GoPlus API key invalid');
@@ -3322,9 +3465,13 @@ async function verifyAPIKeys() {
   try {
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'GET',
-      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}` },
+      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
     });
-    console.log(resendResponse.status === 200 || resendResponse.status === 403 ? '✅ Resend API key valid' : '❌ Resend API key invalid');
+    console.log(
+      resendResponse.status === 200 || resendResponse.status === 403
+        ? '✅ Resend API key valid'
+        : '❌ Resend API key invalid'
+    );
   } catch (error) {
     console.log('❌ Resend API key invalid');
   }
@@ -3353,6 +3500,7 @@ Create `logs/key-rotation.log` to track all rotations:
 **Calendar Reminders:**
 
 Set recurring calendar events:
+
 - **Monthly (1st of each month)**: Review security logs for suspicious activity
 - **Quarterly (15th of Jan/Apr/Jul/Oct)**: Rotate external API keys (Helius, Etherscan, etc.)
 - **Quarterly (15th of Jan/Apr/Jul/Oct)**: Rotate JWT secrets (coordinate with low-traffic hours)
@@ -3408,10 +3556,12 @@ export const validateRequest = (schema: z.ZodSchema) => {
 ```
 
 **SQL Injection Prevention:**
+
 - Use Drizzle ORM (parameterized queries, never string concatenation)
 - All user inputs validated with Zod before DB queries
 
 **XSS Prevention:**
+
 - Helmet.js Content Security Policy (CSP)
 - React escapes all user-generated content by default
 - No `dangerouslySetInnerHTML` unless explicitly sanitized
@@ -3457,6 +3607,7 @@ export const securityMiddleware = [
 ```
 
 **Security Headers Applied:**
+
 - `Strict-Transport-Security`: Force HTTPS
 - `X-Content-Type-Options: nosniff`: Prevent MIME sniffing
 - `X-Frame-Options: DENY`: Prevent clickjacking
@@ -3503,6 +3654,7 @@ export const handleStripeWebhook = async (req: Request, res: Response) => {
 ```
 
 **Security Properties:**
+
 - Stripe signature verification prevents webhook spoofing
 - Raw body required (disable JSON parsing for `/api/webhooks/stripe`)
 - Secret stored in environment variable
@@ -3536,7 +3688,7 @@ export const logSecurityEvent = (event: {
   details: any;
 }) => {
   securityLogger.warn('Security Event', event);
-  
+
   // Send to Sentry if critical
   if (event.type === 'SUSPICIOUS_ACTIVITY') {
     Sentry.captureMessage('Suspicious Activity Detected', {
@@ -3548,6 +3700,7 @@ export const logSecurityEvent = (event: {
 ```
 
 **Events to Log:**
+
 - Failed login attempts (>3 in 5 min → alert)
 - Rate limit exceeded
 - Invalid JWT tokens
@@ -3558,35 +3711,37 @@ export const logSecurityEvent = (event: {
 
 ### Security Checklist
 
-| Category | Implementation | Status |
-|----------|----------------|--------|
-| **Authentication** | JWT with 24h expiration + httpOnly refresh tokens | ✅ |
-| **2FA (Admin Accounts)** | TOTP mandatory for all admin users (Google Authenticator) | ✅ |
-| **Password Security** | bcrypt (12 rounds) + strength validation | ✅ |
-| **Email Verification** | Required before login, hashed tokens | ✅ |
-| **Rate Limiting** | Redis-backed, per-IP and per-user | ✅ |
-| **Input Validation** | Zod schemas on all endpoints | ✅ |
-| **SQL Injection** | Drizzle ORM (parameterized queries) | ✅ |
-| **XSS Protection** | Helmet.js CSP + React escaping | ✅ |
-| **CORS** | Frontend origin only, credentials allowed | ✅ |
-| **HTTPS** | Enforced via HSTS header | ✅ |
-| **Secrets Management** | Env validation on startup, never committed | ✅ |
-| **API Key Rotation** | All external API keys rotated every 90 days (tracked in log) | ✅ |
-| **Webhook Security** | Stripe signature verification | ✅ |
-| **Logging** | Winston + Sentry for security events | ✅ |
-| **Data Encryption** | At-rest (Neon), in-transit (TLS 1.3) | ✅ |
+| Category                 | Implementation                                               | Status |
+| ------------------------ | ------------------------------------------------------------ | ------ |
+| **Authentication**       | JWT with 24h expiration + httpOnly refresh tokens            | ✅     |
+| **2FA (Admin Accounts)** | TOTP mandatory for all admin users (Google Authenticator)    | ✅     |
+| **Password Security**    | bcrypt (12 rounds) + strength validation                     | ✅     |
+| **Email Verification**   | Required before login, hashed tokens                         | ✅     |
+| **Rate Limiting**        | Redis-backed, per-IP and per-user                            | ✅     |
+| **Input Validation**     | Zod schemas on all endpoints                                 | ✅     |
+| **SQL Injection**        | Drizzle ORM (parameterized queries)                          | ✅     |
+| **XSS Protection**       | Helmet.js CSP + React escaping                               | ✅     |
+| **CORS**                 | Frontend origin only, credentials allowed                    | ✅     |
+| **HTTPS**                | Enforced via HSTS header                                     | ✅     |
+| **Secrets Management**   | Env validation on startup, never committed                   | ✅     |
+| **API Key Rotation**     | All external API keys rotated every 90 days (tracked in log) | ✅     |
+| **Webhook Security**     | Stripe signature verification                                | ✅     |
+| **Logging**              | Winston + Sentry for security events                         | ✅     |
+| **Data Encryption**      | At-rest (Neon), in-transit (TLS 1.3)                         | ✅     |
 
 ---
 
 ### Security Monitoring & Incident Response
 
 **Daily Monitoring (Admin Dashboard):**
+
 - Failed login attempts by IP
 - Rate limit violations
 - Unusual analysis patterns (e.g., 1000 analyses in 1 hour)
 - API provider downtime
 
 **Incident Response Plan:**
+
 1. **Suspected breach**: Immediately rotate JWT secrets, invalidate all sessions (increment `token_version` for all users)
 2. **DDoS attack**: Enable Cloudflare protection, increase rate limits temporarily
 3. **API key leak**: Rotate all external API keys, review logs for unauthorized usage
@@ -3610,15 +3765,15 @@ MemeDo's performance architecture is designed to deliver token analysis in under
 
 **Multi-Tier TTL Strategy:**
 
-| Data Category | Cache Key Pattern | TTL | Rationale |
-|---------------|------------------|-----|-----------|
-| **Price Data** | `price:{chain}:{address}` | 1-5 min | High volatility, must be fresh |
-| **Token Metadata** | `meta:{chain}:{address}` | 24 hours | Name, symbol, decimals rarely change |
-| **Security Analysis** | `security:{chain}:{address}` | 24 hours | Contract code is immutable (unless proxy) |
-| **Liquidity Data** | `liquidity:{chain}:{address}` | 10 min | Pairs/locks change infrequently |
-| **Full Analysis** | `analysis:{chain}:{address}` | 24 hours | Complete analysis result (all tabs) |
-| **User Watchlist** | `watchlist:{userId}` | 5 min | Frequently accessed, needs price updates |
-| **API Health Metrics** | `api-health:{provider}` | 1 min | Real-time provider status |
+| Data Category          | Cache Key Pattern             | TTL      | Rationale                                 |
+| ---------------------- | ----------------------------- | -------- | ----------------------------------------- |
+| **Price Data**         | `price:{chain}:{address}`     | 1-5 min  | High volatility, must be fresh            |
+| **Token Metadata**     | `meta:{chain}:{address}`      | 24 hours | Name, symbol, decimals rarely change      |
+| **Security Analysis**  | `security:{chain}:{address}`  | 24 hours | Contract code is immutable (unless proxy) |
+| **Liquidity Data**     | `liquidity:{chain}:{address}` | 10 min   | Pairs/locks change infrequently           |
+| **Full Analysis**      | `analysis:{chain}:{address}`  | 24 hours | Complete analysis result (all tabs)       |
+| **User Watchlist**     | `watchlist:{userId}`          | 5 min    | Frequently accessed, needs price updates  |
+| **API Health Metrics** | `api-health:{provider}`       | 1 min    | Real-time provider status                 |
 
 **Implementation:**
 
@@ -3687,9 +3842,12 @@ export class CacheService {
 }
 
 // Example: Caching analysis results
-export const getOrFetchAnalysis = async (chain: string, address: string): Promise<AnalysisResult> => {
+export const getOrFetchAnalysis = async (
+  chain: string,
+  address: string
+): Promise<AnalysisResult> => {
   const cacheKey = `analysis:${chain}:${address}`;
-  
+
   // Try cache first
   const cached = await cacheService.get<AnalysisResult>(cacheKey);
   if (cached) {
@@ -3698,10 +3856,10 @@ export const getOrFetchAnalysis = async (chain: string, address: string): Promis
 
   // Cache miss → fetch fresh data
   const result = await analysisOrchestrator.analyze(chain, address);
-  
+
   // Cache for 24 hours
   await cacheService.set(cacheKey, result, 24 * 60 * 60);
-  
+
   return { ...result, cache_hit: false };
 };
 ```
@@ -3712,27 +3870,28 @@ export const getOrFetchAnalysis = async (chain: string, address: string): Promis
 // Invalidate cache when user manually refreshes analysis
 app.post('/api/analysis/:chain/:address/refresh', authenticate, async (req, res) => {
   const { chain, address } = req.params;
-  
+
   // Delete cached analysis
   await cacheService.delete(`analysis:${chain}:${address}`);
-  
+
   // Fetch fresh data
   const result = await getOrFetchAnalysis(chain, address);
-  
+
   res.json({ success: true, data: result });
 });
 
 // Bulk invalidation for admin (e.g., after API provider update)
 app.post('/api/admin/cache/flush', authenticate, authorize('admin'), async (req, res) => {
   const { pattern } = req.body; // e.g., "analysis:solana:*"
-  
+
   await cacheService.flushPattern(pattern);
-  
+
   res.json({ success: true, message: `Flushed cache pattern: ${pattern}` });
 });
 ```
 
 **Performance Impact:**
+
 - **Cache hit rate target**: 75%+ (measured via `cache_hit` field in responses)
 - **Latency reduction**: ~5s (from 6-8s analysis → <1s cached response)
 - **Cost savings**: ~70% fewer external API calls
@@ -3822,6 +3981,7 @@ export const db = drizzle(sql);
 ```
 
 **Performance Targets:**
+
 - **Query latency**: <100ms for simple queries, <500ms for complex joins
 - **Connection pool size**: 10-20 connections (Neon default)
 - **Index hit rate**: >95% (monitor via `pg_stat_user_indexes`)
@@ -3891,9 +4051,12 @@ export class HeliusClient extends BaseAPIClient {
   }
 
   async getTokenMetadata(address: string): Promise<any> {
-    const response = await this.client.get(`/v0/token-metadata?api-key=${process.env.HELIUS_API_KEY}`, {
-      params: { mintAccounts: [address] },
-    });
+    const response = await this.client.get(
+      `/v0/token-metadata?api-key=${process.env.HELIUS_API_KEY}`,
+      {
+        params: { mintAccounts: [address] },
+      }
+    );
     return response.data;
   }
 }
@@ -3910,9 +4073,7 @@ export const analyzeToken = async (req: Request, res: Response) => {
     // Set overall timeout of 15s for entire analysis
     const result = await Promise.race([
       getOrFetchAnalysis(chain, address),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Analysis timeout')), 15000)
-      ),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Analysis timeout')), 15000)),
     ]);
 
     res.json({ success: true, data: result });
@@ -3933,13 +4094,13 @@ export const analyzeToken = async (req: Request, res: Response) => {
 
 **Timeout Budget:**
 
-| Operation | Timeout | Rationale |
-|-----------|---------|-----------|
-| Single API call | 5s | Fail fast if provider is slow |
-| API call with retries | 12s max | 5s × 2 retries + backoff |
-| Full analysis (all categories) | 15s | Allows parallel execution with fallbacks |
-| Database query | 3s | Neon serverless cold start buffer |
-| Redis operation | 1s | In-memory should be instant |
+| Operation                      | Timeout | Rationale                                |
+| ------------------------------ | ------- | ---------------------------------------- |
+| Single API call                | 5s      | Fail fast if provider is slow            |
+| API call with retries          | 12s max | 5s × 2 retries + backoff                 |
+| Full analysis (all categories) | 15s     | Allows parallel execution with fallbacks |
+| Database query                 | 3s      | Neon serverless cold start buffer        |
+| Redis operation                | 1s      | In-memory should be instant              |
 
 ---
 
@@ -3958,7 +4119,7 @@ export const useAnalysis = (chain: string, address: string) => {
     staleTime: 5 * 60 * 1000, // Consider fresh for 5 min
     cacheTime: 24 * 60 * 60 * 1000, // Keep in cache for 24 hours
     refetchOnWindowFocus: false, // Don't refetch on tab switch
-    
+
     // Show cached data immediately while fetching fresh data in background
     placeholderData: (previousData) => previousData,
   });
@@ -3972,10 +4133,10 @@ function AnalysisPage() {
     <div>
       {/* Show cached data immediately */}
       {data && <AnalysisResults data={data} />}
-      
+
       {/* Show subtle loading indicator if refetching */}
       {isFetching && <div className="text-sm text-gray-500">Updating...</div>}
-      
+
       {/* Only show skeleton on initial load */}
       {isLoading && !data && <AnalysisSkeleton />}
     </div>
@@ -3998,12 +4159,12 @@ function Dashboard() {
     <div>
       {/* Load critical content first */}
       <PriceOverview /> {/* Inline, renders immediately */}
-      
+
       {/* Defer non-critical charts */}
       <Suspense fallback={<ChartSkeleton />}>
         <LiquidityChart />
       </Suspense>
-      
+
       <Suspense fallback={<ChartSkeleton />}>
         <HolderDistribution />
       </Suspense>
@@ -4150,6 +4311,7 @@ export class MetricsService {
 **Performance Dashboard (Admin):**
 
 Display real-time metrics:
+
 - **P50/P95/P99 latency** (analysis duration)
 - **Cache hit rate** (target: >75%)
 - **API success rate per provider** (DexScreener, Helius, etc.)
@@ -4160,16 +4322,16 @@ Display real-time metrics:
 
 ### Performance Budget Summary
 
-| Metric | Target | Acceptable | Alert Threshold |
-|--------|--------|-----------|-----------------|
-| **Analysis Duration (P50)** | 6s | 8s | >10s |
-| **Analysis Duration (P95)** | 9s | 12s | >15s |
-| **Cache Hit Rate** | 75% | 65% | <60% |
-| **API Success Rate** | 96% | 90% | <85% |
-| **Completeness Score (Avg)** | 94% | 90% | <85% |
-| **Database Query Time** | 100ms | 200ms | >500ms |
-| **Frontend LCP** | <2.5s | <4s | >4s |
-| **Frontend FID** | <100ms | <300ms | >300ms |
+| Metric                       | Target | Acceptable | Alert Threshold |
+| ---------------------------- | ------ | ---------- | --------------- |
+| **Analysis Duration (P50)**  | 6s     | 8s         | >10s            |
+| **Analysis Duration (P95)**  | 9s     | 12s        | >15s            |
+| **Cache Hit Rate**           | 75%    | 65%        | <60%            |
+| **API Success Rate**         | 96%    | 90%        | <85%            |
+| **Completeness Score (Avg)** | 94%    | 90%        | <85%            |
+| **Database Query Time**      | 100ms  | 200ms      | >500ms          |
+| **Frontend LCP**             | <2.5s  | <4s        | >4s             |
+| **Frontend FID**             | <100ms | <300ms     | >300ms          |
 
 ---
 
@@ -4182,6 +4344,7 @@ Once approved, we'll proceed to **Section 9: Deployment Architecture** (Vercel f
 ### Overview
 
 MemeDo uses a modern, cost-effective deployment architecture optimized for solo developers and small teams:
+
 - **Frontend**: Vercel (automatic deployments, global CDN, zero config)
 - **Backend**: Render (container-based, easy scaling, PostgreSQL-friendly)
 - **Database**: Neon PostgreSQL (serverless, automatic scaling)
@@ -4274,13 +4437,14 @@ vercel env add VITE_API_URL production
 
 **Environment Variables (Vercel Dashboard):**
 
-| Variable | Value | Environment |
-|----------|-------|-------------|
-| `VITE_API_URL` | `https://api.memedo.io` | Production |
-| `VITE_API_URL` | `https://api-staging.memedo.io` | Preview |
-| `VITE_API_URL` | `http://localhost:3000` | Development |
+| Variable       | Value                           | Environment |
+| -------------- | ------------------------------- | ----------- |
+| `VITE_API_URL` | `https://api.memedo.io`         | Production  |
+| `VITE_API_URL` | `https://api-staging.memedo.io` | Preview     |
+| `VITE_API_URL` | `http://localhost:3000`         | Development |
 
 **Build Configuration:**
+
 - **Build Command**: `pnpm run build`
 - **Output Directory**: `dist`
 - **Install Command**: `pnpm install --frozen-lockfile`
@@ -4357,7 +4521,6 @@ services:
       - key: FRONTEND_URL
         value: https://staging.memedo.io
     autoDeploy: true
-
 # Background jobs (optional - for future use)
 # - type: cron
 #   name: memedo-api-cleanup
@@ -4436,30 +4599,30 @@ jobs:
   # Run tests and linting
   test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [20.x]
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      
+
       - name: Setup pnpm cache
         uses: actions/cache@v3
         with:
@@ -4467,29 +4630,29 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Run ESLint
         run: pnpm run lint
-      
+
       - name: Run TypeScript type check
         run: pnpm run typecheck
-      
+
       - name: Run unit tests (Backend)
         run: cd backend && pnpm run test
         env:
           NODE_ENV: test
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
           REDIS_URL: ${{ secrets.TEST_REDIS_URL }}
-      
+
       - name: Run unit tests (Frontend)
         run: cd frontend && pnpm run test
-      
+
       - name: Build Backend
         run: cd backend && pnpm run build
-      
+
       - name: Build Frontend
         run: cd frontend && pnpm run build
         env:
@@ -4500,14 +4663,14 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Render (Staging)
         run: |
           curl -X POST ${{ secrets.RENDER_STAGING_DEPLOY_HOOK }}
-      
+
       - name: Deploy to Vercel (Staging)
         run: |
           npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
@@ -4517,10 +4680,10 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Run Database Migrations
         run: |
           cd backend
@@ -4528,11 +4691,11 @@ jobs:
           pnpm run db:migrate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      
+
       - name: Deploy to Render (Production)
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
-      
+
       - name: Wait for Backend Health Check
         run: |
           for i in {1..30}; do
@@ -4545,18 +4708,18 @@ jobs:
           done
           echo "Backend health check failed"
           exit 1
-      
+
       - name: Deploy to Vercel (Production)
         run: |
           npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
-      
+
       - name: Notify Deployment Success
         if: success()
         run: |
           curl -X POST https://api.memedo.io/admin/notify \
             -H "Authorization: Bearer ${{ secrets.ADMIN_API_KEY }}" \
             -d '{"message": "Production deployment successful", "commit": "${{ github.sha }}"}'
-      
+
       - name: Notify Deployment Failure
         if: failure()
         run: |
@@ -4569,26 +4732,26 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-      
+
       - name: Install Playwright
         run: |
           cd frontend
           pnpm install --frozen-lockfile
           npx playwright install --with-deps
-      
+
       - name: Run E2E tests
         run: cd frontend && pnpm run test:e2e
         env:
           BASE_URL: https://staging.memedo.io
-      
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
@@ -4599,16 +4762,16 @@ jobs:
 
 **GitHub Secrets Required:**
 
-| Secret | Description |
-|--------|-------------|
-| `DATABASE_URL` | Production Neon PostgreSQL connection string |
-| `TEST_DATABASE_URL` | Test database (separate Neon instance) |
-| `TEST_REDIS_URL` | Test Redis (Upstash) |
-| `RENDER_DEPLOY_HOOK` | Render deploy webhook URL (production) |
-| `RENDER_STAGING_DEPLOY_HOOK` | Render deploy webhook URL (staging) |
-| `VERCEL_TOKEN` | Vercel authentication token |
-| `VERCEL_ORG_ID` | Vercel organization ID |
-| `ADMIN_API_KEY` | Internal API key for notifications |
+| Secret                       | Description                                  |
+| ---------------------------- | -------------------------------------------- |
+| `DATABASE_URL`               | Production Neon PostgreSQL connection string |
+| `TEST_DATABASE_URL`          | Test database (separate Neon instance)       |
+| `TEST_REDIS_URL`             | Test Redis (Upstash)                         |
+| `RENDER_DEPLOY_HOOK`         | Render deploy webhook URL (production)       |
+| `RENDER_STAGING_DEPLOY_HOOK` | Render deploy webhook URL (staging)          |
+| `VERCEL_TOKEN`               | Vercel authentication token                  |
+| `VERCEL_ORG_ID`              | Vercel organization ID                       |
+| `ADMIN_API_KEY`              | Internal API key for notifications           |
 
 ---
 
@@ -4658,10 +4821,16 @@ fi
 await db.schema.alterTable('users').addColumn('new_field', 'text').execute();
 
 // Migration 2 (deploy after all instances updated)
-await db.schema.alterTable('users').alterColumn('new_field', (col) => col.setNotNull()).execute();
+await db.schema
+  .alterTable('users')
+  .alterColumn('new_field', (col) => col.setNotNull())
+  .execute();
 
 // ❌ BAD: Add required column (breaks running instances)
-await db.schema.alterTable('users').addColumn('new_field', 'text', (col) => col.notNull()).execute();
+await db.schema
+  .alterTable('users')
+  .addColumn('new_field', 'text', (col) => col.notNull())
+  .execute();
 ```
 
 **Frontend (Vercel):**
@@ -4676,6 +4845,7 @@ Vercel deploys are atomic:
 **Deployment Preview:**
 
 Every PR gets a unique preview URL:
+
 ```
 https://memedo-pr-123.vercel.app
 ```
@@ -4768,10 +4938,10 @@ pnpm run db:migrate:check
 export async function backupDatabase() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const backupFile = `backup-${timestamp}.sql`;
-  
+
   // Use Neon's backup API or pg_dump
   execSync(`pg_dump $DATABASE_URL > backups/${backupFile}`);
-  
+
   console.log(`✅ Database backed up to ${backupFile}`);
 }
 ```
@@ -4782,11 +4952,11 @@ export async function backupDatabase() {
 
 **Environment Hierarchy:**
 
-| Environment | Purpose | Branch | URL |
-|-------------|---------|--------|-----|
-| **Development** | Local development | feature/* | localhost:5173 |
-| **Staging** | Pre-production testing | staging | staging.memedo.io |
-| **Production** | Live users | main | memedo.io |
+| Environment     | Purpose                | Branch     | URL               |
+| --------------- | ---------------------- | ---------- | ----------------- |
+| **Development** | Local development      | feature/\* | localhost:5173    |
+| **Staging**     | Pre-production testing | staging    | staging.memedo.io |
+| **Production**  | Live users             | main       | memedo.io         |
 
 **Environment Variables Template:**
 
@@ -4898,11 +5068,11 @@ git commit -m "feat: add watchlist table"
 
 Configure health check endpoints:
 
-| Endpoint | Check Frequency | Alert On |
-|----------|----------------|----------|
-| `https://memedo.io` | Every 5 min | Status != 200 |
-| `https://api.memedo.io/health` | Every 5 min | Status != 200 |
-| `https://api.memedo.io/health` | Every 5 min | `checks.database != "ok"` |
+| Endpoint                       | Check Frequency | Alert On                  |
+| ------------------------------ | --------------- | ------------------------- |
+| `https://memedo.io`            | Every 5 min     | Status != 200             |
+| `https://api.memedo.io/health` | Every 5 min     | Status != 200             |
+| `https://api.memedo.io/health` | Every 5 min     | `checks.database != "ok"` |
 
 **Sentry (Error Tracking):**
 
@@ -4985,16 +5155,16 @@ app.use(Sentry.Handlers.errorHandler());
 
 **Estimated Monthly Costs (MVP Phase):**
 
-| Service | Plan | Monthly Cost | Notes |
-|---------|------|--------------|-------|
-| **Vercel** | Hobby (Free) | $0 | 100 GB bandwidth/month included |
-| **Render** | Starter | $7 | 512 MB RAM, 0.5 CPU |
-| **Neon** | Free Tier | $0 | 3 GB storage, 100h compute/month |
-| **Upstash Redis** | Free Tier | $0 | 10k commands/day |
-| **External APIs** | Free/Low Tiers | $50-80 | DexScreener (free), Helius ($50/mo), etc. |
-| **Monitoring** | Free Tiers | $0 | Sentry (5k events/mo), UptimeRobot (50 monitors) |
-| **Domain** | Namecheap | $12/year | .io domain |
-| **Total** | | **~$60-90/month** | Scales to $200-300/month at 1000 users |
+| Service           | Plan           | Monthly Cost      | Notes                                            |
+| ----------------- | -------------- | ----------------- | ------------------------------------------------ |
+| **Vercel**        | Hobby (Free)   | $0                | 100 GB bandwidth/month included                  |
+| **Render**        | Starter        | $7                | 512 MB RAM, 0.5 CPU                              |
+| **Neon**          | Free Tier      | $0                | 3 GB storage, 100h compute/month                 |
+| **Upstash Redis** | Free Tier      | $0                | 10k commands/day                                 |
+| **External APIs** | Free/Low Tiers | $50-80            | DexScreener (free), Helius ($50/mo), etc.        |
+| **Monitoring**    | Free Tiers     | $0                | Sentry (5k events/mo), UptimeRobot (50 monitors) |
+| **Domain**        | Namecheap      | $12/year          | .io domain                                       |
+| **Total**         |                | **~$60-90/month** | Scales to $200-300/month at 1000 users           |
 
 **Cost Optimization Tips:**
 
@@ -5006,14 +5176,14 @@ app.use(Sentry.Handlers.errorHandler());
 
 **Scaling Costs (At 1000 Users):**
 
-| Service | Upgraded Plan | Monthly Cost |
-|---------|---------------|--------------|
-| Vercel | Pro | $20 |
-| Render | Standard (1 GB RAM) | $25 |
-| Neon | Launch (10 GB) | $19 |
-| Upstash Redis | Pay-as-you-go | $10-20 |
-| External APIs | Mid-tier plans | $150-200 |
-| **Total** | | **~$250-300/month** |
+| Service       | Upgraded Plan       | Monthly Cost        |
+| ------------- | ------------------- | ------------------- |
+| Vercel        | Pro                 | $20                 |
+| Render        | Standard (1 GB RAM) | $25                 |
+| Neon          | Launch (10 GB)      | $19                 |
+| Upstash Redis | Pay-as-you-go       | $10-20              |
+| External APIs | Mid-tier plans      | $150-200            |
+| **Total**     |                     | **~$250-300/month** |
 
 ---
 
@@ -5021,12 +5191,12 @@ app.use(Sentry.Handlers.errorHandler());
 
 **Backup Strategy:**
 
-| Component | Backup Frequency | Retention | Recovery Time |
-|-----------|-----------------|-----------|---------------|
-| **Database (Neon)** | Automatic daily + on-demand | 30 days | <1 hour |
-| **Redis (Upstash)** | Not backed up (cache only) | N/A | N/A (rebuild from DB) |
-| **Code** | Git (GitHub) | Forever | <5 min |
-| **Environment Variables** | Manual backup (1Password/encrypted file) | Forever | <10 min |
+| Component                 | Backup Frequency                         | Retention | Recovery Time         |
+| ------------------------- | ---------------------------------------- | --------- | --------------------- |
+| **Database (Neon)**       | Automatic daily + on-demand              | 30 days   | <1 hour               |
+| **Redis (Upstash)**       | Not backed up (cache only)               | N/A       | N/A (rebuild from DB) |
+| **Code**                  | Git (GitHub)                             | Forever   | <5 min                |
+| **Environment Variables** | Manual backup (1Password/encrypted file) | Forever   | <10 min               |
 
 **Recovery Procedures:**
 
@@ -5097,6 +5267,7 @@ psql $DATABASE_URL < recovery.sql
 **This completes the Full-Stack Architecture Document for MemeDo!**
 
 The document now includes:
+
 1. ✅ Executive Summary & Introduction
 2. ✅ Decision Summary Table
 3. ✅ Project Structure
@@ -5123,15 +5294,14 @@ Type **"approved"** if Section 9 is complete, or let me know what needs adjustme
 
 ## Development Environment
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ## Architecture Decision Records (ADRs)
 
-*(Section to be completed)*
+_(Section to be completed)_
 
 ---
 
 _Generated by BMAD Decision Architecture Workflow v1.3.2_  
 _Date: October 28, 2025_  
 _For: Qlirim Elezi_
-
