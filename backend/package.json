@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "type-check": "tsc --noEmit",
+    "test:env": "tsx src/utils/test-env-validation.ts",
     "db:test": "tsx src/db/test-connection.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",

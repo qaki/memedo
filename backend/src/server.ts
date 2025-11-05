@@ -1,13 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import { env } from './utils/env-validator';
 
-// Load environment variables
-dotenv.config();
-
+// Environment variables are validated on import (fail-fast)
 const app = express();
-const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const PORT = parseInt(env.PORT, 10);
+const FRONTEND_URL = env.FRONTEND_URL;
 
 // Middleware
 app.use(
