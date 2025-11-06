@@ -7,10 +7,26 @@ const app = express();
 const PORT = parseInt(env.PORT, 10);
 const FRONTEND_URL = env.FRONTEND_URL;
 
-// Middleware
+// Middleware - CORS configuration for production
+const allowedOrigins = [
+  FRONTEND_URL, // From env (http://localhost:5173 in dev)
+  'https://meme-do.com',
+  'https://www.meme-do.com',
+  'http://localhost:5173', // Explicit dev origin
+];
+
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, curl, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
   })
 );

@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: memedo-backend
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: cd backend && pnpm install && pnpm build
+    startCommand: cd backend && pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: FRONTEND_URL
+        value: https://meme-do.com
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: TOTP_ENCRYPTION_KEY
+        sync: false
+      - key: JWT_ACCESS_EXPIRY
+        value: 86400
+      - key: JWT_REFRESH_EXPIRY
+        value: 604800
+      - key: RESEND_API_KEY
+        sync: false
+      - key: FROM_EMAIL
+        value: noreply@meme-do.com
+      - key: SUPPORT_EMAIL
+        value: support@meme-do.com
+      - key: ENABLE_RATE_LIMITING
+        value: true
+      - key: ENABLE_2FA
+        value: true
+      - key: ENABLE_API_LOGGING
+        value: true
+    healthCheckPath: /health
+    autoDeploy: true
