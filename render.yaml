@@ -4,8 +4,8 @@ services:
     env: node
     region: oregon
     plan: starter
-    buildCommand: cd backend && pnpm install && pnpm build
-    startCommand: cd backend && pnpm start
+    buildCommand: pnpm install && pnpm --filter=backend run build
+    startCommand: pnpm --filter=backend start
     envVars:
       - key: NODE_ENV
         value: production
