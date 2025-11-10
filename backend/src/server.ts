@@ -1,6 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { env } from './utils/env-validator';
+
+// Import routes
+import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
+import twoFARoutes from './routes/2fa.routes';
+import analysisRoutes from './routes/analysis.routes';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();
@@ -32,6 +39,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Request logging middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -52,7 +60,13 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
-// API routes placeholder
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/user/2fa', twoFARoutes);
+app.use('/api/analysis', analysisRoutes);
+
+// API info endpoint
 app.get('/api', (req: Request, res: Response) => {
   res.json({
     success: true,
@@ -61,6 +75,9 @@ app.get('/api', (req: Request, res: Response) => {
       endpoints: {
         health: '/health',
         api: '/api',
+        auth: '/api/auth',
+        user: '/api/user',
+        analysis: '/api/analysis',
       },
     },
   });
