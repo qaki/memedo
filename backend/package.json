@@ -19,6 +19,7 @@
   "dependencies": {
     "@memedo/shared": "workspace:*",
     "@neondatabase/serverless": "^1.0.2",
+    "@upstash/redis": "^1.35.6",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

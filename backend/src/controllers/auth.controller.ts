@@ -73,12 +73,13 @@ export const register = async (req: Request, res: Response) => {
 
     // Zod validation errors
     if (error instanceof Error && error.name === 'ZodError') {
+      const zodError = error as { errors?: unknown[] };
       return res.status(400).json({
         success: false,
         error: {
           code: 'VALIDATION_ERROR',
           message: 'Invalid input data',
-          details: error.errors,
+          details: zodError.errors || [],
         },
       });
     }
@@ -263,12 +264,13 @@ export const login = async (req: Request, res: Response) => {
     console.error('Login error:', error);
 
     if (error instanceof Error && error.name === 'ZodError') {
+      const zodError = error as { errors?: unknown[] };
       return res.status(400).json({
         success: false,
         error: {
           code: 'VALIDATION_ERROR',
           message: 'Invalid input data',
-          details: error.errors,
+          details: zodError.errors || [],
         },
       });
     }
