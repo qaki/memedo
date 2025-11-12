@@ -7,16 +7,20 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+
+    // ❌ REMOVED: This causes TS6059 error because linked files are outside this directory.
+    // "rootDir": "./src",
 
     // 👇 CRUCIAL ADDITION FOR MONOREPO WORKSPACES 👇
     "baseUrl": ".",
     "paths": {
-      // Assuming your shared package source is in the '../shared/src' folder
+      // This tells TS how to resolve the imports (e.g., import { z } from '@memedo/shared')
       "@memedo/shared": ["../shared/src"]
     }
     // 👆 END CRUCIAL ADDITION 👆
   },
-  "include": ["src/**/*"],
+
+  // ✅ MODIFIED: This tells TS to compile files in 'src' AND resolve types from '../shared/src'.
+  "include": ["src/**/*", "../shared/src/**/*"],
   "exclude": ["node_modules"]
 }
