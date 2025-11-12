@@ -1,36 +1,35 @@
 import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.middleware';
 import { checkQuota, incrementUsage } from '../middleware/quota.middleware';
+import {
+  analyzeToken,
+  getAnalysisHistory,
+  getAnalysisById,
+  getSupportedChains,
+  getAdapterHealth,
+} from '../controllers/analysis.controller';
 
 const router = Router();
 
-// Token analysis endpoint (protected + quota checked)
-// Full implementation will be in Epic 3
-router.post('/analyze', requireAuth, checkQuota, async (req, res) => {
+// Public routes
+router.get('/supported-chains', getSupportedChains);
+router.get('/health', getAdapterHealth);
+
+// Protected routes (require authentication + quota)
+// Note: incrementUsage is called after successful analysis
+router.post('/analyze', requireAuth, checkQuota, async (req, res, next) => {
   try {
-    // This is a placeholder for Epic 3: Token Analysis Engine
-    // After successful analysis, call incrementUsage(req.user!.id)
-
-    // For now, increment usage to test quota enforcement
-    await incrementUsage(req.user!.id);
-
-    res.json({
-      success: true,
-      data: {
-        message: 'Analysis endpoint placeholder (Epic 3 will implement full analysis logic)',
-        usage_incremented: true,
-      },
-    });
+    await analyzeToken(req, res);
+    // Increment usage after successful analysis
+    if (res.statusCode === 200) {
+      await incrementUsage(req.user!.id);
+    }
   } catch (error) {
-    console.error('Analysis error:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        code: 'ANALYSIS_FAILED',
-        message: 'Analysis failed',
-      },
-    });
+    next(error);
   }
 });
+
+router.get('/history', requireAuth, getAnalysisHistory);
+router.get('/:id', requireAuth, getAnalysisById);
 
 export default router;
