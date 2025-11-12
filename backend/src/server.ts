@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import twoFARoutes from './routes/2fa.routes';
 import analysisRoutes from './routes/analysis.routes';
+import analyticsRoutes from './routes/analytics.routes';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();
@@ -65,6 +66,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user/2fa', twoFARoutes);
 app.use('/api/analysis', analysisRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // API info endpoint
 app.get('/api', (req: Request, res: Response) => {
@@ -78,6 +80,7 @@ app.get('/api', (req: Request, res: Response) => {
         auth: '/api/auth',
         user: '/api/user',
         analysis: '/api/analysis',
+        analytics: '/api/analytics (admin only)',
       },
     },
   });
