@@ -1,22 +1,22 @@
+// backend/tsconfig.json
 {
   "compilerOptions": {
-    "target": "ES2020",
     "module": "commonjs",
-    "lib": ["ES2020"],
+    "target": "es2020",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
+
+    // 👇 CRUCIAL ADDITION FOR MONOREPO WORKSPACES 👇
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../shared/src/*"]
+      // Assuming your shared package source is in the '../shared/src' folder
+      "@memedo/shared": ["../shared/src"]
     }
+    // 👆 END CRUCIAL ADDITION 👆
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules"]
 }
