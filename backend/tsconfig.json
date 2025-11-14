@@ -7,9 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-
-    // ❌ REMOVED: This causes TS6059 error because linked files are outside this directory.
-    // "rootDir": "./src",
+    "rootDir": "./src",
 
     // 👇 CRUCIAL ADDITION FOR MONOREPO WORKSPACES 👇
     "baseUrl": ".",
@@ -20,7 +18,7 @@
     // 👆 END CRUCIAL ADDITION 👆
   },
 
-  // ✅ MODIFIED: This tells TS to compile files in 'src' AND resolve types from '../shared/src'.
-  "include": ["src/**/*", "../shared/src/**/*"],
+  // ✅ Only compile backend src files. Shared package is built separately.
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
