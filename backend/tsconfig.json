@@ -12,8 +12,8 @@
     // 👇 CRUCIAL ADDITION FOR MONOREPO WORKSPACES 👇
     "baseUrl": ".",
     "paths": {
-      // This tells TS how to resolve the imports (e.g., import { z } from '@memedo/shared')
-      "@memedo/shared": ["../shared/src"]
+      // This tells TS to use the compiled output from the shared package
+      "@memedo/shared": ["../shared/dist"]
     }
     // 👆 END CRUCIAL ADDITION 👆
   },
