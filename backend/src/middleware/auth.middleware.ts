@@ -3,7 +3,6 @@ import { db } from '../db';
 import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { verifyAccessToken } from '../utils/jwt';
-import '../types/express'; // Load Express Request extension
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
