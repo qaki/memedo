@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { db } from '../db';
 import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const QUOTA_FREE_TIER = 20; // Free users get 20 analyses per month
 
