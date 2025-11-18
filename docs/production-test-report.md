@@ -403,7 +403,7 @@ curl -X POST https://memedo-backend.onrender.com/api/auth/register \
 ### ✅ API Keys Configured
 
 - `RESEND_API_KEY` - Email delivery
-- `FROM_EMAIL` - noreply@meme-do.com
+- `FROM_EMAIL` - support@meme-do.com
 - `HELIUS_API_KEY` - Solana data (optional)
 - `ETHERSCAN_API_KEY` - EVM data (optional)
 

@@ -132,7 +132,7 @@ RESEND_API_KEY=re_your_actual_resend_key
 ```
 
 ```
-FROM_EMAIL=noreply@meme-do.com
+FROM_EMAIL=support@meme-do.com
 ```
 
 ```
@@ -170,7 +170,7 @@ ENABLE_API_LOGGING=true
 | `JWT_ACCESS_EXPIRY`    | Set to `86400`               | ✅ Yes    |
 | `JWT_REFRESH_EXPIRY`   | Set to `604800`              | ✅ Yes    |
 | `RESEND_API_KEY`       | Leave blank for now          | ⚠️ Epic 2 |
-| `FROM_EMAIL`           | Set to `noreply@meme-do.com` | ⚠️ Epic 2 |
+| `FROM_EMAIL`           | Set to `support@meme-do.com` | ⚠️ Epic 2 |
 | `SUPPORT_EMAIL`        | Set to `support@meme-do.com` | ⚠️ Epic 2 |
 | `ENABLE_RATE_LIMITING` | Set to `true`                | ✅ Yes    |
 | `ENABLE_2FA`           | Set to `true`                | ✅ Yes    |

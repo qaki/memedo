@@ -210,7 +210,7 @@ JWT_REFRESH_EXPIRY=604800
 
 ```
 RESEND_API_KEY=your-resend-key
-FROM_EMAIL=noreply@meme-do.com
+FROM_EMAIL=support@meme-do.com
 SUPPORT_EMAIL=support@meme-do.com
 ```
 

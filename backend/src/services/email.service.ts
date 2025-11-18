@@ -8,7 +8,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 
   try {
     await resend.emails.send({
-      from: env.FROM_EMAIL || 'noreply@meme-do.com',
+      from: env.FROM_EMAIL || 'support@meme-do.com',
       to: email,
       subject: 'Verify your MemeDo account',
       html: `
@@ -38,7 +38,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 
   try {
     await resend.emails.send({
-      from: env.FROM_EMAIL || 'noreply@meme-do.com',
+      from: env.FROM_EMAIL || 'support@meme-do.com',
       to: email,
       subject: 'Reset your MemeDo password',
       html: `
