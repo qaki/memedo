@@ -35,7 +35,12 @@ export const registerSchema = z
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Password is required'),
-  totpToken: z.string().length(6).optional(), // 2FA token (optional for non-admin users)
+  totpToken: z
+    .string()
+    .optional()
+    .refine((val) => !val || val.length === 6, {
+      message: '2FA token must be exactly 6 digits',
+    }), // 2FA token (optional - empty string or 6 digits)
 });
 
 /**

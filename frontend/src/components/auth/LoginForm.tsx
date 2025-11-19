@@ -8,6 +8,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { useAuthStore } from '../../stores/auth.store';
 import { useToast } from '../../hooks/useToast';
+import { getErrorMessage } from '../../lib/api';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -20,24 +21,37 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
+    // Prevent multiple submissions
+    if (isLoading || isSubmitting) return;
+
     setIsLoading(true);
 
     try {
-      await login(data);
+      // Clean up totpToken - if empty string, send undefined
+      const loginData = {
+        ...data,
+        totpToken: data.totpToken?.trim() || undefined,
+      };
+
+      await login(loginData);
       toast.success('Login successful!');
       navigate('/dashboard');
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message || 'Login failed. Please try again.');
-      } else {
-        toast.error('Login failed. Please try again.');
-      }
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+
+      // Set form-level error to prevent resubmission
+      setError('root', {
+        type: 'manual',
+        message: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -62,11 +76,11 @@ export const LoginForm = () => {
       />
 
       <Input
-        label="2FA Code (if enabled)"
+        label="2FA Code (optional)"
         type="text"
         placeholder="123456"
         error={errors.totpToken?.message}
-        helperText="Leave empty if 2FA is not enabled"
+        helperText="Only required if you have 2FA enabled"
         {...register('totpToken')}
       />
 
@@ -76,7 +90,15 @@ export const LoginForm = () => {
         </Link>
       </div>
 
-      <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
+      {errors.root && <div className="text-sm text-red-600 text-center">{errors.root.message}</div>}
+
+      <Button
+        type="submit"
+        className="w-full"
+        size="lg"
+        isLoading={isLoading}
+        disabled={isLoading || isSubmitting}
+      >
         Login
       </Button>
 
