@@ -1,14 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { env } from './utils/env-validator';
+import { env } from './utils/env-validator.js';
 
 // Import routes
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import twoFARoutes from './routes/2fa.routes';
-import analysisRoutes from './routes/analysis.routes';
-import analyticsRoutes from './routes/analytics.routes';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import twoFARoutes from './routes/2fa.routes.js';
+import analysisRoutes from './routes/analysis.routes.js';
+import analyticsRoutes from './routes/analytics.routes.js';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();

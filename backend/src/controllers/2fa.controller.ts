@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { db } from '../db';
-import { users } from '../db/schema';
+import { db } from '../db/index.js';
+import { users } from '../db/schema/index.js';
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import {
@@ -9,7 +9,7 @@ import {
   encryptTOTPSecret,
   verifyTOTPToken,
   generateBackupCodes,
-} from '../utils/totp';
+} from '../utils/totp.js';
 
 export const setup2FA = async (req: Request, res: Response) => {
   try {

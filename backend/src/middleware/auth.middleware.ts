@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { db } from '../db';
-import { users } from '../db/schema';
+import { db } from '../db/index.js';
+import { users } from '../db/schema/index.js';
 import { eq } from 'drizzle-orm';
-import { verifyAccessToken } from '../utils/jwt';
+import { verifyAccessToken } from '../utils/jwt.js';
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {

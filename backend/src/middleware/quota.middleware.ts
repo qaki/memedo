@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { db } from '../db';
-import { users } from '../db/schema';
+import { db } from '../db/index.js';
+import { users } from '../db/schema/index.js';
 import { eq } from 'drizzle-orm';
 
 const QUOTA_FREE_TIER = 20; // Free users get 20 analyses per month

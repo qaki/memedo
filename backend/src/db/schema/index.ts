@@ -5,7 +5,7 @@
  * The schema aligns with the Full-Stack Architecture Document (Section 4: Data Schema).
  */
 
-export * from './users';
-export * from './analyses';
-export * from './subscriptions';
-export * from './api_logs';
+export * from './users.js';
+export * from './analyses.js';
+export * from './subscriptions.js';
+export * from './api_logs.js';

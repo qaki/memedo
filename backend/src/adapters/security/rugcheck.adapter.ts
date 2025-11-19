@@ -7,7 +7,7 @@
 import axios from 'axios';
 import { Adapter } from '../../services/cafo.service';
 import { getCached, setCached, CacheTTL } from '../../services/redis.service';
-import { SecurityScan, Chain } from '../../types/token-analysis';
+import { SecurityScan, Chain } from '../../types/token-analysis.js';
 
 interface RugCheckResponse {
   tokenProgram?: string;

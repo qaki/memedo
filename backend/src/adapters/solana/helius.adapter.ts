@@ -7,8 +7,8 @@
 import axios from 'axios';
 import { Adapter } from '../../services/cafo.service';
 import { getCached, setCached, CacheTTL } from '../../services/redis.service';
-import { TokenMetadata, HolderDistribution, Chain } from '../../types/token-analysis';
-import { env } from '../../utils/env-validator';
+import { TokenMetadata, HolderDistribution, Chain } from '../../types/token-analysis.js';
+import { env } from '../../utils/env-validator.js';
 
 interface HeliusTokenMetadata {
   account: string;

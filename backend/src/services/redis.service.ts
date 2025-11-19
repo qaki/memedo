@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { env } from '../utils/env-validator';
+import { env } from '../utils/env-validator.js';
 
 // Parse Upstash Redis URL
 // Format: https://TOKEN@HOST or redis://default:TOKEN@HOST:PORT

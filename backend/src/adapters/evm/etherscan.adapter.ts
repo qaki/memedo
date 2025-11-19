@@ -7,8 +7,8 @@
 import axios from 'axios';
 import { Adapter } from '../../services/cafo.service';
 import { getCached, setCached, CacheTTL } from '../../services/redis.service';
-import { TokenMetadata, Chain, ETHERSCAN_API_URLS } from '../../types/token-analysis';
-import { env } from '../../utils/env-validator';
+import { TokenMetadata, Chain, ETHERSCAN_API_URLS } from '../../types/token-analysis.js';
+import { env } from '../../utils/env-validator.js';
 
 interface EtherscanContractResponse {
   status: string;

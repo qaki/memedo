@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { requireAuth, requireRole } from '../middleware/auth.middleware';
+import { requireAuth, requireRole } from '../middleware/auth.middleware.js';
 import {
   getAPIHealthStats,
   getUsageByChain,
@@ -8,7 +8,7 @@ import {
   getAdapterHealth,
   getCacheStatistics,
   getDashboard,
-} from '../controllers/analytics.controller';
+} from '../controllers/analytics.controller.js';
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import { TOTP, Secret } from 'otpauth';
 import crypto from 'crypto';
 import QRCode from 'qrcode';
-import { env } from './env-validator';
+import { env } from './env-validator.js';
 
 // Encrypt TOTP secret before storage
 export function encryptTOTPSecret(secret: string): string {

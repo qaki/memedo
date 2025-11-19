@@ -3,8 +3,8 @@
  * Tracks all external API calls for monitoring, cost tracking, and performance analysis
  */
 
-import { db } from '../db';
-import { api_logs } from '../db/schema';
+import { db } from '../db/index.js';
+import { api_logs } from '../db/schema/index.js';
 
 interface APICallLog {
   analysisId?: string;

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.middleware';
-import { checkQuota, incrementUsage } from '../middleware/quota.middleware';
+import { requireAuth } from '../middleware/auth.middleware.js';
+import { checkQuota, incrementUsage } from '../middleware/quota.middleware.js';
 import {
   analyzeToken,
   getAnalysisHistory,
   getAnalysisById,
   getSupportedChains,
   getAdapterHealth,
-} from '../controllers/analysis.controller';
+} from '../controllers/analysis.controller.js';
 
 const router = Router();
 

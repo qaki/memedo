@@ -2,13 +2,18 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { z } from 'zod';
-import { db } from '../db';
-import { users } from '../db/schema';
+import { db } from '../db/index.js';
+import { users } from '../db/schema/index.js';
 import { eq } from 'drizzle-orm';
 import { registerSchema, loginSchema } from '@memedo/shared';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.service';
-import { generateTokens, setAuthCookies, clearAuthCookies, verifyRefreshToken } from '../utils/jwt';
-import { verifyTOTPToken } from '../utils/totp';
+import {
+  generateTokens,
+  setAuthCookies,
+  clearAuthCookies,
+  verifyRefreshToken,
+} from '../utils/jwt.js';
+import { verifyTOTPToken } from '../utils/totp.js';
 
 export const register = async (req: Request, res: Response) => {
   try {

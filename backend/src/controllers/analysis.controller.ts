@@ -6,7 +6,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import { analysisService } from '../services/analysis.service';
-import { Chain, CHAIN_CONFIGS } from '../types/token-analysis';
+import { Chain, CHAIN_CONFIGS } from '../types/token-analysis.js';
 
 // Request validation schemas
 const analyzeRequestSchema = z.object({

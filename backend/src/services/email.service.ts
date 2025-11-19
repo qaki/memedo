@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { env } from '../utils/env-validator';
+import { env } from '../utils/env-validator.js';
 
 const resend = new Resend(env.RESEND_API_KEY);
 

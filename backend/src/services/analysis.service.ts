@@ -3,17 +3,17 @@
  * Aggregates data from multiple adapters and calculates safety scores
  */
 
-import { cafo } from './cafo.service';
-import { getCached, setCached, CacheTTL, generateCacheKey } from './redis.service';
+import { cafo } from './cafo.service.js';
+import { getCached, setCached, CacheTTL, generateCacheKey } from './redis.service.js';
 import {
   TokenAnalysis,
   TokenMetadata,
   SecurityScan,
   Chain,
   isValidAddress,
-} from '../types/token-analysis';
-import { db } from '../db';
-import { analyses } from '../db/schema';
+} from '../types/token-analysis.js';
+import { db } from '../db/index.js';
+import { analyses } from '../db/schema/index.js';
 
 // Import adapters
 import { heliusAdapter } from '../adapters/solana/helius.adapter';

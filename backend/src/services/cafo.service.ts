@@ -14,7 +14,7 @@
  */
 
 // Redis imports will be used in adapters (Stories 3.3-3.5)
-// import { getCached, setCached, CacheTTL } from './redis.service';
+// import { getCached, setCached, CacheTTL } from './redis.service.js';
 
 // Adapter interface - all data adapters must implement this
 export interface Adapter<T> {

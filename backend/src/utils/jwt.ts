@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
-import { env } from './env-validator';
+import { env } from './env-validator.js';
 
 interface JWTPayload {
   userId: string;

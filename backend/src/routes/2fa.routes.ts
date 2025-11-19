@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.middleware';
-import { setup2FA, enable2FA, disable2FA } from '../controllers/2fa.controller';
+import { requireAuth } from '../middleware/auth.middleware.js';
+import { setup2FA, enable2FA, disable2FA } from '../controllers/2fa.controller.js';
 
 const router = Router();
 

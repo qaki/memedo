@@ -3,7 +3,7 @@
  * Run with: pnpm tsx src/utils/test-env-validation.ts
  */
 
-import { env } from './env-validator';
+import { env } from './env-validator.js';
 
 console.log('\n🧪 Environment Validation Test\n');
 console.log('✅ All required environment variables are present and valid:');
