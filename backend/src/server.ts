@@ -18,6 +18,8 @@ const FRONTEND_URL = env.FRONTEND_URL;
 // Middleware - CORS configuration for production
 const allowedOrigins = [
   FRONTEND_URL, // From env (http://localhost:5173 in dev)
+  'https://meme-go.com',
+  'https://www.meme-go.com',
   'https://meme-do.com',
   'https://www.meme-do.com',
   'http://localhost:5173', // Explicit dev origin
