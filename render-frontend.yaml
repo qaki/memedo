@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: memedo-frontend
+    env: static
+    region: oregon
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter=@memedo/shared run build && pnpm --filter=memedo-frontend run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: VITE_API_URL
+        value: https://memedo-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
