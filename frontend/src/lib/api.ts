@@ -38,23 +38,46 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    // If 401 and not already retried, try to refresh token
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // CRITICAL: Skip token refresh for these endpoints to prevent loops
+    const skipRefreshEndpoints = [
+      '/api/auth/login',
+      '/api/auth/register',
+      '/api/auth/refresh',
+      '/api/auth/forgot-password',
+      '/api/auth/reset-password',
+      '/api/auth/verify-email',
+    ];
+
+    const requestUrl = originalRequest?.url || '';
+    const shouldSkipRefresh = skipRefreshEndpoints.some((endpoint) =>
+      requestUrl.includes(endpoint)
+    );
+
+    // If 401 and not already retried and not a skip endpoint, try to refresh token
+    if (error.response?.status === 401 && !originalRequest._retry && !shouldSkipRefresh) {
+      console.log('[API] 401 on', requestUrl, '- Attempting token refresh');
       originalRequest._retry = true;
 
       try {
         // Try to refresh the token
         await api.post('/api/auth/refresh');
+        console.log('[API] Token refresh successful, retrying original request');
 
         // Retry the original request
         return api(originalRequest);
       } catch (refreshError) {
+        console.error('[API] Token refresh failed, logging out');
         // Refresh failed, logout user
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }
+    }
+
+    // For login/register errors, just reject without refresh attempt
+    if (shouldSkipRefresh) {
+      console.log('[API] Skipping token refresh for', requestUrl);
     }
 
     return Promise.reject(error);
