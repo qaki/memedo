@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@memedo/shared';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -17,6 +17,7 @@ export const LoginForm = () => {
   const login = useAuthStore((state) => state.login);
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const {
     register,
@@ -28,9 +29,20 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    // Prevent multiple submissions
-    if (isLoading || isSubmitting) return;
+    // CRITICAL: Prevent multiple submissions with ref
+    if (isSubmittingRef.current || isLoading) {
+      console.log(
+        '[LoginForm] Already submitting, ignoring (ref:',
+        isSubmittingRef.current,
+        'loading:',
+        isLoading,
+        ')'
+      );
+      return;
+    }
 
+    console.log('[LoginForm] Starting login...');
+    isSubmittingRef.current = true;
     setIsLoading(true);
 
     try {
@@ -40,19 +52,28 @@ export const LoginForm = () => {
         totpToken: data.totpToken?.trim() || undefined,
       };
 
+      console.log('[LoginForm] Calling login API...');
       await login(loginData);
+
+      console.log('[LoginForm] Login successful!');
       toast.success('Login successful!');
       navigate('/dashboard');
     } catch (error) {
+      console.error('[LoginForm] Login failed:', error);
       const errorMessage = getErrorMessage(error);
+
+      // Show error via toast
       toast.error(errorMessage);
 
-      // Set form-level error to prevent resubmission
+      // Set form-level error to display in UI
       setError('root', {
         type: 'manual',
         message: errorMessage,
       });
     } finally {
+      // CRITICAL: Always reset both flags
+      console.log('[LoginForm] Resetting submission state');
+      isSubmittingRef.current = false;
       setIsLoading(false);
     }
   };
