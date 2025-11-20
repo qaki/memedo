@@ -17,7 +17,10 @@ export const LoginForm = () => {
   const login = useAuthStore((state) => state.login);
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
   const isSubmittingRef = useRef(false);
+  const lastSubmitTimeRef = useRef(0);
 
   const {
     register,
@@ -29,20 +32,49 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    // CRITICAL: Prevent multiple submissions with ref
-    if (isSubmittingRef.current || isLoading) {
-      console.log(
-        '[LoginForm] Already submitting, ignoring (ref:',
-        isSubmittingRef.current,
-        'loading:',
-        isLoading,
-        ')'
-      );
+    const now = Date.now();
+
+    // CRITICAL: Multiple layers of protection against loops
+
+    // 1. Check if blocked after 5 attempts
+    if (isBlocked) {
+      console.warn('[LoginForm] BLOCKED: Too many failed attempts');
+      toast.error('Too many failed attempts. Please wait 1 minute.');
       return;
     }
 
-    console.log('[LoginForm] Starting login...');
+    // 2. Check if already submitting
+    if (isSubmittingRef.current || isLoading) {
+      console.warn('[LoginForm] BLOCKED: Already submitting');
+      return;
+    }
+
+    // 3. Rate limiting - prevent submissions within 1 second
+    if (now - lastSubmitTimeRef.current < 1000) {
+      console.warn('[LoginForm] BLOCKED: Rate limit (too fast)');
+      return;
+    }
+
+    // 4. Check attempt count
+    if (attemptCount >= 5) {
+      console.warn('[LoginForm] BLOCKED: Max attempts reached');
+      setIsBlocked(true);
+      toast.error('Too many failed login attempts. Please wait 1 minute.');
+
+      // Unblock after 1 minute
+      setTimeout(() => {
+        setIsBlocked(false);
+        setAttemptCount(0);
+        console.log('[LoginForm] Unblocked after timeout');
+      }, 60000);
+      return;
+    }
+
+    console.log('[LoginForm] ✅ Starting login... (Attempt', attemptCount + 1, '/ 5)');
+
+    // Set all guards
     isSubmittingRef.current = true;
+    lastSubmitTimeRef.current = now;
     setIsLoading(true);
 
     try {
@@ -52,27 +84,53 @@ export const LoginForm = () => {
         totpToken: data.totpToken?.trim() || undefined,
       };
 
-      console.log('[LoginForm] Calling login API...');
+      console.log('[LoginForm] 📡 Calling login API...');
       await login(loginData);
 
-      console.log('[LoginForm] Login successful!');
+      console.log('[LoginForm] ✅ Login successful!');
       toast.success('Login successful!');
+
+      // Reset attempt count on success
+      setAttemptCount(0);
       navigate('/dashboard');
     } catch (error) {
-      console.error('[LoginForm] Login failed:', error);
+      console.error('[LoginForm] ❌ Login failed:', error);
+
+      // Increment attempt count
+      const newAttemptCount = attemptCount + 1;
+      setAttemptCount(newAttemptCount);
+
       const errorMessage = getErrorMessage(error);
+      const remainingAttempts = 5 - newAttemptCount;
 
-      // Show error via toast
-      toast.error(errorMessage);
+      // Show error with remaining attempts
+      if (remainingAttempts > 0) {
+        toast.error(`${errorMessage}. ${remainingAttempts} attempts remaining.`);
+        setError('root', {
+          type: 'manual',
+          message: `${errorMessage}. You have ${remainingAttempts} attempt${remainingAttempts === 1 ? '' : 's'} remaining.`,
+        });
+      } else {
+        toast.error('Too many failed attempts. Blocked for 1 minute.');
+        setError('root', {
+          type: 'manual',
+          message: 'Too many failed attempts. Please wait 1 minute before trying again.',
+        });
+        setIsBlocked(true);
 
-      // Set form-level error to display in UI
-      setError('root', {
-        type: 'manual',
-        message: errorMessage,
-      });
+        // Unblock after 1 minute
+        setTimeout(() => {
+          setIsBlocked(false);
+          setAttemptCount(0);
+          setError('root', { type: 'manual', message: '' });
+          console.log('[LoginForm] Unblocked after timeout');
+        }, 60000);
+      }
+
+      console.log('[LoginForm] Attempt count:', newAttemptCount, '/ 5');
     } finally {
-      // CRITICAL: Always reset both flags
-      console.log('[LoginForm] Resetting submission state');
+      // CRITICAL: Always reset submission guard
+      console.log('[LoginForm] 🔄 Resetting submission state');
       isSubmittingRef.current = false;
       setIsLoading(false);
     }
@@ -118,10 +176,16 @@ export const LoginForm = () => {
         className="w-full"
         size="lg"
         isLoading={isLoading}
-        disabled={isLoading || isSubmitting}
+        disabled={isLoading || isSubmitting || isBlocked}
       >
-        Login
+        {isBlocked ? 'Too Many Attempts - Wait 1 Minute' : 'Login'}
       </Button>
+
+      {attemptCount > 0 && !isBlocked && (
+        <div className="text-sm text-orange-600 text-center">
+          Failed attempts: {attemptCount} / 5
+        </div>
+      )}
 
       <p className="text-center text-sm text-gray-600">
         Don't have an account?{' '}
