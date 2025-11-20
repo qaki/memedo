@@ -34,30 +34,45 @@ export const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     const now = Date.now();
 
-    // CRITICAL: Multiple layers of protection against loops
+    console.log('[LoginForm] 🔍 onSubmit called at', now);
+    console.log('[LoginForm] 🔍 isSubmittingRef:', isSubmittingRef.current);
+    console.log('[LoginForm] 🔍 isLoading:', isLoading);
+    console.log('[LoginForm] 🔍 lastSubmit:', lastSubmitTimeRef.current);
+    console.log('[LoginForm] 🔍 timeSinceLastSubmit:', now - lastSubmitTimeRef.current);
+
+    // CRITICAL: ABSOLUTE LOCK - Prevent ANY resubmission
 
     // 1. Check if blocked after 5 attempts
     if (isBlocked) {
-      console.warn('[LoginForm] BLOCKED: Too many failed attempts');
-      toast.error('Too many failed attempts. Please wait 1 minute.');
-      return;
+      console.warn('[LoginForm] 🚫 BLOCKED: Too many failed attempts');
+      return false; // Return false to stop form submission
     }
 
-    // 2. Check if already submitting
-    if (isSubmittingRef.current || isLoading) {
-      console.warn('[LoginForm] BLOCKED: Already submitting');
-      return;
+    // 2. Check if already submitting - THIS IS THE KEY TO STOP THE LOOP
+    if (isSubmittingRef.current) {
+      console.warn('[LoginForm] 🚫 BLOCKED: Already submitting (ref=true)');
+      return false;
     }
 
-    // 3. Rate limiting - prevent submissions within 1 second
-    if (now - lastSubmitTimeRef.current < 1000) {
-      console.warn('[LoginForm] BLOCKED: Rate limit (too fast)');
-      return;
+    if (isLoading) {
+      console.warn('[LoginForm] 🚫 BLOCKED: Already loading (state=true)');
+      return false;
+    }
+
+    // 3. Rate limiting - AGGRESSIVE: prevent submissions within 2 seconds
+    const timeSinceLastSubmit = now - lastSubmitTimeRef.current;
+    if (timeSinceLastSubmit < 2000) {
+      console.warn(
+        '[LoginForm] 🚫 BLOCKED: Rate limit - only',
+        timeSinceLastSubmit,
+        'ms since last submit (need 2000ms)'
+      );
+      return false;
     }
 
     // 4. Check attempt count
     if (attemptCount >= 5) {
-      console.warn('[LoginForm] BLOCKED: Max attempts reached');
+      console.warn('[LoginForm] 🚫 BLOCKED: Max attempts reached');
       setIsBlocked(true);
       toast.error('Too many failed login attempts. Please wait 1 minute.');
 
@@ -65,17 +80,23 @@ export const LoginForm = () => {
       setTimeout(() => {
         setIsBlocked(false);
         setAttemptCount(0);
-        console.log('[LoginForm] Unblocked after timeout');
+        console.log('[LoginForm] ✅ Unblocked after timeout');
       }, 60000);
-      return;
+      return false;
     }
 
-    console.log('[LoginForm] ✅ Starting login... (Attempt', attemptCount + 1, '/ 5)');
+    console.log(
+      '[LoginForm] ✅ ALL CHECKS PASSED - Starting login... (Attempt',
+      attemptCount + 1,
+      '/ 5)'
+    );
 
-    // Set all guards
+    // LOCK EVERYTHING IMMEDIATELY
     isSubmittingRef.current = true;
     lastSubmitTimeRef.current = now;
     setIsLoading(true);
+
+    console.log('[LoginForm] 🔒 LOCKED: ref=true, loading=true, timestamp=', now);
 
     try {
       // Clean up totpToken - if empty string, send undefined
@@ -123,21 +144,41 @@ export const LoginForm = () => {
           setIsBlocked(false);
           setAttemptCount(0);
           setError('root', { type: 'manual', message: '' });
-          console.log('[LoginForm] Unblocked after timeout');
+          console.log('[LoginForm] ✅ Unblocked after timeout');
         }, 60000);
       }
 
-      console.log('[LoginForm] Attempt count:', newAttemptCount, '/ 5');
+      console.log('[LoginForm] 📊 Attempt count:', newAttemptCount, '/ 5');
     } finally {
-      // CRITICAL: Always reset submission guard
-      console.log('[LoginForm] 🔄 Resetting submission state');
-      isSubmittingRef.current = false;
-      setIsLoading(false);
+      // CRITICAL: Always unlock AFTER a delay to prevent rapid resubmission
+      console.log('[LoginForm] 🔄 Will unlock in 500ms...');
+
+      setTimeout(() => {
+        isSubmittingRef.current = false;
+        setIsLoading(false);
+        console.log('[LoginForm] 🔓 UNLOCKED: ref=false, loading=false');
+      }, 500); // Wait 500ms before unlocking to prevent rapid resubmission
     }
   };
 
+  // Wrap handleSubmit to add extra protection
+  const handleFormSubmit = (e: React.FormEvent) => {
+    console.log('[LoginForm] 📝 Form submit event triggered');
+
+    // If already submitting, prevent the form submission entirely
+    if (isSubmittingRef.current || isLoading) {
+      console.warn('[LoginForm] 🚫 Prevented form submission - already processing');
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    // Let react-hook-form handle it
+    handleSubmit(onSubmit)(e);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleFormSubmit} className="space-y-6">
       <Input
         label="Email"
         type="email"
