@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { ApiError } from '../schemas/api.schema';
+import type { ApiError } from '../schemas/api.schema.js';
 
 /**
  * Validates data against a Zod schema and returns parsed data or throws an error

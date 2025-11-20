@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { emailSchema } from './auth.schema';
-import { chainSchema, contractAddressSchema } from './analysis.schema';
+import { emailSchema } from './auth.schema.js';
+import { chainSchema, contractAddressSchema } from './analysis.schema.js';
 
 /**
  * User role enum

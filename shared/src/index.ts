@@ -6,17 +6,17 @@
  */
 
 // Export all schemas
-export * from './schemas/auth.schema';
-export * from './schemas/analysis.schema';
-export * from './schemas/user.schema';
-export * from './schemas/api.schema';
+export * from './schemas/auth.schema.js';
+export * from './schemas/analysis.schema.js';
+export * from './schemas/user.schema.js';
+export * from './schemas/api.schema.js';
 
 // Export all constants
-export * from './constants';
+export * from './constants/index.js';
 
 // Export all utilities
-export * from './utils/validation';
-export * from './utils/formatting';
+export * from './utils/validation.js';
+export * from './utils/formatting.js';
 
 // Re-export zod for convenience
 export { z } from 'zod';
