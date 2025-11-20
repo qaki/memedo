@@ -5,7 +5,7 @@
 
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { analysisService } from '../services/analysis.service';
+import { analysisService } from '../services/analysis.service.js';
 import { Chain, CHAIN_CONFIGS } from '../types/token-analysis.js';
 
 // Request validation schemas

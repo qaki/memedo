@@ -6,7 +6,7 @@ import { db } from '../db/index.js';
 import { users } from '../db/schema/index.js';
 import { eq } from 'drizzle-orm';
 import { registerSchema, loginSchema } from '@memedo/shared';
-import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.service';
+import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.service.js';
 import {
   generateTokens,
   setAuthCookies,

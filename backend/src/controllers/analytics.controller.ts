@@ -4,9 +4,9 @@
  */
 
 import { Request, Response } from 'express';
-import { apiLogger } from '../services/api-logger.service';
-import { cafo } from '../services/cafo.service';
-import { getCacheStats, getCacheHitRatio } from '../services/redis.service';
+import { apiLogger } from '../services/api-logger.service.js';
+import { cafo } from '../services/cafo.service.js';
+import { getCacheStats, getCacheHitRatio } from '../services/redis.service.js';
 
 /**
  * GET /api/analytics/api-health

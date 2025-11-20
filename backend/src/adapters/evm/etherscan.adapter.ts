@@ -5,8 +5,8 @@
  */
 
 import axios from 'axios';
-import { Adapter } from '../../services/cafo.service';
-import { getCached, setCached, CacheTTL } from '../../services/redis.service';
+import { Adapter } from '../../services/cafo.service.js';
+import { getCached, setCached, CacheTTL } from '../../services/redis.service.js';
 import { TokenMetadata, Chain, ETHERSCAN_API_URLS } from '../../types/token-analysis.js';
 import { env } from '../../utils/env-validator.js';
 
