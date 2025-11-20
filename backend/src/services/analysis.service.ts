@@ -16,10 +16,10 @@ import { db } from '../db/index.js';
 import { analyses } from '../db/schema/index.js';
 
 // Import adapters
-import { heliusAdapter } from '../adapters/solana/helius.adapter';
-import { etherscanAdapter } from '../adapters/evm/etherscan.adapter';
-import { goPlusAdapter } from '../adapters/security/goplus.adapter';
-import { rugCheckAdapter } from '../adapters/security/rugcheck.adapter';
+import { heliusAdapter } from '../adapters/solana/helius.adapter.js';
+import { etherscanAdapter } from '../adapters/evm/etherscan.adapter.js';
+import { goPlusAdapter } from '../adapters/security/goplus.adapter.js';
+import { rugCheckAdapter } from '../adapters/security/rugcheck.adapter.js';
 
 export class AnalysisService {
   private initialized = false;
