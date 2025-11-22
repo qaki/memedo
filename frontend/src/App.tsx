@@ -8,7 +8,14 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 function App() {
   const fetchProfile = useAuthStore((state) => state.fetchProfile);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const init = useAuthStore((state) => state.init);
   const fetchSupportedChains = useAnalysisStore((state) => state.fetchSupportedChains);
+
+  // Initialize auth store listeners
+  useEffect(() => {
+    const cleanup = init();
+    return cleanup;
+  }, [init]);
 
   // On app load, try to restore auth session and load supported chains
   useEffect(() => {

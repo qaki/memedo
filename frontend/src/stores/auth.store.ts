@@ -10,6 +10,7 @@ interface AuthState {
   error: string | null;
 
   // Actions
+  init: () => () => void; // Returns cleanup function
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
@@ -28,6 +29,49 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
       error: null,
+
+      // Initialize: Listen for auth state changes from API interceptor
+      init: () => {
+        // Listen for custom events from API interceptor
+        const handleSessionExpired = () => {
+          console.log('[AuthStore] Session expired event received, clearing state');
+          set({
+            user: null,
+            isAuthenticated: false,
+            error: null,
+          });
+        };
+
+        window.addEventListener('auth:session-expired', handleSessionExpired);
+
+        // Also check if localStorage was cleared while we were persisted
+        const checkAuthSync = () => {
+          const hasToken = localStorage.getItem('accessToken');
+          const isAuth = get().isAuthenticated;
+
+          if (isAuth && !hasToken) {
+            console.log('[AuthStore] Auth state out of sync, clearing');
+            set({
+              user: null,
+              isAuthenticated: false,
+              error: null,
+            });
+          }
+        };
+
+        // Check on focus (when user returns to tab)
+        window.addEventListener('focus', checkAuthSync);
+
+        // Check every 30 seconds
+        const interval = setInterval(checkAuthSync, 30000);
+
+        // Cleanup function
+        return () => {
+          window.removeEventListener('auth:session-expired', handleSessionExpired);
+          window.removeEventListener('focus', checkAuthSync);
+          clearInterval(interval);
+        };
+      },
 
       login: async (credentials: LoginCredentials) => {
         set({ isLoading: true, error: null });
