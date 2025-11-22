@@ -66,11 +66,13 @@ api.interceptors.response.use(
         // Retry the original request
         return api(originalRequest);
       } catch (refreshError) {
-        console.error('[API] Token refresh failed, logging out');
-        // Refresh failed, logout user
+        console.error('[API] Token refresh failed, clearing auth state');
+        // Refresh failed, clear auth state
+        // DO NOT use window.location.href - it causes page reload loops!
+        // Let React Router + ProtectedRoute handle navigation naturally
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
-        window.location.href = '/login';
+        localStorage.removeItem('auth-storage'); // Clear Zustand persist
         return Promise.reject(refreshError);
       }
     }

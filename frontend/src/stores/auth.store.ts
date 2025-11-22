@@ -120,9 +120,10 @@ export const useAuthStore = create<AuthState>()(
             error: null,
           });
         } catch (error) {
-          const message = getErrorMessage(error);
+          console.log('[AuthStore] fetchProfile failed, clearing auth state');
+          // Clear auth state on failure (expired session, etc.)
           set({
-            error: message,
+            error: null, // Don't show error for expired sessions
             isLoading: false,
             isAuthenticated: false,
             user: null,
