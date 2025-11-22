@@ -36,7 +36,7 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
         data: { analysis: TokenAnalysis };
       }>('/api/analysis/analyze', {
         chain,
-        contractAddress,
+        address: contractAddress, // Backend expects 'address' field
       });
 
       const { analysis } = response.data.data;
@@ -63,13 +63,13 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
     try {
       const response = await api.get<{
         success: true;
-        data: { analyses: AnalysisHistoryItem[] };
+        data: { history: AnalysisHistoryItem[] };
       }>('/api/analysis/history');
 
-      const { analyses } = response.data.data;
+      const { history } = response.data.data; // Backend returns 'history' not 'analyses'
 
       set({
-        history: analyses,
+        history,
         isLoadingHistory: false,
         error: null,
       });
