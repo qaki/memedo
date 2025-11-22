@@ -82,11 +82,14 @@ export const useAuthStore = create<AuthState>()(
             credentials
           );
 
-          const { user, accessToken } = response.data.data;
+          const { user, accessToken, refreshToken } = response.data.data;
 
-          // Store access token in localStorage
+          // Store tokens in localStorage (for cross-domain support)
           if (accessToken) {
             localStorage.setItem('accessToken', accessToken);
+          }
+          if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
           }
 
           set({
@@ -139,20 +142,31 @@ export const useAuthStore = create<AuthState>()(
             error: null,
           });
           localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
         }
       },
 
       refreshToken: async () => {
         try {
+          // Get refresh token from localStorage
+          const refreshToken = localStorage.getItem('refreshToken');
+          
+          if (!refreshToken) {
+            throw new Error('No refresh token available');
+          }
+
           const response = await api.post<{
             success: true;
-            data: { message: string; accessToken?: string };
-          }>('/api/auth/refresh');
+            data: { message: string; accessToken?: string; refreshToken?: string };
+          }>('/api/auth/refresh', { refreshToken });
 
-          // Store new access token in localStorage
-          const { accessToken } = response.data.data;
+          // Store new tokens in localStorage
+          const { accessToken, refreshToken: newRefreshToken } = response.data.data;
           if (accessToken) {
             localStorage.setItem('accessToken', accessToken);
+          }
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
           }
 
           // If successful, fetch the updated profile

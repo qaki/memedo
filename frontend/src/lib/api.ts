@@ -59,18 +59,28 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Try to refresh the token
+        // Get refresh token from localStorage
+        const refreshToken = localStorage.getItem('refreshToken');
+        
+        if (!refreshToken) {
+          throw new Error('No refresh token available');
+        }
+
+        // Try to refresh the token (send refreshToken in body for cross-domain support)
         const refreshResponse = await api.post<{
           success: true;
-          data: { message: string; accessToken?: string };
-        }>('/api/auth/refresh');
-
+          data: { message: string; accessToken?: string; refreshToken?: string };
+        }>('/api/auth/refresh', { refreshToken });
+        
         console.log('[API] Token refresh successful, retrying original request');
 
-        // Store new access token if provided
-        const newAccessToken = refreshResponse.data.data.accessToken;
+        // Store new tokens if provided
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = refreshResponse.data.data;
         if (newAccessToken) {
           localStorage.setItem('accessToken', newAccessToken);
+        }
+        if (newRefreshToken) {
+          localStorage.setItem('refreshToken', newRefreshToken);
         }
 
         // Retry the original request
@@ -79,6 +89,7 @@ api.interceptors.response.use(
         console.error('[API] Token refresh failed, clearing auth state');
         // Refresh failed, clear auth state
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
         localStorage.removeItem('auth-storage'); // Clear Zustand persist
 

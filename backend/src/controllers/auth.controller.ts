@@ -263,7 +263,8 @@ export const login = async (req: Request, res: Response) => {
           role: user.role,
           email_verified: user.email_verified,
         },
-        accessToken: tokens.accessToken, // Include token in response for localStorage backup
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken, // Include refresh token for localStorage backup
       },
     });
   } catch (error: unknown) {
@@ -301,7 +302,8 @@ export const logout = async (req: Request, res: Response) => {
 
 export const refreshToken = async (req: Request, res: Response) => {
   try {
-    const refreshToken = req.cookies.refresh_token;
+    // Accept refresh token from either cookies OR request body (for cross-domain support)
+    const refreshToken = req.cookies.refresh_token || req.body.refreshToken;
 
     if (!refreshToken) {
       return res.status(401).json({
@@ -335,9 +337,10 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: {
+      data: { 
         message: 'Tokens refreshed successfully',
-        accessToken: tokens.accessToken, // Include token in response for localStorage backup
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken, // Include refresh token in response for localStorage backup
       },
     });
   } catch (error) {
