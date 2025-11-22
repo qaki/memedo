@@ -6,7 +6,16 @@ import { verifyAccessToken } from '../utils/jwt.js';
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.access_token;
+    // Accept token from either cookies OR Authorization header (for cross-domain support)
+    let token = req.cookies.access_token;
+
+    // If no cookie, check Authorization header
+    if (!token && req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      if (authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7); // Remove 'Bearer ' prefix
+      }
+    }
 
     if (!token) {
       return res.status(401).json({
