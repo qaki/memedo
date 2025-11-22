@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { router } from './router';
 import { useAuthStore } from './stores/auth.store';
 import { useAnalysisStore } from './stores/analysis.store';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function App() {
   const fetchProfile = useAuthStore((state) => state.fetchProfile);
@@ -38,7 +39,11 @@ function App() {
     initializeApp();
   }, []); // Only run once on mount, dependencies are stable
 
-  return <RouterProvider router={router} />;
+  return (
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
+  );
 }
 
 export default App;
