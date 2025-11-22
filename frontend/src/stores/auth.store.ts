@@ -82,7 +82,12 @@ export const useAuthStore = create<AuthState>()(
             credentials
           );
 
-          const { user } = response.data.data;
+          const { user, accessToken } = response.data.data;
+
+          // Store access token in localStorage
+          if (accessToken) {
+            localStorage.setItem('accessToken', accessToken);
+          }
 
           set({
             user,
@@ -139,7 +144,17 @@ export const useAuthStore = create<AuthState>()(
 
       refreshToken: async () => {
         try {
-          await api.post('/api/auth/refresh');
+          const response = await api.post<{
+            success: true;
+            data: { message: string; accessToken?: string };
+          }>('/api/auth/refresh');
+
+          // Store new access token in localStorage
+          const { accessToken } = response.data.data;
+          if (accessToken) {
+            localStorage.setItem('accessToken', accessToken);
+          }
+
           // If successful, fetch the updated profile
           await get().fetchProfile();
         } catch (error) {

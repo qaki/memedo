@@ -60,8 +60,18 @@ api.interceptors.response.use(
 
       try {
         // Try to refresh the token
-        await api.post('/api/auth/refresh');
+        const refreshResponse = await api.post<{
+          success: true;
+          data: { message: string; accessToken?: string };
+        }>('/api/auth/refresh');
+
         console.log('[API] Token refresh successful, retrying original request');
+
+        // Store new access token if provided
+        const newAccessToken = refreshResponse.data.data.accessToken;
+        if (newAccessToken) {
+          localStorage.setItem('accessToken', newAccessToken);
+        }
 
         // Retry the original request
         return api(originalRequest);

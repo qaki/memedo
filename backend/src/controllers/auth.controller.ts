@@ -263,6 +263,7 @@ export const login = async (req: Request, res: Response) => {
           role: user.role,
           email_verified: user.email_verified,
         },
+        accessToken: tokens.accessToken, // Include token in response for localStorage backup
       },
     });
   } catch (error: unknown) {
@@ -334,7 +335,10 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: { message: 'Tokens refreshed successfully' },
+      data: {
+        message: 'Tokens refreshed successfully',
+        accessToken: tokens.accessToken, // Include token in response for localStorage backup
+      },
     });
   } catch (error) {
     console.error('Token refresh error:', error);
