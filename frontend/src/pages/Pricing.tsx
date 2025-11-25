@@ -109,7 +109,7 @@ export default function Pricing() {
               <Zap className="w-12 h-12 text-indigo-500 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Pro Monthly</h3>
               <div className="text-4xl font-bold text-gray-900 mb-2">
-                $29
+                $39.99
                 <span className="text-lg font-normal text-gray-500">/month</span>
               </div>
               <p className="text-gray-600">For serious traders</p>
@@ -166,10 +166,10 @@ export default function Pricing() {
               <Star className="w-12 h-12 text-purple-500 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Pro Yearly</h3>
               <div className="text-4xl font-bold text-gray-900 mb-2">
-                $290
+                $383.90
                 <span className="text-lg font-normal text-gray-500">/year</span>
               </div>
-              <p className="text-green-600 font-medium">Save $58 (2 months free!)</p>
+              <p className="text-green-600 font-medium">Save $96 (2.4 months free!)</p>
             </div>
 
             <ul className="space-y-4 mb-8">

@@ -93,10 +93,10 @@ Successfully integrated FastSpring payment processing with a complete subscripti
 | Plan | Price | Analyses/Day | Watchlist | Export | Support |
 |------|-------|--------------|-----------|--------|---------|
 | **Free** | $0/mo | 5 | 5 tokens | ❌ | Community |
-| **Pro Monthly** | $29/mo | 100 | 50 tokens | ✅ | Priority |
-| **Pro Yearly** | $290/yr | 100 | 50 tokens | ✅ | Priority |
+| **Pro Monthly** | $39.99/mo | 100 | 50 tokens | ✅ | Priority |
+| **Pro Yearly** | $383.90/yr | 100 | 50 tokens | ✅ | Priority |
 
-_Yearly plan saves $58 (2 months free!)_
+_Yearly plan saves $96 (2.4 months free!)_
 
 #### 2. **Subscription Management Dashboard**
 
@@ -165,8 +165,8 @@ Follow the guide: `docs/fastspring-setup.md`
 1. Create FastSpring account
 2. Generate API credentials (Developer Tools > APIs)
 3. Create products:
-   - Path: `memego-pro-monthly`, Price: $29/mo
-   - Path: `memego-pro-yearly`, Price: $290/yr
+   - Path: `memego-pro-monthly`, Price: $39.99/mo
+   - Path: `memego-pro-yearly`, Price: $383.90/yr
 4. Configure webhook URL: `https://memedo-backend.onrender.com/api/webhooks/fastspring`
 5. Add credentials to Render environment variables
 
