@@ -7,7 +7,7 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from '../db/index.js';
 import { users } from '../db/schema/users.js';
 import { eq } from 'drizzle-orm';
-import { ApiError } from '@memedo/shared';
+import { ApiError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
 import { fastspringService } from '../services/fastspring.service.js';
 import { SubscriptionPlan } from '../types/fastspring.types.js';
@@ -168,13 +168,16 @@ export const checkWatchlistLimit = async (req: Request, res: Response, next: Nex
 /**
  * Extend Express Request type to include usage info
  */
-declare module 'express-serve-static-core' {
-  interface Request {
-    usageInfo?: {
-      used: number;
-      limit: number;
-      plan: SubscriptionPlan;
-    };
-    watchlistLimit?: number;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      usageInfo?: {
+        used: number;
+        limit: number;
+        plan: SubscriptionPlan;
+      };
+      watchlistLimit?: number;
+    }
   }
 }

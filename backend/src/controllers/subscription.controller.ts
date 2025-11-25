@@ -8,7 +8,7 @@ import { db } from '../db/index.js';
 import { users } from '../db/schema/users.js';
 import { eq } from 'drizzle-orm';
 import { fastspringService } from '../services/fastspring.service.js';
-import { ApiError } from '@memedo/shared';
+import { ApiError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
 import { SubscriptionPlan } from '../types/fastspring.types.js';
 
