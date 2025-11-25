@@ -55,6 +55,12 @@ export const Header = () => {
               <UserMenu user={user} />
             ) : (
               <div className="flex items-center gap-3">
+                <Link
+                  to="/pricing"
+                  className="text-gray-700 hover:text-gray-900 font-medium text-sm"
+                >
+                  Pricing
+                </Link>
                 <Link to="/login" className="text-gray-700 hover:text-gray-900 font-medium text-sm">
                   Login
                 </Link>

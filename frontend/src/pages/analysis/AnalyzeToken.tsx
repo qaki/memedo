@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Spinner } from '../../components/ui/Spinner';
 import { AnalysisResults } from '../../components/analysis/AnalysisResults';
+import { UsageIndicator } from '../../components/subscription/UsageIndicator';
 import { useAnalysisStore } from '../../stores/analysis.store';
 import { useToast } from '../../hooks/useToast';
 
@@ -110,11 +111,16 @@ const AnalyzeToken = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Analyze Token</h1>
-        <p className="mt-2 text-gray-600">
-          Get comprehensive security analysis and risk assessment for any token
-        </p>
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-gray-900">Analyze Token</h1>
+          <p className="mt-2 text-gray-600">
+            Get comprehensive security analysis and risk assessment for any token
+          </p>
+        </div>
+        <div className="w-80">
+          <UsageIndicator />
+        </div>
       </div>
 
       {/* Search Form */}

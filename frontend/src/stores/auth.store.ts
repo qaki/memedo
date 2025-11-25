@@ -150,7 +150,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           // Get refresh token from localStorage
           const refreshToken = localStorage.getItem('refreshToken');
-          
+
           if (!refreshToken) {
             throw new Error('No refresh token available');
           }

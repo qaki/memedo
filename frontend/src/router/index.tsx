@@ -9,6 +9,7 @@ import { Spinner } from '../components/ui/Spinner';
 
 // Lazy loaded pages
 const Home = lazy(() => import('../pages/Home'));
+const Pricing = lazy(() => import('../pages/Pricing'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
@@ -17,6 +18,7 @@ const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
 const Profile = lazy(() => import('../pages/dashboard/Profile'));
 const Settings = lazy(() => import('../pages/dashboard/Settings'));
+const Subscription = lazy(() => import('../pages/dashboard/Subscription'));
 const AnalyzeToken = lazy(() => import('../pages/analysis/AnalyzeToken'));
 const AnalysisHistory = lazy(() => import('../pages/analysis/AnalysisHistory'));
 const NotFound = lazy(() => import('../pages/NotFound'));
@@ -44,6 +46,14 @@ export const router = createBrowserRouter([
         element: (
           <Lazy>
             <Home />
+          </Lazy>
+        ),
+      },
+      {
+        path: 'pricing',
+        element: (
+          <Lazy>
+            <Pricing />
           </Lazy>
         ),
       },
@@ -141,6 +151,16 @@ export const router = createBrowserRouter([
           <Lazy>
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          </Lazy>
+        ),
+      },
+      {
+        path: 'subscription',
+        element: (
+          <Lazy>
+            <ProtectedRoute>
+              <Subscription />
             </ProtectedRoute>
           </Lazy>
         ),

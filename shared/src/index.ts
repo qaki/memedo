@@ -10,6 +10,7 @@ export * from './schemas/auth.schema.js';
 export * from './schemas/analysis.schema.js';
 export * from './schemas/user.schema.js';
 export * from './schemas/api.schema.js';
+export * from './schemas/subscription.schema.js';
 
 // Export all constants
 export * from './constants/index.js';

@@ -61,7 +61,7 @@ api.interceptors.response.use(
       try {
         // Get refresh token from localStorage
         const refreshToken = localStorage.getItem('refreshToken');
-        
+
         if (!refreshToken) {
           throw new Error('No refresh token available');
         }
@@ -71,11 +71,12 @@ api.interceptors.response.use(
           success: true;
           data: { message: string; accessToken?: string; refreshToken?: string };
         }>('/api/auth/refresh', { refreshToken });
-        
+
         console.log('[API] Token refresh successful, retrying original request');
 
         // Store new tokens if provided
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = refreshResponse.data.data;
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          refreshResponse.data.data;
         if (newAccessToken) {
           localStorage.setItem('accessToken', newAccessToken);
         }

@@ -34,6 +34,15 @@ export const users = pgTable(
     analyses_this_month: integer('analyses_this_month').notNull().default(0),
     analyses_reset_date: timestamp('analyses_reset_date').notNull().defaultNow(),
 
+    // Subscription Management (FastSpring)
+    subscription_status: varchar('subscription_status', { length: 50 }).default('free'), // 'free' | 'active' | 'trial' | 'canceled' | 'overdue'
+    subscription_plan: varchar('subscription_plan', { length: 50 }).default('free'), // 'free' | 'memego-pro-monthly' | 'memego-pro-yearly'
+    subscription_period_start: timestamp('subscription_period_start'),
+    subscription_period_end: timestamp('subscription_period_end'),
+    subscription_cancel_at_period_end: boolean('subscription_cancel_at_period_end').default(false),
+    fastspring_subscription_id: varchar('fastspring_subscription_id', { length: 255 }),
+    fastspring_account_id: varchar('fastspring_account_id', { length: 255 }),
+
     // Premium Features (Phase 2)
     saved_alerts_config: jsonb('saved_alerts_config').notNull().default('{}'),
 

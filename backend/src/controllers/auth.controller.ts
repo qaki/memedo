@@ -337,7 +337,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      data: { 
+      data: {
         message: 'Tokens refreshed successfully',
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken, // Include refresh token in response for localStorage backup

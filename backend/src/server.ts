@@ -9,6 +9,8 @@ import userRoutes from './routes/user.routes.js';
 import twoFARoutes from './routes/2fa.routes.js';
 import analysisRoutes from './routes/analysis.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
+import webhookRoutes from './routes/webhook.routes.js';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();
@@ -69,6 +71,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/user/2fa', twoFARoutes);
 app.use('/api/analysis', analysisRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/subscription', subscriptionRoutes);
+app.use('/api/webhooks', webhookRoutes);
 
 // API info endpoint
 app.get('/api', (req: Request, res: Response) => {
@@ -83,6 +87,8 @@ app.get('/api', (req: Request, res: Response) => {
         user: '/api/user',
         analysis: '/api/analysis',
         analytics: '/api/analytics (admin only)',
+        subscription: '/api/subscription',
+        webhooks: '/api/webhooks',
       },
     },
   });
