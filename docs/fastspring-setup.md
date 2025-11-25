@@ -34,7 +34,7 @@ FASTSPRING_STOREFRONT=memego
 
 - **Product Path:** `memego-pro-monthly`
 - **Display Name:** MemeDo Pro (Monthly)
-- **Pricing:** $29/month (or your desired price)
+- **Pricing:** $39.99/month
 - **Billing Frequency:** Monthly
 - **Trial:** Optional (7 days free trial)
 
@@ -42,7 +42,7 @@ FASTSPRING_STOREFRONT=memego
 
 - **Product Path:** `memego-pro-yearly`
 - **Display Name:** MemeDo Pro (Yearly)
-- **Pricing:** $290/year (or your desired price - usually 2 months free)
+- **Pricing:** $383.90/year (saves $96 - 2.4 months free!)
 - **Billing Frequency:** Yearly
 - **Trial:** Optional (7 days free trial)
 
