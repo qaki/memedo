@@ -15,12 +15,12 @@ export default function Pricing() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const { createCheckoutSession } = useSubscriptionStore();
-  const { showToast } = useToast();
+  const toast = useToast();
   const [loading, setLoading] = useState<'monthly' | 'yearly' | null>(null);
 
   const handleSubscribe = async (plan: 'monthly' | 'yearly') => {
     if (!isAuthenticated) {
-      showToast('Please log in to subscribe', 'error');
+      toast.error('Please log in to subscribe');
       navigate('/login');
       return;
     }
@@ -36,10 +36,10 @@ export default function Pricing() {
         'width=600,height=800,scrollbars=yes,resizable=yes'
       );
 
-      showToast('Opening checkout...', 'info');
+      toast.info('Opening checkout...');
     } catch (error) {
       console.error('Checkout error:', error);
-      showToast('Failed to start checkout. Please try again.', 'error');
+      toast.error('Failed to start checkout. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -91,7 +91,7 @@ export default function Pricing() {
             </ul>
 
             <Button
-              variant="outline"
+              variant="secondary"
               className="w-full"
               onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
             >
