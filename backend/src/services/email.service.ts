@@ -1,9 +1,17 @@
 import { Resend } from 'resend';
 import { env } from '../utils/env-validator.js';
 
-const resend = new Resend(env.RESEND_API_KEY);
+// Only initialize Resend if API key is available
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 
 export async function sendVerificationEmail(email: string, token: string) {
+  // Skip email if Resend is not configured
+  if (!resend || !env.RESEND_API_KEY) {
+    console.warn(`⚠️  Email not sent to ${email} - RESEND_API_KEY not configured`);
+    console.warn(`⚠️  Verification link: ${env.FRONTEND_URL}/verify-email/${token}`);
+    return; // Return successfully without sending
+  }
+
   const verificationUrl = `${env.FRONTEND_URL}/verify-email/${token}`;
 
   try {
@@ -29,11 +37,19 @@ export async function sendVerificationEmail(email: string, token: string) {
     console.log(`✅ Verification email sent to ${email}`);
   } catch (error) {
     console.error('Failed to send verification email:', error);
-    throw new Error('Failed to send verification email');
+    // Don't throw error - allow registration to succeed even if email fails
+    console.warn('⚠️  Registration will proceed despite email failure');
   }
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {
+  // Skip email if Resend is not configured
+  if (!resend || !env.RESEND_API_KEY) {
+    console.warn(`⚠️  Email not sent to ${email} - RESEND_API_KEY not configured`);
+    console.warn(`⚠️  Password reset link: ${env.FRONTEND_URL}/reset-password/${token}`);
+    return; // Return successfully without sending
+  }
+
   const resetUrl = `${env.FRONTEND_URL}/reset-password/${token}`;
 
   try {
@@ -59,6 +75,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     console.log(`✅ Password reset email sent to ${email}`);
   } catch (error) {
     console.error('Failed to send password reset email:', error);
-    throw new Error('Failed to send password reset email');
+    // Don't throw error - allow password reset to succeed even if email fails
+    console.warn('⚠️  Password reset will proceed despite email failure');
   }
 }
