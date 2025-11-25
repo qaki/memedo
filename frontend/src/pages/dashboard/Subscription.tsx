@@ -15,7 +15,7 @@ import { useToast } from '../../hooks/useToast';
 
 export default function Subscription() {
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const toast = useToast();
   const {
     subscription,
     usage,
@@ -45,9 +45,9 @@ export default function Subscription() {
     setActionLoading(true);
     try {
       await cancelSubscription();
-      showToast('Subscription canceled successfully', 'success');
+      toast.success('Subscription canceled successfully');
     } catch (error) {
-      showToast('Failed to cancel subscription', 'error');
+      toast.error('Failed to cancel subscription');
     } finally {
       setActionLoading(false);
     }
@@ -57,9 +57,9 @@ export default function Subscription() {
     setActionLoading(true);
     try {
       await reactivateSubscription();
-      showToast('Subscription reactivated successfully', 'success');
+      toast.success('Subscription reactivated successfully');
     } catch (error) {
-      showToast('Failed to reactivate subscription', 'error');
+      toast.error('Failed to reactivate subscription');
     } finally {
       setActionLoading(false);
     }
@@ -87,8 +87,8 @@ export default function Subscription() {
         : subscription?.status === 'canceled'
           ? 'warning'
           : subscription?.status === 'overdue'
-            ? 'error'
-            : 'default';
+            ? 'danger'
+            : 'gray';
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -155,14 +155,14 @@ export default function Subscription() {
 
             {isPremium && !isCanceled && (
               <>
-                <Button variant="outline" onClick={() => navigate('/pricing')} className="flex-1">
+                <Button variant="secondary" onClick={() => navigate('/pricing')} className="flex-1">
                   Change Plan
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="danger"
                   onClick={handleCancel}
                   isLoading={actionLoading}
-                  className="flex-1 text-red-600 hover:text-red-700 hover:border-red-300"
+                  className="flex-1"
                 >
                   Cancel Subscription
                 </Button>
