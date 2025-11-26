@@ -10,17 +10,10 @@
       "breakpoints": true
     },
     {
-      "idx": 3,
+      "idx": 1,
       "version": "7",
       "when": 1732627200000,
-      "tag": "0003_add_subscription_fields",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1732627300000,
-      "tag": "0004_verify_all_users",
+      "tag": "0001_add_subscription_and_verify_users",
       "breakpoints": true
     }
   ]
