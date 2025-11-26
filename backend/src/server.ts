@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { env } from './utils/env-validator.js';
+import { ensureSchema } from './db/ensure-schema.js';
 
 // Import routes
 import authRoutes from './routes/auth.routes.js';
@@ -119,11 +120,23 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`✅ MemeDo Backend running on http://localhost:${PORT}`);
-  console.log(`✅ Frontend allowed from: ${FRONTEND_URL}`);
-  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Start server with schema verification
+async function startServer() {
+  try {
+    // Ensure database schema is up-to-date before starting server
+    await ensureSchema();
+
+    app.listen(PORT, () => {
+      console.log(`✅ MemeDo Backend running on http://localhost:${PORT}`);
+      console.log(`✅ Frontend allowed from: ${FRONTEND_URL}`);
+      console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;
