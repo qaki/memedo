@@ -281,7 +281,14 @@ export const login = async (req: Request, res: Response) => {
       },
     });
   } catch (error: unknown) {
-    console.error('Login error:', error);
+    console.error('❌ Login error:', error);
+
+    // Log detailed error information for debugging
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
 
     if (error instanceof Error && error.name === 'ZodError') {
       const zodError = error as { errors?: unknown[] };
@@ -300,6 +307,12 @@ export const login = async (req: Request, res: Response) => {
       error: {
         code: 'LOGIN_FAILED',
         message: 'An error occurred during login',
+        details:
+          process.env.NODE_ENV === 'development'
+            ? error instanceof Error
+              ? error.message
+              : String(error)
+            : undefined,
       },
     });
   }

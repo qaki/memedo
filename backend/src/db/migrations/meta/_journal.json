@@ -8,6 +8,20 @@
       "when": 1762376827660,
       "tag": "0000_fine_titanium_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1732627200000,
+      "tag": "0003_add_subscription_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1732627300000,
+      "tag": "0004_verify_all_users",
+      "breakpoints": true
     }
   ]
 }
