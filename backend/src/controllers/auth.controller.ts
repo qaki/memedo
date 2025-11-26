@@ -44,6 +44,9 @@ export const register = async (req: Request, res: Response) => {
     const verificationToken = crypto.randomBytes(32).toString('hex');
     const verificationExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
 
+    // Check if email service is available
+    const emailServiceAvailable = !!process.env.RESEND_API_KEY;
+
     // Create user
     const [newUser] = await db
       .insert(users)
@@ -52,19 +55,30 @@ export const register = async (req: Request, res: Response) => {
         password_hash: passwordHash,
         display_name: null, // No display_name in registerSchema
         role: 'free',
-        email_verified: false,
-        email_verification_token: verificationToken,
-        email_verification_expires: verificationExpiry,
+        // Auto-verify if email service is not available
+        email_verified: !emailServiceAvailable,
+        email_verification_token: emailServiceAvailable ? verificationToken : null,
+        email_verification_expires: emailServiceAvailable ? verificationExpiry : null,
       })
       .returning();
 
-    // Send verification email
-    await sendVerificationEmail(newUser.email, verificationToken);
+    // Send verification email only if service is available
+    if (emailServiceAvailable) {
+      await sendVerificationEmail(newUser.email, verificationToken);
+    } else {
+      console.log(`ℹ️  User ${newUser.email} auto-verified (email service not configured)`);
+    }
+
+    // Determine success message based on whether email was sent
+    const emailServiceAvailable = !!process.env.RESEND_API_KEY;
+    const message = emailServiceAvailable
+      ? 'Registration successful. Please check your email to verify your account.'
+      : 'Registration successful. You can now log in.';
 
     res.status(201).json({
       success: true,
       data: {
-        message: 'Registration successful. Please check your email to verify your account.',
+        message,
         user: {
           id: newUser.id,
           email: newUser.email,
