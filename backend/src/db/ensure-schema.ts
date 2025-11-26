@@ -84,8 +84,9 @@ export async function ensureSchema() {
         email_verified = false
     `;
 
-    if (result.count && result.count > 0) {
-      console.log(`✅ Auto-verified ${result.count} existing user(s)`);
+    // Result is an array for neon, length indicates rows affected
+    if (result && result.length > 0) {
+      console.log(`✅ Auto-verified ${result.length} existing user(s)`);
     } else {
       console.log('✅ All users already verified');
     }
