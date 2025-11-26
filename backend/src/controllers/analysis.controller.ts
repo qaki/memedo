@@ -18,6 +18,61 @@ const analyzeRequestSchema = z.object({
  * POST /api/analysis/analyze
  * Analyze a token
  */
+/**
+ * Transform backend TokenAnalysis to frontend format
+ */
+const transformAnalysisForFrontend = (analysis: any) => {
+  return {
+    id: analysis.id || '',
+    user_id: analysis.userId || '',
+    chain: analysis.chain,
+    token_address: analysis.address,
+    safety_score: analysis.safetyScore,
+    risk_level:
+      analysis.riskLevel === 'SAFE' ? 'low' : analysis.riskLevel === 'CAUTION' ? 'medium' : 'high',
+    data_completeness: analysis.dataCompleteness / 100,
+    metadata: analysis.metadata
+      ? {
+          name: analysis.metadata.name,
+          symbol: analysis.metadata.symbol,
+          decimals: analysis.metadata.decimals,
+          total_supply: analysis.metadata.totalSupply,
+          description: analysis.metadata.description,
+          logo: analysis.metadata.imageUrl,
+          website: analysis.metadata.website,
+          twitter: analysis.metadata.twitter,
+          telegram: analysis.metadata.telegram,
+          is_verified: analysis.metadata.verified,
+        }
+      : null,
+    security_scan: analysis.security
+      ? {
+          is_honeypot: analysis.security.isHoneypot,
+          is_open_source: analysis.security.isOpenSource,
+          is_proxy: analysis.security.hasProxy,
+          is_mintable: analysis.security.isMintable,
+          can_take_back_ownership: analysis.security.canTakeBackOwnership,
+          owner_change_balance: analysis.security.canChangeBalance,
+          hidden_owner: analysis.security.hasHiddenOwner,
+          selfdestruct: analysis.security.hasSelfDestruct,
+          external_call: analysis.security.hasExternalCall,
+          buy_tax: analysis.security.buyTaxPercentage?.toString(),
+          sell_tax: analysis.security.sellTaxPercentage?.toString(),
+          is_blacklisted: analysis.security.hasBlacklist,
+          is_whitelisted: analysis.security.hasWhitelist,
+          is_anti_whale: analysis.security.hasAntiWhale,
+          trading_cooldown: analysis.security.hasTradingCooldown,
+          personal_slippage_modifiable: analysis.security.canModifySlippage,
+          cannot_sell_all: analysis.security.cannotSellAll,
+          transfer_pausable: analysis.security.canBePaused,
+          risks: analysis.security.risks || [],
+        }
+      : null,
+    created_at: analysis.analyzedAt?.toISOString() || new Date().toISOString(),
+    updated_at: analysis.analyzedAt?.toISOString() || new Date().toISOString(),
+  };
+};
+
 export const analyzeToken = async (req: Request, res: Response) => {
   try {
     // Validate input
@@ -26,9 +81,12 @@ export const analyzeToken = async (req: Request, res: Response) => {
     // Perform analysis
     const analysis = await analysisService.analyzeToken(address, chain as Chain, req.user?.id);
 
+    // Transform to frontend format
+    const transformedAnalysis = transformAnalysisForFrontend(analysis);
+
     res.json({
       success: true,
-      data: { analysis },
+      data: { analysis: transformedAnalysis },
     });
   } catch (error: unknown) {
     console.error('Analysis error:', error);
