@@ -70,7 +70,6 @@ export const register = async (req: Request, res: Response) => {
     }
 
     // Determine success message based on whether email was sent
-    const emailServiceAvailable = !!process.env.RESEND_API_KEY;
     const message = emailServiceAvailable
       ? 'Registration successful. Please check your email to verify your account.'
       : 'Registration successful. You can now log in.';
