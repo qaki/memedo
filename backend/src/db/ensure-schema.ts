@@ -73,6 +73,26 @@ export async function ensureSchema() {
 
     console.log('✅ Subscription indices created/verified');
 
+    // Rename contract_address to token_address in analyses table (if needed)
+    // Check if old column exists
+    const checkColumn = await sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'analyses' 
+      AND column_name = 'contract_address'
+    `;
+
+    if (checkColumn.length > 0) {
+      console.log('🔄 Renaming contract_address to token_address in analyses table...');
+      await sql`
+        ALTER TABLE analyses 
+        RENAME COLUMN contract_address TO token_address
+      `;
+      console.log('✅ Column renamed successfully');
+    } else {
+      console.log('✅ analyses.token_address column already exists');
+    }
+
     // Auto-verify all existing users (email service not configured initially)
     const result = await sql`
       UPDATE users 
