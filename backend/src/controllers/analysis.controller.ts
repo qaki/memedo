@@ -126,6 +126,21 @@ export const analyzeToken = async (req: Request, res: Response) => {
 };
 
 /**
+ * Transform database analysis history to frontend format
+ */
+const transformHistoryForFrontend = (dbHistory: any[]) => {
+  return dbHistory.map((item) => ({
+    id: item.id,
+    chain: item.chain,
+    token_address: item.token_address,
+    safety_score: item.safety_score,
+    risk_level:
+      item.risk_level === 'SAFE' ? 'low' : item.risk_level === 'CAUTION' ? 'medium' : 'high',
+    created_at: item.created_at.toISOString(),
+  }));
+};
+
+/**
  * GET /api/analysis/history
  * Get user's analysis history
  */
@@ -144,9 +159,12 @@ export const getAnalysisHistory = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 20;
     const history = await analysisService.getUserAnalysisHistory(req.user.id, limit);
 
+    // Transform to frontend format
+    const transformedHistory = transformHistoryForFrontend(history);
+
     res.json({
       success: true,
-      data: { history },
+      data: { history: transformedHistory },
     });
   } catch (error: unknown) {
     console.error('Get history error:', error);
@@ -200,9 +218,12 @@ export const getAnalysisById = async (req: Request, res: Response) => {
       });
     }
 
+    // Transform to frontend format
+    const transformedAnalysis = transformAnalysisForFrontend(analysis);
+
     res.json({
       success: true,
-      data: { analysis },
+      data: { analysis: transformedAnalysis },
     });
   } catch (error: unknown) {
     console.error('Get analysis error:', error);
