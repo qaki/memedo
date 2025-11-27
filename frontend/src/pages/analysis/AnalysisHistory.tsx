@@ -36,7 +36,7 @@ const AnalysisHistory = () => {
     if (supportedChains.length === 0) {
       fetchSupportedChains();
     }
-  }, [fetchHistory, fetchSupportedChains, supportedChains.length, toast]);
+  }, []); // Only run on mount - Zustand functions are stable references
 
   const handleViewAnalysis = async (id: string) => {
     setSelectedAnalysisId(id);

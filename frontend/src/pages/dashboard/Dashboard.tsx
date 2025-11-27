@@ -22,7 +22,7 @@ const Dashboard = () => {
     if (supportedChains.length === 0) {
       fetchSupportedChains();
     }
-  }, [fetchHistory, fetchSupportedChains, supportedChains.length]);
+  }, []); // Only run on mount - Zustand functions are stable references
 
   const getPlanBadgeVariant = (plan: string): 'success' | 'warning' | 'gray' => {
     switch (plan) {
