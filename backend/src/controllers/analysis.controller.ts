@@ -130,13 +130,15 @@ export const analyzeToken = async (req: Request, res: Response) => {
  */
 const transformHistoryForFrontend = (dbHistory: any[]) => {
   return dbHistory.map((item) => ({
-    id: item.id,
-    chain: item.chain,
-    token_address: item.token_address,
-    safety_score: item.safety_score,
+    id: item.id || '',
+    chain: item.chain || 'unknown',
+    token_address: item.token_address || '',
+    safety_score: item.safety_score || 0,
     risk_level:
       item.risk_level === 'SAFE' ? 'low' : item.risk_level === 'CAUTION' ? 'medium' : 'high',
-    created_at: item.created_at.toISOString(),
+    created_at: item.created_at
+      ? new Date(item.created_at).toISOString()
+      : new Date().toISOString(),
   }));
 };
 
@@ -157,17 +159,28 @@ export const getAnalysisHistory = async (req: Request, res: Response) => {
     }
 
     const limit = parseInt(req.query.limit as string) || 20;
+
+    console.log('[getAnalysisHistory] Fetching history for user:', req.user.id);
     const history = await analysisService.getUserAnalysisHistory(req.user.id, limit);
+    console.log('[getAnalysisHistory] Found', history.length, 'analysis records');
 
     // Transform to frontend format
     const transformedHistory = transformHistoryForFrontend(history);
+    console.log('[getAnalysisHistory] Transformed history successfully');
 
     res.json({
       success: true,
       data: { history: transformedHistory },
     });
   } catch (error: unknown) {
-    console.error('Get history error:', error);
+    console.error('[getAnalysisHistory] Error:', error);
+
+    // Log detailed error information
+    if (error instanceof Error) {
+      console.error('[getAnalysisHistory] Error name:', error.name);
+      console.error('[getAnalysisHistory] Error message:', error.message);
+      console.error('[getAnalysisHistory] Error stack:', error.stack);
+    }
 
     res.status(500).json({
       success: false,
