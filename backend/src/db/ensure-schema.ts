@@ -73,8 +73,11 @@ export async function ensureSchema() {
 
     console.log('✅ Subscription indices created/verified');
 
-    // Rename contract_address to token_address in analyses table (if needed)
-    // Check if old column exists
+    // ========================================
+    // FIX ANALYSES TABLE SCHEMA
+    // ========================================
+
+    // 1. Rename contract_address to token_address (if needed)
     const checkColumn = await sql`
       SELECT column_name 
       FROM information_schema.columns 
@@ -83,14 +86,51 @@ export async function ensureSchema() {
     `;
 
     if (checkColumn.length > 0) {
-      console.log('🔄 Renaming contract_address to token_address in analyses table...');
-      await sql`
-        ALTER TABLE analyses 
-        RENAME COLUMN contract_address TO token_address
-      `;
-      console.log('✅ Column renamed successfully');
+      console.log('🔄 Renaming contract_address to token_address...');
+      await sql`ALTER TABLE analyses RENAME COLUMN contract_address TO token_address`;
+      console.log('✅ Column renamed');
     } else {
-      console.log('✅ analyses.token_address column already exists');
+      console.log('✅ token_address already exists');
+    }
+
+    // 2. Add new required columns
+    await sql`ALTER TABLE analyses ADD COLUMN IF NOT EXISTS safety_score INTEGER DEFAULT 50`;
+    await sql`ALTER TABLE analyses ADD COLUMN IF NOT EXISTS risk_level VARCHAR(20) DEFAULT 'CAUTION'`;
+    await sql`ALTER TABLE analyses ADD COLUMN IF NOT EXISTS data_completeness INTEGER DEFAULT 0`;
+    await sql`ALTER TABLE analyses ADD COLUMN IF NOT EXISTS analysis_data JSONB DEFAULT '{}'::jsonb`;
+    await sql`ALTER TABLE analyses ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW()`;
+    console.log('✅ Added missing columns to analyses table');
+
+    // 3. Migrate data from old columns to new (if old columns exist)
+    const checkOldColumns = await sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'analyses' 
+      AND column_name IN ('results', 'completeness_score')
+    `;
+
+    if (checkOldColumns.length > 0) {
+      console.log('🔄 Migrating data from old columns...');
+
+      // Copy results -> analysis_data (if not already populated)
+      await sql`
+        UPDATE analyses 
+        SET analysis_data = results 
+        WHERE (analysis_data IS NULL OR analysis_data = '{}'::jsonb)
+        AND results IS NOT NULL
+      `;
+
+      // Copy completeness_score -> data_completeness (if not already populated)
+      await sql`
+        UPDATE analyses 
+        SET data_completeness = completeness_score 
+        WHERE data_completeness = 0 
+        AND completeness_score IS NOT NULL
+      `;
+
+      console.log('✅ Data migration complete');
+    } else {
+      console.log('✅ No old columns to migrate');
     }
 
     // Auto-verify all existing users (email service not configured initially)
