@@ -88,35 +88,35 @@ export const Sidebar = () => {
       <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-white border-r border-gray-200
-          transform transition-transform duration-300 ease-in-out
+          w-72 md:w-64 bg-white border-r border-gray-100 shadow-soft
+          transform transition-all duration-300 ease-in-out
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0
         `}
       >
-        <div className="h-full flex flex-col pt-5 pb-4 overflow-y-auto">
-          <nav className="mt-5 flex-1 px-3 space-y-1">
+        <div className="h-full flex flex-col pt-6 pb-4 overflow-y-auto">
+          <nav className="mt-2 flex-1 px-3 space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
                 className={`
-                  group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg
-                  transition-colors
+                  group flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl
+                  transition-all duration-200
                   ${
                     isActive(item.path)
-                      ? 'bg-indigo-50 text-indigo-600'
+                      ? 'bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 shadow-soft'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }
                 `}
               >
                 <div
-                  className={
+                  className={`transition-all duration-200 ${
                     isActive(item.path)
-                      ? 'text-indigo-600'
-                      : 'text-gray-400 group-hover:text-gray-500'
-                  }
+                      ? 'text-primary-600 scale-110'
+                      : 'text-gray-400 group-hover:text-gray-600'
+                  }`}
                 >
                   {item.icon}
                 </div>
