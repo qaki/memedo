@@ -168,8 +168,8 @@ const AnalysisHistory = () => {
                         <span className="font-semibold text-gray-900">{item.safety_score}/100</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant={getRiskBadgeVariant(item.risk_level)}>
-                          {item.risk_level.toUpperCase()} RISK
+                        <Badge variant={getRiskBadgeVariant(item.risk_level || 'unknown')}>
+                          {(item.risk_level || 'unknown').toUpperCase()} RISK
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2">

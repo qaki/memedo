@@ -5,11 +5,17 @@
 
 import { create } from 'zustand';
 import { api } from '../lib/api';
-import type {
-  SubscriptionStatusResponse,
-  SubscriptionUsageResponse,
-  CheckoutSessionResponse,
-} from '@memedo/shared';
+// Temporarily commented out - FastSpring types will be added later
+// import type {
+//   SubscriptionStatusResponse,
+//   SubscriptionUsageResponse,
+//   CheckoutSessionResponse,
+// } from '@memedo/shared';
+
+// Temporary type definitions until FastSpring is fully integrated
+type SubscriptionStatusResponse = any;
+type SubscriptionUsageResponse = any;
+type CheckoutSessionResponse = any;
 
 interface SubscriptionState {
   // State
