@@ -178,7 +178,7 @@ class FastSpringService {
       reset?: boolean;
     }
   ): string {
-    const storefront = process.env.FASTSPRING_STOREFRONT || 'memego';
+    const storefront = process.env.FASTSPRING_STOREFRONT || 'memego_store';
     const params = new URLSearchParams();
 
     if (options?.email) {
