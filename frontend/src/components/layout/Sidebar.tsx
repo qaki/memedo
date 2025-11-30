@@ -74,13 +74,22 @@ export const Sidebar = () => {
     return location.pathname === path;
   };
 
+  // Close sidebar on mobile when route changes
+  const handleLinkClick = () => {
+    // On mobile, close the sidebar after clicking a link
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  };
+
   return (
     <>
       {/* Mobile overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-gray-600 bg-opacity-75 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
+          aria-label="Close sidebar"
         />
       )}
 
@@ -100,7 +109,7 @@ export const Sidebar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                onClick={() => setSidebarOpen(false)}
+                onClick={handleLinkClick}
                 className={`
                   group flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl
                   transition-all duration-200
