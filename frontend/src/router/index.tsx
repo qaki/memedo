@@ -21,6 +21,9 @@ const Settings = lazy(() => import('../pages/dashboard/Settings'));
 const Subscription = lazy(() => import('../pages/dashboard/Subscription'));
 const AnalyzeToken = lazy(() => import('../pages/analysis/AnalyzeToken'));
 const AnalysisHistory = lazy(() => import('../pages/analysis/AnalysisHistory'));
+const TermsOfService = lazy(() => import('../pages/legal/TermsOfService'));
+const PrivacyPolicy = lazy(() => import('../pages/legal/PrivacyPolicy'));
+const RefundPolicy = lazy(() => import('../pages/legal/RefundPolicy'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 
 // Loading fallback component
@@ -54,6 +57,30 @@ export const router = createBrowserRouter([
         element: (
           <Lazy>
             <Pricing />
+          </Lazy>
+        ),
+      },
+      {
+        path: 'terms',
+        element: (
+          <Lazy>
+            <TermsOfService />
+          </Lazy>
+        ),
+      },
+      {
+        path: 'privacy',
+        element: (
+          <Lazy>
+            <PrivacyPolicy />
+          </Lazy>
+        ),
+      },
+      {
+        path: 'refund-policy',
+        element: (
+          <Lazy>
+            <RefundPolicy />
           </Lazy>
         ),
       },
