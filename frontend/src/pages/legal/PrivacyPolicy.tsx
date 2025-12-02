@@ -5,16 +5,17 @@ export default function PrivacyPolicy() {
     <div className="max-w-4xl mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
-        <p className="text-gray-600">Last Updated: November 30, 2025</p>
+        <p className="text-gray-600">Last Updated: December 2, 2025</p>
       </div>
 
       <Card padding="lg" className="prose prose-sm max-w-none">
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
           <p className="text-gray-700 mb-4">
-            MemeDo ("we", "us", or "our") is committed to protecting your privacy. This Privacy
-            Policy explains how we collect, use, disclose, and safeguard your information when you
-            use our blockchain token analysis platform ("Service").
+            MemeDo ("we", "us", or "our"), operated by <strong>memego10</strong>, is committed to
+            protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and
+            safeguard your information when you use our blockchain token analysis platform
+            ("Service").
           </p>
           <p className="text-gray-700">
             By using our Service, you consent to the data practices described in this policy. If you
@@ -38,7 +39,7 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               <strong>Payment Information:</strong> Processed securely through our payment processor
-              (FastSpring). We do not store complete credit card information
+              (Paddle). We do not store complete credit card information
             </li>
             <li>
               <strong>Profile Information:</strong> Optional profile details and preferences
@@ -137,7 +138,7 @@ export default function PrivacyPolicy() {
           </p>
           <ul className="list-disc pl-6 text-gray-700 mb-4 space-y-2">
             <li>
-              <strong>Payment Processing:</strong> FastSpring (payment gateway)
+              <strong>Payment Processing:</strong> Paddle (payment gateway)
             </li>
             <li>
               <strong>Hosting:</strong> Render.com (application hosting)
@@ -373,6 +374,8 @@ export default function PrivacyPolicy() {
             please contact us:
           </p>
           <p className="text-gray-700">
+            <strong>Business Name:</strong> memego10
+            <br />
             <strong>Email:</strong> privacy@meme-go.com
             <br />
             <strong>Website:</strong> https://www.meme-go.com

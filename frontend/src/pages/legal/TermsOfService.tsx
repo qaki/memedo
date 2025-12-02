@@ -5,21 +5,22 @@ export default function TermsOfService() {
     <div className="max-w-4xl mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Terms of Service</h1>
-        <p className="text-gray-600">Last Updated: November 30, 2025</p>
+        <p className="text-gray-600">Last Updated: December 2, 2025</p>
       </div>
 
       <Card padding="lg" className="prose prose-sm max-w-none">
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Agreement to Terms</h2>
           <p className="text-gray-700 mb-4">
-            By accessing or using MemeDo ("Service", "Platform", "we", "us", or "our"), you agree to
-            be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you
-            may not access or use the Service.
+            By accessing or using MemeDo ("Service", "Platform", "we", "us", or "our"), operated by{' '}
+            <strong>memego10</strong> ("Company"), you agree to be bound by these Terms of Service
+            ("Terms"). If you do not agree to these Terms, you may not access or use the Service.
           </p>
           <p className="text-gray-700">
             MemeDo is a blockchain token analysis platform that provides security assessments, risk
             evaluations, and analytical insights for cryptocurrency tokens across multiple
-            blockchain networks.
+            blockchain networks. The Service is operated by <strong>memego10</strong>, our legal
+            business entity.
           </p>
         </section>
 
@@ -214,6 +215,8 @@ export default function TermsOfService() {
             If you have any questions about these Terms, please contact us at:
           </p>
           <p className="text-gray-700 mt-4">
+            <strong>Business Name:</strong> memego10
+            <br />
             <strong>Email:</strong> legal@meme-go.com
             <br />
             <strong>Website:</strong> https://www.meme-go.com
