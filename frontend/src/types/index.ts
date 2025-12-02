@@ -63,11 +63,41 @@ export interface SecurityScan {
   personal_slippage_modifiable?: boolean | null;
   cannot_sell_all?: boolean | null;
   transfer_pausable?: boolean | null;
+  is_ownership_renounced?: boolean | null; // NEW: Renounced ownership flag!
   risks?: Array<{
     name: string;
     level: string;
     description: string;
   }>;
+}
+
+// NEW: Market data from BirdEye
+export interface MarketData {
+  price_usd: number;
+  volume_24h: number;
+  market_cap: number;
+  price_change_24h: number;
+  holders: number;
+  transactions_24h: number;
+
+  // Critical market health metrics
+  total_liquidity_usd: number;
+  volume_buy_24h_usd?: number;
+  volume_sell_24h_usd?: number;
+  total_supply: number;
+
+  // Holder distribution
+  top_10_holder_percentage: number;
+  top_10_holders?: Array<{
+    address: string;
+    balance: number;
+    percentage: number;
+  }>;
+
+  // Risk flags
+  is_low_liquidity: boolean;
+  is_low_volume: boolean;
+  is_high_concentration: boolean;
 }
 
 export interface TokenAnalysis {
@@ -80,6 +110,7 @@ export interface TokenAnalysis {
   data_completeness: number;
   metadata: TokenMetadata | null;
   security_scan: SecurityScan | null;
+  market_data: MarketData | null; // NEW: Market health metrics!
   created_at: string;
   updated_at: string;
 }

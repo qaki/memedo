@@ -78,6 +78,7 @@ export class RugCheckAdapter implements Adapter<SecurityScan> {
         hasTradingCooldown: false,
         canBePaused: false,
         hasTaxes: false,
+        isOwnershipRenounced: false, // Will be set based on mint/update authority
         risks: [],
       };
 
@@ -110,7 +111,26 @@ export class RugCheckAdapter implements Adapter<SecurityScan> {
         // Update security flags based on risk names
         const riskName = risk.name.toLowerCase();
         if (riskName.includes('mint') && riskName.includes('authority')) {
-          securityScan.isMintable = true;
+          // Check if mint authority is DISABLED (revoked)
+          if (
+            riskName.includes('disabled') ||
+            riskName.includes('revoked') ||
+            riskName.includes('none')
+          ) {
+            securityScan.isOwnershipRenounced = true; // GOOD: Mint authority revoked!
+          } else {
+            securityScan.isMintable = true; // BAD: Can still mint
+          }
+        }
+        if (riskName.includes('update') && riskName.includes('authority')) {
+          // Check if update authority is DISABLED (revoked)
+          if (
+            riskName.includes('disabled') ||
+            riskName.includes('revoked') ||
+            riskName.includes('none')
+          ) {
+            securityScan.isOwnershipRenounced = true; // GOOD: Update authority revoked!
+          }
         }
         if (riskName.includes('freeze')) {
           securityScan.hasBlacklist = true; // Solana freeze = blacklist equivalent

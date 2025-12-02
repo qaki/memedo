@@ -28,8 +28,10 @@ interface GoPlusResponse {
       can_be_paused?: string;
       buy_tax?: string; // e.g., '0.05' for 5%
       sell_tax?: string;
+      owner_address?: string; // Owner wallet address
       owner_balance?: string;
       owner_percent?: string; // e.g., '0.1' for 10%
+      creator_address?: string;
       creator_balance?: string;
       creator_percent?: string;
       holder_count?: string;
@@ -87,6 +89,17 @@ export class GoPlusAdapter implements Adapter<SecurityScan> {
       throw new Error(`No security data found for ${address}`);
     }
 
+    // Check if ownership is renounced
+    // Ownership is considered renounced if:
+    // - Owner address is zero address (0x000...000 or null)
+    // - OR owner_percent is 0 or extremely low (< 0.001%)
+    const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+    const isOwnershipRenounced: boolean = Boolean(
+      !data.owner_address ||
+        data.owner_address.toLowerCase() === ZERO_ADDRESS.toLowerCase() ||
+        (data.owner_percent && parseFloat(data.owner_percent) < 0.00001)
+    );
+
     // Parse security data
     const securityScan: SecurityScan = {
       isHoneypot: data.is_honeypot === '1' || data.honeypot_with_same_creator === '1',
@@ -104,6 +117,7 @@ export class GoPlusAdapter implements Adapter<SecurityScan> {
       ),
       buyTaxPercentage: data.buy_tax ? parseFloat(data.buy_tax) * 100 : undefined,
       sellTaxPercentage: data.sell_tax ? parseFloat(data.sell_tax) * 100 : undefined,
+      isOwnershipRenounced, // NEW: Critical safety flag!
       ownerBalance: data.owner_balance,
       ownerPercentage: data.owner_percent ? parseFloat(data.owner_percent) * 100 : undefined,
       creatorBalance: data.creator_balance,

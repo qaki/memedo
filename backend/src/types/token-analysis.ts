@@ -19,8 +19,9 @@ export interface TokenMetadata {
   twitter?: string;
   telegram?: string;
   verified: boolean; // Contract verified on explorer
-  createdAt?: Date;
+  createdAt?: Date; // NEW: Token creation date for age calculation
   deployer?: string;
+  tokenAge?: number; // NEW: Age in days since creation
 }
 
 // Holder distribution analysis
@@ -68,6 +69,7 @@ export interface SecurityScan {
   hasTaxes: boolean;
   buyTaxPercentage?: number;
   sellTaxPercentage?: number;
+  isOwnershipRenounced: boolean; // NEW: Critical safety flag
   ownerBalance?: string;
   ownerPercentage?: number;
   creatorBalance?: string;
@@ -80,14 +82,34 @@ export interface SecurityScan {
   }>;
 }
 
-// Market data
+// Market data - ENHANCED with BirdEye metrics
 export interface MarketData {
+  // Basic Metrics
   priceUSD: number;
   volume24h: number;
   marketCap: number;
   priceChange24h: number;
   holders: number;
   transactions24h: number;
+
+  // NEW: Critical Market Health Metrics
+  totalLiquidityUSD: number; // Total value locked in liquidity pools
+  volumeBuy24hUSD?: number; // 24h buy volume
+  volumeSell24hUSD?: number; // 24h sell volume
+  totalSupply: number; // Total token supply
+
+  // NEW: Holder Distribution Risk Metrics
+  top10HolderPercentage: number; // % held by top 10 wallets
+  top10Holders?: Array<{
+    address: string;
+    balance: number;
+    percentage: number;
+  }>;
+
+  // NEW: Risk Flags
+  isLowLiquidity: boolean; // Liquidity < $50,000
+  isLowVolume: boolean; // Volume < $10,000/24h
+  isHighConcentration: boolean; // Top 10 > 30%
 }
 
 // Transaction analysis

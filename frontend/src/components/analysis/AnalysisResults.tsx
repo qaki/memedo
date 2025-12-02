@@ -197,6 +197,186 @@ export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisRes
                   )}
               </div>
             </div>
+
+            {/* Market Health - NEW SECTION! */}
+            {analysis.market_data && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">💰 Market Health</h3>
+
+                {/* Market Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                  {/* Price */}
+                  {analysis.market_data.price_usd > 0 && (
+                    <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-700 mb-1 font-medium">💵 Current Price</p>
+                      <p className="text-xl font-bold text-blue-900">
+                        $
+                        {analysis.market_data.price_usd < 0.01
+                          ? analysis.market_data.price_usd.toExponential(4)
+                          : analysis.market_data.price_usd.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 6,
+                            })}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Total Liquidity */}
+                  {analysis.market_data.total_liquidity_usd !== undefined && (
+                    <div
+                      className={`p-4 border rounded-lg ${
+                        analysis.market_data.is_low_liquidity
+                          ? 'bg-gradient-to-br from-red-50 to-red-100 border-red-300'
+                          : 'bg-gradient-to-br from-green-50 to-green-100 border-green-300'
+                      }`}
+                    >
+                      <p
+                        className={`text-sm font-medium mb-1 ${
+                          analysis.market_data.is_low_liquidity ? 'text-red-700' : 'text-green-700'
+                        }`}
+                      >
+                        💧 Total Liquidity {analysis.market_data.is_low_liquidity && '⚠️'}
+                      </p>
+                      <p
+                        className={`text-xl font-bold ${
+                          analysis.market_data.is_low_liquidity ? 'text-red-900' : 'text-green-900'
+                        }`}
+                      >
+                        ${analysis.market_data.total_liquidity_usd.toLocaleString()}
+                      </p>
+                      {analysis.market_data.is_low_liquidity && (
+                        <p className="text-xs text-red-600 mt-1">
+                          Low liquidity - High slippage risk
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 24h Volume */}
+                  {analysis.market_data.volume_24h !== undefined && (
+                    <div
+                      className={`p-4 border rounded-lg ${
+                        analysis.market_data.is_low_volume
+                          ? 'bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-300'
+                          : 'bg-gradient-to-br from-green-50 to-green-100 border-green-300'
+                      }`}
+                    >
+                      <p
+                        className={`text-sm font-medium mb-1 ${
+                          analysis.market_data.is_low_volume ? 'text-yellow-700' : 'text-green-700'
+                        }`}
+                      >
+                        📊 24h Volume {analysis.market_data.is_low_volume && '⚠️'}
+                      </p>
+                      <p
+                        className={`text-xl font-bold ${
+                          analysis.market_data.is_low_volume ? 'text-yellow-900' : 'text-green-900'
+                        }`}
+                      >
+                        ${analysis.market_data.volume_24h.toLocaleString()}
+                      </p>
+                      {analysis.market_data.is_low_volume && (
+                        <p className="text-xs text-yellow-600 mt-1">Low trading activity</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Market Cap */}
+                  {analysis.market_data.market_cap > 0 && (
+                    <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg">
+                      <p className="text-sm text-purple-700 mb-1 font-medium">📈 Market Cap</p>
+                      <p className="text-xl font-bold text-purple-900">
+                        ${analysis.market_data.market_cap.toLocaleString()}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Holders */}
+                  {analysis.market_data.holders > 0 && (
+                    <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg">
+                      <p className="text-sm text-gray-700 mb-1 font-medium">👥 Total Holders</p>
+                      <p className="text-xl font-bold text-gray-900">
+                        {analysis.market_data.holders.toLocaleString()}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Top 10 Holder Concentration */}
+                  {analysis.market_data.top_10_holder_percentage > 0 && (
+                    <div
+                      className={`p-4 border rounded-lg ${
+                        analysis.market_data.is_high_concentration
+                          ? 'bg-gradient-to-br from-red-50 to-red-100 border-red-300'
+                          : 'bg-gradient-to-br from-green-50 to-green-100 border-green-300'
+                      }`}
+                    >
+                      <p
+                        className={`text-sm font-medium mb-1 ${
+                          analysis.market_data.is_high_concentration
+                            ? 'text-red-700'
+                            : 'text-green-700'
+                        }`}
+                      >
+                        🐋 Top 10 Concentration {analysis.market_data.is_high_concentration && '⚠️'}
+                      </p>
+                      <p
+                        className={`text-xl font-bold ${
+                          analysis.market_data.is_high_concentration
+                            ? 'text-red-900'
+                            : 'text-green-900'
+                        }`}
+                      >
+                        {analysis.market_data.top_10_holder_percentage.toFixed(2)}%
+                      </p>
+                      {analysis.market_data.is_high_concentration && (
+                        <p className="text-xs text-red-600 mt-1">High whale concentration</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Top Holders List */}
+                {analysis.market_data.top_10_holders &&
+                  analysis.market_data.top_10_holders.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="text-md font-semibold text-gray-900 mb-3">Top 10 Holders</h4>
+                      <div className="space-y-2">
+                        {analysis.market_data.top_10_holders
+                          .slice(0, 5)
+                          .map((holder: any, idx: number) => (
+                            <div
+                              key={idx}
+                              className="flex items-center justify-between p-3 bg-white border rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                              <span className="text-sm text-gray-600 font-mono">
+                                #{idx + 1} {holder.address.slice(0, 6)}...{holder.address.slice(-4)}
+                              </span>
+                              <div className="flex items-center gap-3">
+                                <span className="text-sm text-gray-700">
+                                  {holder.balance.toLocaleString(undefined, {
+                                    maximumFractionDigits: 2,
+                                  })}{' '}
+                                  tokens
+                                </span>
+                                <Badge
+                                  variant={
+                                    holder.percentage > 10
+                                      ? 'danger'
+                                      : holder.percentage > 5
+                                        ? 'warning'
+                                        : 'gray'
+                                  }
+                                >
+                                  {holder.percentage.toFixed(2)}%
+                                </Badge>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+              </div>
+            )}
           </div>
         )}
 
@@ -297,6 +477,48 @@ export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisRes
           <div className="space-y-6">
             {analysis.security_scan ? (
               <>
+                {/* Ownership Status - NEW! */}
+                {analysis.security_scan.is_ownership_renounced !== undefined && (
+                  <div
+                    className={`p-4 border-2 rounded-lg ${
+                      analysis.security_scan.is_ownership_renounced
+                        ? 'bg-green-50 border-green-300'
+                        : 'bg-yellow-50 border-yellow-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">
+                        {analysis.security_scan.is_ownership_renounced ? '✅' : '⚠️'}
+                      </span>
+                      <div>
+                        <h4
+                          className={`font-bold ${
+                            analysis.security_scan.is_ownership_renounced
+                              ? 'text-green-900'
+                              : 'text-yellow-900'
+                          }`}
+                        >
+                          Ownership{' '}
+                          {analysis.security_scan.is_ownership_renounced
+                            ? 'Renounced'
+                            : 'Not Renounced'}
+                        </h4>
+                        <p
+                          className={`text-sm ${
+                            analysis.security_scan.is_ownership_renounced
+                              ? 'text-green-700'
+                              : 'text-yellow-700'
+                          }`}
+                        >
+                          {analysis.security_scan.is_ownership_renounced
+                            ? 'Contract owner has permanently given up control. This is a major safety positive!'
+                            : 'Owner still has control of the contract. This could allow malicious modifications.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Critical Checks */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">
