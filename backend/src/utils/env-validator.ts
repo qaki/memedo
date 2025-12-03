@@ -42,7 +42,7 @@ const envSchema = z.object({
 
   // Whop (Payment Provider)
   WHOP_API_KEY: z.string().optional(),
-  WHOP_PRODUCT_ID: z.string().optional(),
+  WHOP_PLAN_ID_PRO: z.string().optional(),
   WHOP_WEBHOOK_SECRET: z.string().optional(),
 
   // Email (optional for initial setup)

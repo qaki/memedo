@@ -14,7 +14,7 @@ import crypto from 'crypto';
 import { logger } from '../utils/logger.js';
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY || '';
-const WHOP_PRODUCT_ID = process.env.WHOP_PRODUCT_ID || '';
+const WHOP_PLAN_ID_PRO = process.env.WHOP_PLAN_ID_PRO || ''; // Your specific plan ID
 const WHOP_WEBHOOK_SECRET = process.env.WHOP_WEBHOOK_SECRET || '';
 const WHOP_API_BASE = 'https://api.whop.com/api/v2';
 
@@ -62,12 +62,12 @@ export interface WhopWebhookEvent {
 
 export class WhopService {
   private apiKey: string;
-  private productId: string;
+  private planIdPro: string;
   private webhookSecret: string;
 
   constructor() {
     this.apiKey = WHOP_API_KEY;
-    this.productId = WHOP_PRODUCT_ID;
+    this.planIdPro = WHOP_PLAN_ID_PRO;
     this.webhookSecret = WHOP_WEBHOOK_SECRET;
 
     if (!this.apiKey) {
@@ -137,7 +137,8 @@ export class WhopService {
         headers: this.getHeaders(),
         params: {
           email: email,
-          product: this.productId,
+          // Filter by plan if available
+          ...(this.planIdPro && { plan: this.planIdPro }),
         },
         timeout: 10000,
       });
@@ -196,14 +197,14 @@ export class WhopService {
    */
   getCheckoutUrl(userEmail: string, planId?: string): string {
     const baseUrl = `https://whop.com/checkout`;
+
+    // Use provided planId or default to configured plan
+    const targetPlan = planId || this.planIdPro;
+
     const params = new URLSearchParams({
-      product: this.productId,
+      plan: targetPlan,
       email: userEmail,
     });
-
-    if (planId) {
-      params.append('plan', planId);
-    }
 
     return `${baseUrl}?${params.toString()}`;
   }
