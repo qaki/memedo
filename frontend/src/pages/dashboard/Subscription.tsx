@@ -16,15 +16,8 @@ import { useToast } from '../../hooks/useToast';
 export default function Subscription() {
   const navigate = useNavigate();
   const toast = useToast();
-  const {
-    subscription,
-    usage,
-    isLoading,
-    fetchSubscriptionStatus,
-    fetchUsage,
-    cancelSubscription,
-    reactivateSubscription,
-  } = useSubscriptionStore();
+  const { subscription, usage, isLoading, fetchSubscriptionStatus, fetchUsage } =
+    useSubscriptionStore();
 
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -33,33 +26,14 @@ export default function Subscription() {
     fetchUsage();
   }, []);
 
-  const handleCancel = async () => {
-    if (
-      !confirm(
-        'Are you sure you want to cancel your subscription? You will continue to have access until the end of your billing period.'
-      )
-    ) {
-      return;
-    }
-
+  const handleManageSubscription = async () => {
     setActionLoading(true);
     try {
-      await cancelSubscription();
-      toast.success('Subscription canceled successfully');
+      // Open Whop customer portal to manage subscription
+      window.open('https://whop.com/hub/manage', '_blank');
+      toast.success('Opening subscription management...');
     } catch (error) {
-      toast.error('Failed to cancel subscription');
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  const handleReactivate = async () => {
-    setActionLoading(true);
-    try {
-      await reactivateSubscription();
-      toast.success('Subscription reactivated successfully');
-    } catch (error) {
-      toast.error('Failed to reactivate subscription');
+      toast.error('Failed to open subscription management');
     } finally {
       setActionLoading(false);
     }
@@ -153,29 +127,13 @@ export default function Subscription() {
               </Button>
             )}
 
-            {isPremium && !isCanceled && (
-              <>
-                <Button variant="secondary" onClick={() => navigate('/pricing')} className="flex-1">
-                  Change Plan
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={handleCancel}
-                  isLoading={actionLoading}
-                  className="flex-1"
-                >
-                  Cancel Subscription
-                </Button>
-              </>
-            )}
-
-            {isCanceled && (
+            {isPremium && (
               <Button
-                onClick={handleReactivate}
+                onClick={handleManageSubscription}
                 isLoading={actionLoading}
-                className="flex-1 bg-green-600 hover:bg-green-700"
+                className="w-full"
               >
-                Reactivate Subscription
+                Manage Subscription on Whop
               </Button>
             )}
           </div>

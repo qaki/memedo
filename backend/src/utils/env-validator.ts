@@ -40,10 +40,10 @@ const envSchema = z.object({
   STRIPE_PRICE_ID: z.string().optional(),
   LEMON_SQUEEZY_API_KEY: z.string().optional(),
 
-  // FastSpring (Payment Provider)
-  FASTSPRING_USERNAME: z.string().optional(),
-  FASTSPRING_PASSWORD: z.string().optional(),
-  FASTSPRING_STOREFRONT: z.string().optional(),
+  // Whop (Payment Provider)
+  WHOP_API_KEY: z.string().optional(),
+  WHOP_PRODUCT_ID: z.string().optional(),
+  WHOP_WEBHOOK_SECRET: z.string().optional(),
 
   // Email (optional for initial setup)
   RESEND_API_KEY: z.string().optional(),

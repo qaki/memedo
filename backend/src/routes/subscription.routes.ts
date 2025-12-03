@@ -8,9 +8,8 @@ import { asyncHandler } from '../middleware/error.middleware.js';
 import {
   getSubscriptionStatus,
   createCheckoutSession,
-  cancelSubscription,
-  reactivateSubscription,
-  updateSubscriptionPlan,
+  getCustomerPortal,
+  verifySubscription,
   getSubscriptionUsage,
 } from '../controllers/subscription.controller.js';
 
@@ -42,25 +41,17 @@ router.get('/usage', asyncHandler(getSubscriptionUsage));
 router.post('/checkout', asyncHandler(createCheckoutSession));
 
 /**
- * @route   POST /api/subscription/cancel
- * @desc    Cancel subscription (cancel at period end)
+ * @route   GET /api/subscription/portal
+ * @desc    Get Whop customer portal URL for managing subscription
  * @access  Private
  */
-router.post('/cancel', asyncHandler(cancelSubscription));
+router.get('/portal', asyncHandler(getCustomerPortal));
 
 /**
- * @route   POST /api/subscription/reactivate
- * @desc    Reactivate a canceled subscription
+ * @route   POST /api/subscription/verify
+ * @desc    Verify subscription status with Whop API (manual sync)
  * @access  Private
  */
-router.post('/reactivate', asyncHandler(reactivateSubscription));
-
-/**
- * @route   PUT /api/subscription/plan
- * @desc    Update subscription plan (upgrade/downgrade)
- * @access  Private
- * @body    { plan: 'monthly' | 'yearly' }
- */
-router.put('/plan', asyncHandler(updateSubscriptionPlan));
+router.post('/verify', asyncHandler(verifySubscription));
 
 export default router;

@@ -29,18 +29,13 @@ export default function Pricing() {
     try {
       const checkoutUrl = await createCheckoutSession(plan);
 
-      // Open FastSpring checkout in popup
-      window.open(
-        checkoutUrl,
-        'fastspring-checkout',
-        'width=600,height=800,scrollbars=yes,resizable=yes'
-      );
+      // Redirect to Whop checkout page
+      window.location.href = checkoutUrl;
 
-      toast.info('Opening checkout...');
+      toast.success('Redirecting to checkout...');
     } catch (error) {
       console.error('Checkout error:', error);
       toast.error('Failed to start checkout. Please try again.');
-    } finally {
       setLoading(null);
     }
   };
@@ -240,8 +235,8 @@ export default function Pricing() {
                 What payment methods do you accept?
               </h3>
               <p className="text-gray-600">
-                We accept all major credit cards, PayPal, and international payment methods through
-                our secure payment processor FastSpring.
+                We accept all major credit cards and international payment methods through our
+                secure payment processor Whop.
               </p>
             </div>
 

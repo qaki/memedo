@@ -45,12 +45,7 @@ export async function ensureSchema() {
 
     await sql`
       ALTER TABLE users 
-      ADD COLUMN IF NOT EXISTS fastspring_subscription_id VARCHAR(255)
-    `;
-
-    await sql`
-      ALTER TABLE users 
-      ADD COLUMN IF NOT EXISTS fastspring_account_id VARCHAR(255)
+      ADD COLUMN IF NOT EXISTS whop_membership_id VARCHAR(255)
     `;
 
     console.log('✅ Subscription columns added/verified');
@@ -62,13 +57,8 @@ export async function ensureSchema() {
     `;
 
     await sql`
-      CREATE INDEX IF NOT EXISTS users_fastspring_subscription_id_idx 
-      ON users(fastspring_subscription_id)
-    `;
-
-    await sql`
-      CREATE INDEX IF NOT EXISTS users_fastspring_account_id_idx 
-      ON users(fastspring_account_id)
+      CREATE INDEX IF NOT EXISTS users_whop_membership_id_idx 
+      ON users(whop_membership_id)
     `;
 
     console.log('✅ Subscription indices created/verified');

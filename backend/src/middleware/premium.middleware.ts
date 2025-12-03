@@ -9,8 +9,6 @@ import { users } from '../db/schema/users.js';
 import { eq } from 'drizzle-orm';
 import { ApiError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
-import { fastspringService } from '../services/fastspring.service.js';
-import { SubscriptionPlan } from '../types/fastspring.types.js';
 
 /**
  * Require premium subscription to access endpoint
@@ -97,15 +95,15 @@ export const checkUsageLimit = async (req: Request, res: Response, next: NextFun
       return next();
     }
 
-    // Get subscription benefits
-    const plan = (user.subscription_plan as SubscriptionPlan) || SubscriptionPlan.FREE;
-    const benefits = fastspringService.getSubscriptionBenefits(plan);
+    // Define limits based on plan
+    const isPremium = user.subscription_plan === 'premium';
+    const maxAnalyses = isPremium ? 999999 : 10; // Unlimited for premium, 10 for free
 
     // Check if user has exceeded limit
     const currentUsage = user.analyses_this_month || 0;
-    if (currentUsage >= benefits.maxAnalysesPerDay) {
+    if (currentUsage >= maxAnalyses) {
       throw new ApiError(
-        `Analysis limit reached. Upgrade to premium for unlimited analyses. (${currentUsage}/${benefits.maxAnalysesPerDay})`,
+        `Analysis limit reached. Upgrade to premium for unlimited analyses. (${currentUsage}/${maxAnalyses})`,
         429
       );
     }
@@ -122,8 +120,8 @@ export const checkUsageLimit = async (req: Request, res: Response, next: NextFun
     // Add usage info to request for logging
     req.usageInfo = {
       used: currentUsage + 1,
-      limit: benefits.maxAnalysesPerDay,
-      plan,
+      limit: maxAnalyses,
+      plan: user.subscription_plan || 'free',
     };
 
     next();
@@ -152,12 +150,13 @@ export const checkWatchlistLimit = async (req: Request, res: Response, next: Nex
       throw new ApiError('User not found', 404);
     }
 
-    const plan = (user.subscription_plan as SubscriptionPlan) || SubscriptionPlan.FREE;
-    const benefits = fastspringService.getSubscriptionBenefits(plan);
+    // Define watchlist limits
+    const isPremium = user.subscription_plan === 'premium';
+    const maxWatchlist = isPremium ? 100 : 5; // 100 for premium, 5 for free
 
     // TODO: Check actual watchlist count from database
     // For now, just attach the limit to the request
-    req.watchlistLimit = benefits.maxWatchlistTokens;
+    req.watchlistLimit = maxWatchlist;
 
     next();
   } catch (error) {
@@ -175,7 +174,7 @@ declare global {
       usageInfo?: {
         used: number;
         limit: number;
-        plan: SubscriptionPlan;
+        plan: string;
       };
       watchlistLimit?: number;
     }

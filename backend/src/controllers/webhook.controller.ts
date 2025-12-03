@@ -1,6 +1,6 @@
 /**
- * FastSpring Webhook Handler
- * Processes subscription events from FastSpring
+ * Whop Webhook Handler
+ * Processes subscription events from Whop
  */
 
 import { Request, Response } from 'express';
@@ -8,36 +8,42 @@ import { db } from '../db/index.js';
 import { users } from '../db/schema/users.js';
 import { eq } from 'drizzle-orm';
 import { logger } from '../utils/logger.js';
-import { FastSpringWebhookEvent } from '../types/fastspring.types.js';
-import { fastspringService } from '../services/fastspring.service.js';
+import { whopService, WhopWebhookEvent } from '../services/whop.service.js';
 
 /**
- * Handle FastSpring webhook events
+ * Handle Whop webhook events
  */
-export const handleFastSpringWebhook = async (req: Request, res: Response) => {
+export const handleWhopWebhook = async (req: Request, res: Response) => {
   try {
-    const events = req.body.events as FastSpringWebhookEvent[];
+    // Verify webhook signature
+    const signature = req.headers['x-whop-signature'] as string;
+    const rawBody = JSON.stringify(req.body);
 
-    if (!events || !Array.isArray(events)) {
-      logger.error('Invalid webhook payload received');
+    if (!whopService.validateWebhookSignature(rawBody, signature || '')) {
+      logger.error('[Whop] Invalid webhook signature');
+      return res.status(401).json({ error: 'Invalid signature' });
+    }
+
+    const event = req.body as WhopWebhookEvent;
+
+    if (!event || !event.data) {
+      logger.error('[Whop] Invalid webhook payload received');
       return res.status(400).json({ error: 'Invalid webhook payload' });
     }
 
-    logger.info(`Received ${events.length} webhook events from FastSpring`);
+    logger.info(`[Whop] Received webhook event: ${event.data.action}`);
 
-    for (const event of events) {
-      try {
-        await processWebhookEvent(event);
-      } catch (error) {
-        logger.error(`Failed to process webhook event ${event.id}:`, error);
-        // Continue processing other events even if one fails
-      }
+    try {
+      await processWebhookEvent(event);
+    } catch (error) {
+      logger.error(`[Whop] Failed to process webhook event ${event.id}:`, error);
+      return res.status(500).json({ error: 'Event processing failed' });
     }
 
-    // FastSpring expects a 200 response
+    // Whop expects a 200 response
     res.status(200).json({ received: true });
   } catch (error) {
-    logger.error('Webhook processing error:', error);
+    logger.error('[Whop] Webhook processing error:', error);
     res.status(500).json({ error: 'Webhook processing failed' });
   }
 };
@@ -45,216 +51,139 @@ export const handleFastSpringWebhook = async (req: Request, res: Response) => {
 /**
  * Process individual webhook event
  */
-async function processWebhookEvent(event: FastSpringWebhookEvent) {
-  const { type, data } = event;
+async function processWebhookEvent(event: WhopWebhookEvent) {
+  const { action } = event.data;
 
-  logger.info(`Processing webhook event: ${type}`, {
+  logger.info(`[Whop] Processing webhook event: ${action}`, {
     eventId: event.id,
-    subscriptionId: data.subscription,
+    membershipId: event.data.membership?.id,
   });
 
-  switch (type) {
-    case 'subscription.activated':
-      await handleSubscriptionActivated(data);
+  switch (action) {
+    case 'membership.created':
+      await handleMembershipCreated(event.data.membership!);
       break;
 
-    case 'subscription.charge.completed':
-      await handleSubscriptionCharged(data);
+    case 'membership.updated':
+      await handleMembershipUpdated(event.data.membership!);
       break;
 
-    case 'subscription.charge.failed':
-      await handleSubscriptionChargeFailed(data);
+    case 'membership.deleted':
+      await handleMembershipDeleted(event.data.membership!);
       break;
 
-    case 'subscription.canceled':
-      await handleSubscriptionCanceled(data);
+    case 'payment.succeeded':
+      await handlePaymentSucceeded(event.data.membership!);
       break;
 
-    case 'subscription.deactivated':
-      await handleSubscriptionDeactivated(data);
-      break;
-
-    case 'subscription.updated':
-      await handleSubscriptionUpdated(data);
-      break;
-
-    case 'subscription.payment.overdue':
-      await handleSubscriptionOverdue(data);
+    case 'payment.failed':
+      await handlePaymentFailed(event.data.membership!);
       break;
 
     default:
-      logger.info(`Unhandled webhook event type: ${type}`);
+      logger.info(`[Whop] Unhandled webhook event type: ${action}`);
   }
 }
 
 /**
- * Handle subscription activation
+ * Handle membership creation (new subscription)
  */
-async function handleSubscriptionActivated(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId, account: accountId, product } = data;
+async function handleMembershipCreated(membership: any) {
+  const userEmail = membership.user.email;
 
-  if (!subscriptionId || !accountId) {
-    logger.error('Missing subscription or account ID in activation event');
+  if (!userEmail) {
+    logger.error('[Whop] Missing user email in membership.created event');
     return;
   }
 
   try {
-    // Get full subscription details from FastSpring
-    const subscription = await fastspringService.getSubscription(subscriptionId);
-    const plan = fastspringService.mapProductToPlan(product as string);
-
-    // Find user by FastSpring account ID or email
-    const account = await fastspringService.getAccount(accountId);
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, account.contact.email))
-      .limit(1);
+    // Find user by email
+    const [user] = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
 
     if (!user) {
-      logger.error(`User not found for FastSpring account ${accountId}`);
+      logger.error(`[Whop] User not found for email ${userEmail}`);
       return;
     }
 
     // Update user subscription status
+    const plan = whopService.mapWhopPlanToRole(membership);
+
     await db
       .update(users)
       .set({
-        subscription_status: subscription.state,
+        subscription_status: membership.status,
         subscription_plan: plan,
-        subscription_period_start: new Date(subscription.begin * 1000),
-        subscription_period_end: new Date(subscription.next * 1000),
-        subscription_cancel_at_period_end: !subscription.autoRenew,
-        fastspring_subscription_id: subscriptionId,
-        fastspring_account_id: accountId,
-        role: 'premium', // Upgrade role to premium
+        subscription_period_start: new Date(membership.renewal_period_start),
+        subscription_period_end: new Date(membership.renewal_period_end),
+        subscription_cancel_at_period_end: membership.cancel_at_period_end,
+        whop_membership_id: membership.id,
+        role: plan, // Upgrade role to premium
         updated_at: new Date(),
       })
       .where(eq(users.id, user.id));
 
-    logger.info(`Subscription activated for user ${user.id}`);
+    logger.info(`[Whop] Membership created for user ${user.id}`);
   } catch (error) {
-    logger.error('Failed to handle subscription activation:', error);
+    logger.error('[Whop] Failed to handle membership creation:', error);
     throw error;
   }
 }
 
 /**
- * Handle successful subscription charge
+ * Handle membership update (renewal, plan change, etc.)
  */
-async function handleSubscriptionCharged(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId } = data;
+async function handleMembershipUpdated(membership: any) {
+  const membershipId = membership.id;
 
-  if (!subscriptionId) return;
+  if (!membershipId) return;
 
   try {
-    const subscription = await fastspringService.getSubscription(subscriptionId);
-
     const [user] = await db
       .select()
       .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
+      .where(eq(users.whop_membership_id, membershipId))
       .limit(1);
 
     if (!user) {
-      logger.error(`User not found for subscription ${subscriptionId}`);
+      logger.error(`[Whop] User not found for membership ${membershipId}`);
       return;
     }
 
-    // Update subscription period
+    // Update subscription details
+    const plan = whopService.mapWhopPlanToRole(membership);
+
     await db
       .update(users)
       .set({
-        subscription_status: 'active',
-        subscription_period_start: new Date(subscription.begin * 1000),
-        subscription_period_end: new Date(subscription.next * 1000),
+        subscription_status: membership.status,
+        subscription_plan: plan,
+        subscription_period_start: new Date(membership.renewal_period_start),
+        subscription_period_end: new Date(membership.renewal_period_end),
+        subscription_cancel_at_period_end: membership.cancel_at_period_end,
+        role: plan,
         updated_at: new Date(),
       })
       .where(eq(users.id, user.id));
 
-    logger.info(`Subscription renewed for user ${user.id}`);
+    logger.info(`[Whop] Membership updated for user ${user.id}`);
   } catch (error) {
-    logger.error('Failed to handle subscription charge:', error);
+    logger.error('[Whop] Failed to handle membership update:', error);
   }
 }
 
 /**
- * Handle failed subscription charge
+ * Handle membership deletion (subscription canceled/expired)
  */
-async function handleSubscriptionChargeFailed(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId } = data;
+async function handleMembershipDeleted(membership: any) {
+  const membershipId = membership.id;
 
-  if (!subscriptionId) return;
+  if (!membershipId) return;
 
   try {
     const [user] = await db
       .select()
       .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
-      .limit(1);
-
-    if (!user) return;
-
-    // Update status to overdue
-    await db
-      .update(users)
-      .set({
-        subscription_status: 'overdue',
-        updated_at: new Date(),
-      })
-      .where(eq(users.id, user.id));
-
-    logger.warn(`Subscription payment failed for user ${user.id}`);
-  } catch (error) {
-    logger.error('Failed to handle subscription charge failure:', error);
-  }
-}
-
-/**
- * Handle subscription cancellation
- */
-async function handleSubscriptionCanceled(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId } = data;
-
-  if (!subscriptionId) return;
-
-  try {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
-      .limit(1);
-
-    if (!user) return;
-
-    await db
-      .update(users)
-      .set({
-        subscription_status: 'canceled',
-        subscription_cancel_at_period_end: true,
-        updated_at: new Date(),
-      })
-      .where(eq(users.id, user.id));
-
-    logger.info(`Subscription canceled for user ${user.id}`);
-  } catch (error) {
-    logger.error('Failed to handle subscription cancellation:', error);
-  }
-}
-
-/**
- * Handle subscription deactivation (end of billing period after cancel)
- */
-async function handleSubscriptionDeactivated(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId } = data;
-
-  if (!subscriptionId) return;
-
-  try {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
+      .where(eq(users.whop_membership_id, membershipId))
       .limit(1);
 
     if (!user) return;
@@ -271,74 +200,74 @@ async function handleSubscriptionDeactivated(data: FastSpringWebhookEvent['data'
       })
       .where(eq(users.id, user.id));
 
-    logger.info(`Subscription deactivated for user ${user.id}, downgraded to free`);
+    logger.info(`[Whop] Membership deleted for user ${user.id}, downgraded to free`);
   } catch (error) {
-    logger.error('Failed to handle subscription deactivation:', error);
+    logger.error('[Whop] Failed to handle membership deletion:', error);
   }
 }
 
 /**
- * Handle subscription update (plan change)
+ * Handle successful payment
  */
-async function handleSubscriptionUpdated(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId, product } = data;
+async function handlePaymentSucceeded(membership: any) {
+  const membershipId = membership.id;
 
-  if (!subscriptionId) return;
-
-  try {
-    const subscription = await fastspringService.getSubscription(subscriptionId);
-    const plan = fastspringService.mapProductToPlan(product as string);
-
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
-      .limit(1);
-
-    if (!user) return;
-
-    await db
-      .update(users)
-      .set({
-        subscription_plan: plan,
-        subscription_period_end: new Date(subscription.next * 1000),
-        updated_at: new Date(),
-      })
-      .where(eq(users.id, user.id));
-
-    logger.info(`Subscription updated for user ${user.id} to plan ${plan}`);
-  } catch (error) {
-    logger.error('Failed to handle subscription update:', error);
-  }
-}
-
-/**
- * Handle subscription payment overdue
- */
-async function handleSubscriptionOverdue(data: FastSpringWebhookEvent['data']) {
-  const { subscription: subscriptionId } = data;
-
-  if (!subscriptionId) return;
+  if (!membershipId) return;
 
   try {
     const [user] = await db
       .select()
       .from(users)
-      .where(eq(users.fastspring_subscription_id, subscriptionId))
+      .where(eq(users.whop_membership_id, membershipId))
       .limit(1);
 
     if (!user) return;
 
+    // Update status to active and update renewal period
     await db
       .update(users)
       .set({
-        subscription_status: 'overdue',
+        subscription_status: 'active',
+        subscription_period_start: new Date(membership.renewal_period_start),
+        subscription_period_end: new Date(membership.renewal_period_end),
         updated_at: new Date(),
       })
       .where(eq(users.id, user.id));
 
-    logger.warn(`Subscription overdue for user ${user.id}`);
+    logger.info(`[Whop] Payment succeeded for user ${user.id}`);
   } catch (error) {
-    logger.error('Failed to handle subscription overdue:', error);
+    logger.error('[Whop] Failed to handle payment success:', error);
+  }
+}
+
+/**
+ * Handle failed payment
+ */
+async function handlePaymentFailed(membership: any) {
+  const membershipId = membership.id;
+
+  if (!membershipId) return;
+
+  try {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.whop_membership_id, membershipId))
+      .limit(1);
+
+    if (!user) return;
+
+    // Update status to past_due
+    await db
+      .update(users)
+      .set({
+        subscription_status: 'past_due',
+        updated_at: new Date(),
+      })
+      .where(eq(users.id, user.id));
+
+    logger.warn(`[Whop] Payment failed for user ${user.id}`);
+  } catch (error) {
+    logger.error('[Whop] Failed to handle payment failure:', error);
   }
 }
