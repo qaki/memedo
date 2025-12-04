@@ -196,36 +196,47 @@ export class WhopService {
    * Whop uses direct checkout URLs, not API-generated sessions
    * @param userId - Your internal user ID (for tracking via metadata)
    * @param userEmail - User's email address
-   * @param planType - Plan type ('monthly', 'yearly', or direct plan ID)
+   * @param planTypeOrId - Plan type ('monthly', 'yearly') or direct Whop plan ID
    */
   async generateCheckoutSession(
     userId: string,
     userEmail: string,
-    planType?: string
+    planTypeOrId?: string
   ): Promise<string> {
-    // Map plan types to actual Whop plan IDs
-    // For now, we use the configured plan ID
-    // In the future, you can add multiple plan IDs for different tiers
-    const targetPlan = this.planIdPro;
+    // Determine the actual Whop plan ID to use
+    let targetPlan: string;
 
-    logger.info(`[Whop] Generating checkout URL for user ${userId} (${planType || 'default'})`);
+    if (!planTypeOrId) {
+      // No plan specified - use default Pro plan
+      targetPlan = this.planIdPro;
+    } else if (planTypeOrId.startsWith('plan_')) {
+      // Already a Whop plan ID (format: plan_xxxxx)
+      targetPlan = planTypeOrId;
+    } else {
+      // Plan type like 'monthly' or 'yearly'
+      // For now, map everything to the configured Pro plan
+      // TODO: Add separate env vars for monthly/yearly plans if needed
+      // e.g., WHOP_PLAN_ID_MONTHLY, WHOP_PLAN_ID_YEARLY
+      targetPlan = this.planIdPro;
+      logger.info(`[Whop] Mapping plan type '${planTypeOrId}' to plan ID: ${targetPlan}`);
+    }
 
-    // Whop uses direct checkout URLs with embedded metadata
-    // Format: https://whop.com/checkout/<plan_id>?email=...&metadata[key]=value
-    const baseUrl = 'https://whop.com/checkout';
+    logger.info(`[Whop] Generating checkout URL for user ${userId} with plan: ${targetPlan}`);
+
+    // Whop checkout URL format: https://whop.com/checkout/<plan_id>?email=...&metadata[key]=value
+    const baseUrl = `https://whop.com/checkout/${targetPlan}`;
 
     const params = new URLSearchParams({
-      plan: targetPlan,
       email: userEmail,
-      // Whop metadata format (check Whop docs for exact format)
+      // Whop metadata format for tracking
       'metadata[user_id]': userId,
       'metadata[source]': 'memedo_frontend',
-      'metadata[plan_type]': planType || 'default',
+      'metadata[plan_type]': planTypeOrId || 'default',
     });
 
     const checkoutUrl = `${baseUrl}?${params.toString()}`;
 
-    logger.info(`[Whop] Generated checkout URL for user ${userId}`);
+    logger.info(`[Whop] Generated checkout URL for user ${userId}: ${checkoutUrl}`);
     return checkoutUrl;
   }
 
