@@ -192,13 +192,64 @@ export class WhopService {
   }
 
   /**
-   * Create a checkout session URL
-   * Returns URL for user to complete payment on Whop
+   * Create a dynamic checkout session via Whop API
+   * This generates a unique purchase URL with embedded metadata
+   * @param userId - Your internal user ID (for tracking)
+   * @param userEmail - User's email address
+   * @param planId - Optional specific plan ID (defaults to configured Pro plan)
    */
-  getCheckoutUrl(userEmail: string, planId?: string): string {
-    const baseUrl = `https://whop.com/checkout`;
+  async generateCheckoutSession(
+    userId: string,
+    userEmail: string,
+    planId?: string
+  ): Promise<string> {
+    try {
+      // Use provided planId or default to configured plan
+      const targetPlan = planId || this.planIdPro;
 
-    // Use provided planId or default to configured plan
+      logger.info(`[Whop] Generating checkout session for user ${userId}, email: ${userEmail}`);
+
+      const response = await axios.post(
+        `${WHOP_API_BASE}/checkout/sessions`,
+        {
+          plan_id: targetPlan,
+          email: userEmail,
+          metadata: {
+            user_id: userId, // Embed user ID for webhook reconciliation
+            source: 'memedo_frontend',
+          },
+          success_url: 'https://meme-go.com/dashboard?checkout=success',
+          cancel_url: 'https://meme-go.com/pricing?checkout=cancelled',
+        },
+        {
+          headers: this.getHeaders(),
+          timeout: 10000,
+        }
+      );
+
+      const checkoutUrl = response.data.checkout_url || response.data.url;
+
+      if (!checkoutUrl) {
+        throw new Error('No checkout URL returned from Whop API');
+      }
+
+      logger.info(`[Whop] Generated checkout URL for user ${userId}`);
+      return checkoutUrl;
+    } catch (error) {
+      logger.error('[Whop] Failed to generate checkout session:', error);
+
+      // Fallback to simple checkout URL if API fails
+      logger.warn('[Whop] Falling back to basic checkout URL');
+      return this.getBasicCheckoutUrl(userEmail, planId);
+    }
+  }
+
+  /**
+   * Fallback: Basic checkout URL (without API call)
+   * Used when the dynamic checkout API fails
+   */
+  private getBasicCheckoutUrl(userEmail: string, planId?: string): string {
+    const baseUrl = `https://whop.com/checkout`;
     const targetPlan = planId || this.planIdPro;
 
     const params = new URLSearchParams({

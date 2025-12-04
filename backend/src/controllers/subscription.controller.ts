@@ -68,7 +68,10 @@ export const getSubscriptionStatus = async (req: Request, res: Response) => {
 
 /**
  * Create a checkout session for subscription purchase
- * Returns Whop checkout URL
+ * Two-step dynamic checkout flow:
+ * 1. Frontend calls this endpoint
+ * 2. Backend generates secure Whop checkout URL with metadata
+ * 3. Frontend redirects user to that URL
  */
 export const createCheckoutSession = async (req: Request, res: Response) => {
   try {
@@ -86,14 +89,16 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       throw new ApiError('User not found', 404);
     }
 
-    // Get Whop checkout URL
-    const checkoutUrl = whopService.getCheckoutUrl(user.email, plan);
+    // Generate dynamic checkout URL via Whop API
+    // This embeds the user ID in metadata for webhook reconciliation
+    const checkoutUrl = await whopService.generateCheckoutSession(userId, user.email, plan);
 
-    logger.info(`[Subscription] Generated checkout URL for user ${userId}`);
+    logger.info(`[Subscription] Generated dynamic checkout URL for user ${userId}`);
 
     res.json({
       checkoutUrl,
       plan: plan || 'default',
+      userId, // Return for debugging
     });
   } catch (error) {
     logger.error('[Subscription] Failed to create checkout session:', error);
