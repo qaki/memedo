@@ -192,76 +192,45 @@ export class WhopService {
   }
 
   /**
-   * Create a dynamic checkout session via Whop API
-   * This generates a unique purchase URL with embedded metadata
-   * @param userId - Your internal user ID (for tracking)
+   * Create a dynamic checkout session for Whop
+   * Whop uses direct checkout URLs, not API-generated sessions
+   * @param userId - Your internal user ID (for tracking via metadata)
    * @param userEmail - User's email address
-   * @param planId - Optional specific plan ID (defaults to configured Pro plan)
+   * @param planType - Plan type ('monthly', 'yearly', or direct plan ID)
    */
   async generateCheckoutSession(
     userId: string,
     userEmail: string,
-    planId?: string
+    planType?: string
   ): Promise<string> {
-    try {
-      // Use provided planId or default to configured plan
-      const targetPlan = planId || this.planIdPro;
+    // Map plan types to actual Whop plan IDs
+    // For now, we use the configured plan ID
+    // In the future, you can add multiple plan IDs for different tiers
+    const targetPlan = this.planIdPro;
 
-      logger.info(`[Whop] Generating checkout session for user ${userId}, email: ${userEmail}`);
+    logger.info(`[Whop] Generating checkout URL for user ${userId} (${planType || 'default'})`);
 
-      const response = await axios.post(
-        `${WHOP_API_BASE}/checkout/sessions`,
-        {
-          plan_id: targetPlan,
-          email: userEmail,
-          metadata: {
-            user_id: userId, // Embed user ID for webhook reconciliation
-            source: 'memedo_frontend',
-          },
-          success_url: 'https://meme-go.com/dashboard?checkout=success',
-          cancel_url: 'https://meme-go.com/pricing?checkout=cancelled',
-        },
-        {
-          headers: this.getHeaders(),
-          timeout: 10000,
-        }
-      );
-
-      const checkoutUrl = response.data.checkout_url || response.data.url;
-
-      if (!checkoutUrl) {
-        throw new Error('No checkout URL returned from Whop API');
-      }
-
-      logger.info(`[Whop] Generated checkout URL for user ${userId}`);
-      return checkoutUrl;
-    } catch (error) {
-      logger.error('[Whop] Failed to generate checkout session:', error);
-
-      // Fallback to simple checkout URL if API fails
-      logger.warn('[Whop] Falling back to basic checkout URL');
-      return this.getBasicCheckoutUrl(userEmail, planId);
-    }
-  }
-
-  /**
-   * Fallback: Basic checkout URL (without API call)
-   * Used when the dynamic checkout API fails
-   */
-  private getBasicCheckoutUrl(userEmail: string, planId?: string): string {
-    const baseUrl = `https://whop.com/checkout`;
-    const targetPlan = planId || this.planIdPro;
+    // Whop uses direct checkout URLs with embedded metadata
+    // Format: https://whop.com/checkout/<plan_id>?email=...&metadata[key]=value
+    const baseUrl = 'https://whop.com/checkout';
 
     const params = new URLSearchParams({
       plan: targetPlan,
       email: userEmail,
+      // Whop metadata format (check Whop docs for exact format)
+      'metadata[user_id]': userId,
+      'metadata[source]': 'memedo_frontend',
+      'metadata[plan_type]': planType || 'default',
     });
 
-    return `${baseUrl}?${params.toString()}`;
+    const checkoutUrl = `${baseUrl}?${params.toString()}`;
+
+    logger.info(`[Whop] Generated checkout URL for user ${userId}`);
+    return checkoutUrl;
   }
 
   /**
-   * Get customer portal URL for managing subscription
+   * Get customer portal URL for managing subscription on Whop
    */
   getCustomerPortalUrl(): string {
     return 'https://whop.com/hub/manage';
