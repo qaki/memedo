@@ -6,7 +6,7 @@
 
 import { db } from '../db/index.js';
 import { watchlist } from '../db/schema/watchlist.js';
-import { tokenAnalyses } from '../db/schema/token-analyses.js';
+import { analyses } from '../db/schema/analyses.js';
 import { eq, desc, and } from 'drizzle-orm';
 import { logger } from '../utils/logger.js';
 
@@ -14,7 +14,7 @@ import { logger } from '../utils/logger.js';
 type WatchlistItem = typeof watchlist.$inferSelect;
 
 // Type for token analysis from database
-type TokenAnalysis = typeof tokenAnalyses.$inferSelect | null;
+type TokenAnalysis = typeof analyses.$inferSelect | null;
 
 // Type for combined token data
 interface TokenData {
@@ -66,7 +66,7 @@ class AnalyticsService {
   async getDashboardAnalytics(userId: string): Promise<DashboardStats> {
     try {
       // Get all watchlist items for the user
-      const userWatchlist = await db.select().from(watchlist).where(eq(watchlist.user_id, userId));
+      const userWatchlist = await db.select().from(watchlist).where(eq(watchlist.userId, userId));
 
       if (userWatchlist.length === 0) {
         return this.getEmptyStats();
@@ -77,14 +77,11 @@ class AnalyticsService {
         userWatchlist.map(async (item) => {
           const latestAnalysis = await db
             .select()
-            .from(tokenAnalyses)
+            .from(analyses)
             .where(
-              and(
-                eq(tokenAnalyses.token_address, item.token_address),
-                eq(tokenAnalyses.chain, item.chain)
-              )
+              and(eq(analyses.tokenAddress, item.tokenAddress), eq(analyses.chain, item.chain))
             )
-            .orderBy(desc(tokenAnalyses.analyzed_at))
+            .orderBy(desc(analyses.analyzedAt))
             .limit(1);
 
           return {
@@ -125,10 +122,10 @@ class AnalyticsService {
     const totalTokens = tokenData.length;
 
     // Calculate average safety score
-    const tokensWithScore = tokenData.filter((t) => t.analysis?.safety_score != null);
+    const tokensWithScore = tokenData.filter((t) => t.analysis?.safetyScore != null);
     const averageSafetyScore =
       tokensWithScore.length > 0
-        ? tokensWithScore.reduce((sum, t) => sum + t.analysis.safety_score, 0) /
+        ? tokensWithScore.reduce((sum, t) => sum + t.analysis.safetyScore, 0) /
           tokensWithScore.length
         : 0;
 
@@ -141,7 +138,7 @@ class AnalyticsService {
     };
 
     tokenData.forEach((t) => {
-      const riskLevel = t.analysis?.risk_level?.toLowerCase() || 'unknown';
+      const riskLevel = t.analysis?.riskLevel?.toLowerCase() || 'unknown';
       if (riskLevel === 'high') riskDistribution.high++;
       else if (riskLevel === 'medium') riskDistribution.medium++;
       else if (riskLevel === 'low') riskDistribution.low++;
@@ -168,16 +165,16 @@ class AnalyticsService {
    */
   private getTopTokens(tokenData: TokenData[]) {
     return tokenData
-      .filter((t) => t.analysis?.safety_score != null)
-      .sort((a, b) => b.analysis.safety_score - a.analysis.safety_score)
+      .filter((t) => t.analysis?.safetyScore != null)
+      .sort((a, b) => b.analysis.safetyScore - a.analysis.safetyScore)
       .slice(0, 5)
       .map((t) => ({
-        tokenName: t.watchlistItem.token_name || 'Unknown',
-        tokenSymbol: t.watchlistItem.token_symbol || 'N/A',
-        tokenAddress: t.watchlistItem.token_address,
+        tokenName: t.watchlistItem.tokenName || 'Unknown',
+        tokenSymbol: t.watchlistItem.tokenSymbol || 'N/A',
+        tokenAddress: t.watchlistItem.tokenAddress,
         chain: t.watchlistItem.chain,
-        safetyScore: t.analysis.safety_score,
-        riskLevel: t.analysis.risk_level || 'unknown',
+        safetyScore: t.analysis.safetyScore,
+        riskLevel: t.analysis.riskLevel || 'unknown',
       }));
   }
 
@@ -186,16 +183,16 @@ class AnalyticsService {
    */
   private getAttentionNeeded(tokenData: TokenData[]) {
     return tokenData
-      .filter((t) => t.analysis?.safety_score != null && t.analysis.safety_score < 50)
-      .sort((a, b) => a.analysis.safety_score - b.analysis.safety_score)
+      .filter((t) => t.analysis?.safetyScore != null && t.analysis.safetyScore < 50)
+      .sort((a, b) => a.analysis.safetyScore - b.analysis.safetyScore)
       .slice(0, 5)
       .map((t) => ({
-        tokenName: t.watchlistItem.token_name || 'Unknown',
-        tokenSymbol: t.watchlistItem.token_symbol || 'N/A',
-        tokenAddress: t.watchlistItem.token_address,
+        tokenName: t.watchlistItem.tokenName || 'Unknown',
+        tokenSymbol: t.watchlistItem.tokenSymbol || 'N/A',
+        tokenAddress: t.watchlistItem.tokenAddress,
         chain: t.watchlistItem.chain,
-        safetyScore: t.analysis.safety_score,
-        riskLevel: t.analysis.risk_level || 'unknown',
+        safetyScore: t.analysis.safetyScore,
+        riskLevel: t.analysis.riskLevel || 'unknown',
       }));
   }
 
@@ -204,14 +201,14 @@ class AnalyticsService {
    */
   private getRecentActivity(watchlistItems: WatchlistItem[]) {
     return watchlistItems
-      .sort((a, b) => new Date(b.added_at).getTime() - new Date(a.added_at).getTime())
+      .sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime())
       .slice(0, 5)
       .map((item) => ({
-        tokenName: item.token_name || 'Unknown',
-        tokenSymbol: item.token_symbol || 'N/A',
-        tokenAddress: item.token_address,
+        tokenName: item.tokenName || 'Unknown',
+        tokenSymbol: item.tokenSymbol || 'N/A',
+        tokenAddress: item.tokenAddress,
         chain: item.chain,
-        addedAt: item.added_at,
+        addedAt: item.addedAt,
       }));
   }
 
