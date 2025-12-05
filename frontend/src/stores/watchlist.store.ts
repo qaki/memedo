@@ -5,9 +5,7 @@
  */
 
 import { create } from 'zustand';
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import api from '../lib/api';
 
 export interface WatchlistItem {
   id: string;
@@ -50,9 +48,7 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
   fetchWatchlist: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/api/watchlist`, {
-        withCredentials: true,
-      });
+      const response = await api.get('/api/watchlist');
 
       set({
         watchlist: response.data.data,
@@ -75,18 +71,12 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
   ) => {
     set({ isLoading: true, error: null });
     try {
-      await axios.post(
-        `${API_URL}/api/watchlist`,
-        {
-          tokenAddress,
-          chain,
-          tokenName,
-          tokenSymbol,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      await api.post('/api/watchlist', {
+        tokenAddress,
+        chain,
+        tokenName,
+        tokenSymbol,
+      });
 
       // Refresh watchlist
       await get().fetchWatchlist();
@@ -106,9 +96,7 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
   removeFromWatchlist: async (id: string) => {
     set({ isLoading: true, error: null });
     try {
-      await axios.delete(`${API_URL}/api/watchlist/${id}`, {
-        withCredentials: true,
-      });
+      await api.delete(`/api/watchlist/${id}`);
 
       // Remove from local state immediately
       set((state) => ({
