@@ -16,6 +16,7 @@ export const MainLayout = () => {
     '/analyze',
     '/history',
     '/watchlist',
+    '/analytics',
     '/profile',
     '/settings',
     '/subscription',

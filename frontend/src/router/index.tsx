@@ -24,6 +24,9 @@ const AnalysisHistory = lazy(() => import('../pages/analysis/AnalysisHistory'));
 const Watchlist = lazy(() =>
   import('../pages/dashboard/Watchlist').then((m) => ({ default: m.Watchlist }))
 );
+const Analytics = lazy(() =>
+  import('../pages/dashboard/Analytics').then((m) => ({ default: m.Analytics }))
+);
 const TermsOfService = lazy(() => import('../pages/legal/TermsOfService'));
 const PrivacyPolicy = lazy(() => import('../pages/legal/PrivacyPolicy'));
 const RefundPolicy = lazy(() => import('../pages/legal/RefundPolicy'));
@@ -171,6 +174,16 @@ export const router = createBrowserRouter([
           <Lazy>
             <ProtectedRoute>
               <Watchlist />
+            </ProtectedRoute>
+          </Lazy>
+        ),
+      },
+      {
+        path: 'analytics',
+        element: (
+          <Lazy>
+            <ProtectedRoute>
+              <Analytics />
             </ProtectedRoute>
           </Lazy>
         ),
