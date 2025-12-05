@@ -7,8 +7,8 @@
 import { db } from '../db/index.js';
 import { watchlist, analyses } from '../db/schema/index.js';
 import { eq, and, desc } from 'drizzle-orm';
-import { ApiError } from '../middleware/error.middleware.js';
-import logger from '../utils/logger.js';
+import { ApiError } from '../utils/errors.js';
+import { logger } from '../utils/logger.js';
 
 export interface AddToWatchlistParams {
   userId: string;
@@ -97,16 +97,16 @@ class WatchlistService {
           // Get most recent analysis for this token
           const latestAnalyses = await db
             .select({
-              safetyScore: analyses.safetyScore,
-              riskLevel: analyses.riskLevel,
-              analysisData: analyses.analysisData,
-              createdAt: analyses.createdAt,
+              safetyScore: analyses.safety_score,
+              riskLevel: analyses.risk_level,
+              analysisData: analyses.analysis_data,
+              createdAt: analyses.created_at,
             })
             .from(analyses)
             .where(
-              and(eq(analyses.tokenAddress, item.tokenAddress), eq(analyses.chain, item.chain))
+              and(eq(analyses.token_address, item.tokenAddress), eq(analyses.chain, item.chain))
             )
-            .orderBy(desc(analyses.createdAt))
+            .orderBy(desc(analyses.created_at))
             .limit(1);
 
           const latestAnalysis = latestAnalyses[0];

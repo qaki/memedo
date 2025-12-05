@@ -6,7 +6,7 @@
 
 import { Request, Response } from 'express';
 import { watchlistService } from '../services/watchlist.service.js';
-import { ApiError } from '../middleware/error.middleware.js';
+import { ApiError } from '../utils/errors.js';
 
 /**
  * Add a token to user's watchlist
