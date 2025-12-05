@@ -79,9 +79,9 @@ class AnalyticsService {
             .select()
             .from(analyses)
             .where(
-              and(eq(analyses.tokenAddress, item.tokenAddress), eq(analyses.chain, item.chain))
+              and(eq(analyses.token_address, item.tokenAddress), eq(analyses.chain, item.chain))
             )
-            .orderBy(desc(analyses.analyzedAt))
+            .orderBy(desc(analyses.created_at))
             .limit(1);
 
           return {
@@ -122,10 +122,10 @@ class AnalyticsService {
     const totalTokens = tokenData.length;
 
     // Calculate average safety score
-    const tokensWithScore = tokenData.filter((t) => t.analysis?.safetyScore != null);
+    const tokensWithScore = tokenData.filter((t) => t.analysis?.safety_score != null);
     const averageSafetyScore =
       tokensWithScore.length > 0
-        ? tokensWithScore.reduce((sum, t) => sum + t.analysis.safetyScore, 0) /
+        ? tokensWithScore.reduce((sum, t) => sum + (t.analysis?.safety_score || 0), 0) /
           tokensWithScore.length
         : 0;
 
@@ -138,7 +138,7 @@ class AnalyticsService {
     };
 
     tokenData.forEach((t) => {
-      const riskLevel = t.analysis?.riskLevel?.toLowerCase() || 'unknown';
+      const riskLevel = t.analysis?.risk_level?.toLowerCase() || 'unknown';
       if (riskLevel === 'high') riskDistribution.high++;
       else if (riskLevel === 'medium') riskDistribution.medium++;
       else if (riskLevel === 'low') riskDistribution.low++;
@@ -165,16 +165,16 @@ class AnalyticsService {
    */
   private getTopTokens(tokenData: TokenData[]) {
     return tokenData
-      .filter((t) => t.analysis?.safetyScore != null)
-      .sort((a, b) => b.analysis.safetyScore - a.analysis.safetyScore)
+      .filter((t) => t.analysis?.safety_score != null)
+      .sort((a, b) => (b.analysis?.safety_score || 0) - (a.analysis?.safety_score || 0))
       .slice(0, 5)
       .map((t) => ({
         tokenName: t.watchlistItem.tokenName || 'Unknown',
         tokenSymbol: t.watchlistItem.tokenSymbol || 'N/A',
         tokenAddress: t.watchlistItem.tokenAddress,
         chain: t.watchlistItem.chain,
-        safetyScore: t.analysis.safetyScore,
-        riskLevel: t.analysis.riskLevel || 'unknown',
+        safetyScore: t.analysis?.safety_score || 0,
+        riskLevel: t.analysis?.risk_level || 'unknown',
       }));
   }
 
@@ -183,16 +183,16 @@ class AnalyticsService {
    */
   private getAttentionNeeded(tokenData: TokenData[]) {
     return tokenData
-      .filter((t) => t.analysis?.safetyScore != null && t.analysis.safetyScore < 50)
-      .sort((a, b) => a.analysis.safetyScore - b.analysis.safetyScore)
+      .filter((t) => t.analysis?.safety_score != null && t.analysis.safety_score < 50)
+      .sort((a, b) => (a.analysis?.safety_score || 0) - (b.analysis?.safety_score || 0))
       .slice(0, 5)
       .map((t) => ({
         tokenName: t.watchlistItem.tokenName || 'Unknown',
         tokenSymbol: t.watchlistItem.tokenSymbol || 'N/A',
         tokenAddress: t.watchlistItem.tokenAddress,
         chain: t.watchlistItem.chain,
-        safetyScore: t.analysis.safetyScore,
-        riskLevel: t.analysis.riskLevel || 'unknown',
+        safetyScore: t.analysis?.safety_score || 0,
+        riskLevel: t.analysis?.risk_level || 'unknown',
       }));
   }
 
