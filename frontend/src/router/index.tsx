@@ -21,6 +21,9 @@ const Settings = lazy(() => import('../pages/dashboard/Settings'));
 const Subscription = lazy(() => import('../pages/dashboard/Subscription'));
 const AnalyzeToken = lazy(() => import('../pages/analysis/AnalyzeToken'));
 const AnalysisHistory = lazy(() => import('../pages/analysis/AnalysisHistory'));
+const Watchlist = lazy(() =>
+  import('../pages/dashboard/Watchlist').then((m) => ({ default: m.Watchlist }))
+);
 const TermsOfService = lazy(() => import('../pages/legal/TermsOfService'));
 const PrivacyPolicy = lazy(() => import('../pages/legal/PrivacyPolicy'));
 const RefundPolicy = lazy(() => import('../pages/legal/RefundPolicy'));
@@ -158,6 +161,16 @@ export const router = createBrowserRouter([
           <Lazy>
             <ProtectedRoute>
               <AnalysisHistory />
+            </ProtectedRoute>
+          </Lazy>
+        ),
+      },
+      {
+        path: 'watchlist',
+        element: (
+          <Lazy>
+            <ProtectedRoute>
+              <Watchlist />
             </ProtectedRoute>
           </Lazy>
         ),

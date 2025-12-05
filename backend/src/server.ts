@@ -12,6 +12,7 @@ import analysisRoutes from './routes/analysis.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
 import webhookRoutes from './routes/webhook.routes.js';
+import watchlistRoutes from './routes/watchlist.routes.js';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();
@@ -74,6 +75,7 @@ app.use('/api/analysis', analysisRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/webhooks', webhookRoutes);
+app.use('/api/watchlist', watchlistRoutes);
 
 // API info endpoint
 app.get('/api', (req: Request, res: Response) => {
@@ -90,6 +92,7 @@ app.get('/api', (req: Request, res: Response) => {
         analytics: '/api/analytics (admin only)',
         subscription: '/api/subscription',
         webhooks: '/api/webhooks',
+        watchlist: '/api/watchlist',
       },
     },
   });

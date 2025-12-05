@@ -3,6 +3,8 @@ import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import type { TokenAnalysis, SupportedChain } from '../../types';
+import { useWatchlistStore } from '../../stores/watchlist.store';
+import toast from 'react-hot-toast';
 
 interface AnalysisResultsProps {
   analysis: TokenAnalysis;
@@ -14,6 +16,36 @@ type Tab = 'overview' | 'token-info' | 'security' | 'contract' | 'raw-data';
 
 export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisResultsProps) => {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const { addToWatchlist, removeFromWatchlist, isInWatchlist, watchlist } = useWatchlistStore();
+
+  const inWatchlist = isInWatchlist(analysis.token_address, analysis.chain);
+
+  const handleWatchlistToggle = async () => {
+    try {
+      if (inWatchlist) {
+        // Find the watchlist item ID and remove it
+        const item = watchlist.find(
+          (w) =>
+            w.tokenAddress.toLowerCase() === analysis.token_address.toLowerCase() &&
+            w.chain === analysis.chain
+        );
+        if (item) {
+          await removeFromWatchlist(item.id);
+          toast.success('Removed from watchlist');
+        }
+      } else {
+        await addToWatchlist(
+          analysis.token_address,
+          analysis.chain,
+          analysis.metadata?.name,
+          analysis.metadata?.symbol
+        );
+        toast.success('Added to watchlist');
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update watchlist');
+    }
+  };
 
   const getRiskBadgeVariant = (riskLevel: string): 'success' | 'warning' | 'danger' | 'gray' => {
     switch (riskLevel) {
@@ -75,12 +107,32 @@ export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisRes
               {new Date(analysis.created_at).toLocaleString()}
             </p>
           </div>
-          <Badge
-            variant={getRiskBadgeVariant(analysis.risk_level || 'unknown')}
-            className="text-lg px-4 py-2"
-          >
-            {(analysis.risk_level || 'unknown').toUpperCase()} RISK
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={handleWatchlistToggle}
+              variant={inWatchlist ? 'secondary' : 'primary'}
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              {inWatchlist ? (
+                <>
+                  <span>⭐</span>
+                  <span>In Watchlist</span>
+                </>
+              ) : (
+                <>
+                  <span>☆</span>
+                  <span>Add to Watchlist</span>
+                </>
+              )}
+            </Button>
+            <Badge
+              variant={getRiskBadgeVariant(analysis.risk_level || 'unknown')}
+              className="text-lg px-4 py-2"
+            >
+              {(analysis.risk_level || 'unknown').toUpperCase()} RISK
+            </Badge>
+          </div>
         </div>
 
         {/* Chain Badge */}

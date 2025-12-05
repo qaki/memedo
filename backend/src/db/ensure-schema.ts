@@ -141,6 +141,36 @@ export async function ensureSchema() {
       console.log('✅ All users already verified');
     }
 
+    // Create watchlist table if it doesn't exist
+    console.log('🔍 Creating watchlist table if needed...');
+    await sql`
+      CREATE TABLE IF NOT EXISTS watchlist (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token_address VARCHAR(255) NOT NULL,
+        chain VARCHAR(50) NOT NULL,
+        token_name VARCHAR(255),
+        token_symbol VARCHAR(50),
+        added_at TIMESTAMP NOT NULL DEFAULT NOW()
+      )
+    `;
+
+    // Create indexes for watchlist
+    await sql`
+      CREATE INDEX IF NOT EXISTS watchlist_user_id_idx ON watchlist(user_id)
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS watchlist_token_chain_idx ON watchlist(token_address, chain)
+    `;
+
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS watchlist_user_token_chain_idx 
+      ON watchlist(user_id, token_address, chain)
+    `;
+
+    console.log('✅ Watchlist table ready');
+
     console.log('🎉 Database schema is up-to-date!');
   } catch (error) {
     console.error('❌ Failed to ensure database schema:', error);

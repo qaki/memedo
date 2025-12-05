@@ -9,3 +9,4 @@ export * from './users.js';
 export * from './analyses.js';
 export * from './subscriptions.js';
 export * from './api_logs.js';
+export * from './watchlist.js';
