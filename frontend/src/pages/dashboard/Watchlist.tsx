@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
+import { History } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export const Watchlist = () => {
@@ -208,11 +209,23 @@ export const Watchlist = () => {
               >
                 {item.latestAnalysis ? 'Re-analyze' : 'Analyze'}
               </Button>
+              {item.latestAnalysis && (
+                <Button
+                  onClick={() => navigate(`/history/${item.chain}/${item.tokenAddress}`)}
+                  variant="secondary"
+                  size="sm"
+                  className="px-3"
+                  title="View History"
+                >
+                  <History size={16} />
+                </Button>
+              )}
               <Button
                 onClick={() => handleRemove(item.id, item.tokenSymbol)}
                 variant="secondary"
                 size="sm"
                 className="px-3"
+                title="Remove from Watchlist"
               >
                 🗑️
               </Button>

@@ -126,6 +126,83 @@ export const analyzeToken = async (req: Request, res: Response) => {
 };
 
 /**
+ * Re-analyze a token (force refresh, bypass cache)
+ * POST /api/analysis/reanalyze
+ */
+export const reanalyzeToken = async (req: Request, res: Response) => {
+  try {
+    // Validate input
+    const { address, chain } = analyzeRequestSchema.parse(req.body);
+
+    // Require authentication for re-analysis
+    if (!req.user?.id) {
+      return res.status(401).json({
+        success: false,
+        error: {
+          code: 'UNAUTHORIZED',
+          message: 'Authentication required for re-analysis',
+        },
+      });
+    }
+
+    console.log(`[ReAnalyze] Force refresh for ${chain}:${address} (user: ${req.user.id})`);
+
+    // Perform analysis with forceRefresh = true
+    const analysis = await analysisService.analyzeToken(
+      address,
+      chain as Chain,
+      req.user.id,
+      true // forceRefresh
+    );
+
+    // Transform to frontend format
+    const transformedAnalysis = transformAnalysisForFrontend(analysis);
+
+    res.json({
+      success: true,
+      data: {
+        analysis: transformedAnalysis,
+        message: 'Token re-analyzed successfully with fresh data',
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Re-analysis error:', error);
+
+    // Zod validation errors
+    if (error instanceof Error && error.name === 'ZodError') {
+      const zodError = error as { errors?: unknown[] };
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Invalid input data',
+          details: zodError.errors || [],
+        },
+      });
+    }
+
+    // Analysis errors
+    if (error instanceof Error) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'ANALYSIS_FAILED',
+          message: error.message,
+        },
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'An unexpected error occurred during re-analysis',
+      },
+    });
+  }
+};
+
+/**
  * Transform database analysis history to frontend format
  */
 const transformHistoryForFrontend = (dbHistory: any[]) => {

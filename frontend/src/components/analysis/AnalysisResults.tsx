@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import type { TokenAnalysis, SupportedChain } from '../../types';
 import { useWatchlistStore } from '../../stores/watchlist.store';
+import { History } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface AnalysisResultsProps {
@@ -15,6 +17,7 @@ interface AnalysisResultsProps {
 type Tab = 'overview' | 'token-info' | 'security' | 'contract' | 'raw-data';
 
 export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisResultsProps) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const { addToWatchlist, removeFromWatchlist, isInWatchlist, watchlist } = useWatchlistStore();
 
@@ -125,6 +128,16 @@ export const AnalysisResults = ({ analysis, chains, onCopyAddress }: AnalysisRes
                   <span>Add to Watchlist</span>
                 </>
               )}
+            </Button>
+            <Button
+              onClick={() => navigate(`/history/${analysis.chain}/${analysis.token_address}`)}
+              variant="secondary"
+              size="sm"
+              className="flex items-center gap-2"
+              title="View historical analysis data"
+            >
+              <History size={16} />
+              <span>View History</span>
             </Button>
             <Badge
               variant={getRiskBadgeVariant(analysis.risk_level || 'unknown')}

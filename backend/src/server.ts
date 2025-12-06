@@ -13,6 +13,7 @@ import analyticsRoutes from './routes/analytics.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
 import webhookRoutes from './routes/webhook.routes.js';
 import watchlistRoutes from './routes/watchlist.routes.js';
+import historicalRoutes from './routes/historical.routes.js';
 
 // Environment variables are validated on import (fail-fast)
 const app = express();
@@ -76,6 +77,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/webhooks', webhookRoutes);
 app.use('/api/watchlist', watchlistRoutes);
+app.use('/api/historical', historicalRoutes);
 
 // API info endpoint
 app.get('/api', (req: Request, res: Response) => {
@@ -93,6 +95,7 @@ app.get('/api', (req: Request, res: Response) => {
         subscription: '/api/subscription',
         webhooks: '/api/webhooks',
         watchlist: '/api/watchlist',
+        historical: '/api/historical',
       },
     },
   });

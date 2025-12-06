@@ -27,6 +27,7 @@ const Watchlist = lazy(() =>
 const Analytics = lazy(() =>
   import('../pages/dashboard/Analytics').then((m) => ({ default: m.Analytics }))
 );
+const TokenHistory = lazy(() => import('../pages/dashboard/TokenHistory'));
 const TermsOfService = lazy(() => import('../pages/legal/TermsOfService'));
 const PrivacyPolicy = lazy(() => import('../pages/legal/PrivacyPolicy'));
 const RefundPolicy = lazy(() => import('../pages/legal/RefundPolicy'));
@@ -184,6 +185,16 @@ export const router = createBrowserRouter([
           <Lazy>
             <ProtectedRoute>
               <Analytics />
+            </ProtectedRoute>
+          </Lazy>
+        ),
+      },
+      {
+        path: 'history/:chain/:address',
+        element: (
+          <Lazy>
+            <ProtectedRoute>
+              <TokenHistory />
             </ProtectedRoute>
           </Lazy>
         ),

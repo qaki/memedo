@@ -3,6 +3,7 @@ import { requireAuth } from '../middleware/auth.middleware.js';
 import { checkQuota, incrementUsage } from '../middleware/quota.middleware.js';
 import {
   analyzeToken,
+  reanalyzeToken,
   getAnalysisHistory,
   getAnalysisById,
   getSupportedChains,
@@ -21,6 +22,20 @@ router.post('/analyze', requireAuth, checkQuota, async (req, res, next) => {
   try {
     await analyzeToken(req, res);
     // Increment usage after successful analysis
+    if (res.statusCode === 200) {
+      await incrementUsage(req.user!.id);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Re-analyze endpoint (force refresh, bypass cache)
+// Also requires quota check since it's a full analysis
+router.post('/reanalyze', requireAuth, checkQuota, async (req, res, next) => {
+  try {
+    await reanalyzeToken(req, res);
+    // Increment usage after successful re-analysis
     if (res.statusCode === 200) {
       await incrementUsage(req.user!.id);
     }

@@ -70,7 +70,12 @@ export class AnalysisService {
    * Analyze a token
    * Main entry point - orchestrates all data collection and scoring
    */
-  async analyzeToken(address: string, chain: Chain, userId?: string): Promise<TokenAnalysis> {
+  async analyzeToken(
+    address: string,
+    chain: Chain,
+    userId?: string,
+    forceRefresh = false
+  ): Promise<TokenAnalysis> {
     this.initialize();
 
     // 1. Validate input
@@ -78,12 +83,16 @@ export class AnalysisService {
       throw new Error(`Invalid address format for chain ${chain}`);
     }
 
-    // 2. Check cache
+    // 2. Check cache (skip if forceRefresh is true)
     const cacheKey = generateCacheKey('analysis', chain, address);
-    const cached = await getCached<TokenAnalysis>(cacheKey);
-    if (cached) {
-      console.log(`[AnalysisService] ✅ Cache hit for ${address}`);
-      return cached;
+    if (!forceRefresh) {
+      const cached = await getCached<TokenAnalysis>(cacheKey);
+      if (cached) {
+        console.log(`[AnalysisService] ✅ Cache hit for ${address}`);
+        return cached;
+      }
+    } else {
+      console.log(`[AnalysisService] 🔄 Force refresh requested for ${address}`);
     }
 
     console.log(`[AnalysisService] Analyzing ${address} on ${chain}...`);
