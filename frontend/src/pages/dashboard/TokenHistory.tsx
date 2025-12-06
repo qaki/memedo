@@ -11,7 +11,7 @@ import { HistoricalAreaChart } from '../../components/charts/HistoricalAreaChart
 import { ChartCard } from '../../components/analytics/ChartCard';
 import { StatCard } from '../../components/analytics/StatCard';
 import { ArrowLeft, RefreshCw, TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { Spinner } from '../../components/common/Spinner';
+import { Spinner } from '../../components/ui/Spinner';
 
 const TokenHistory = () => {
   const { chain, address } = useParams<{ chain: string; address: string }>();
@@ -162,12 +162,14 @@ const TokenHistory = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
           title="Average Safety Score"
-          value={summary.averageSafetyScore}
-          suffix="/100"
+          value={`${summary.averageSafetyScore}/100`}
           icon={getTrendIcon(summary.safetyScoreChange)}
           trend={
             summary.safetyScoreChange !== 0
-              ? `${summary.safetyScoreChange > 0 ? '+' : ''}${summary.safetyScoreChange}`
+              ? {
+                  value: `${Math.abs(summary.safetyScoreChange)} pts`,
+                  isPositive: summary.safetyScoreChange > 0,
+                }
               : undefined
           }
         />
@@ -175,10 +177,10 @@ const TokenHistory = () => {
           title="Current Risk Level"
           value={summary.currentRiskLevel.toUpperCase()}
           icon={getTrendIcon(0)}
-          trend={
+          subtitle={
             summary.riskLevelChanged
               ? `Changed from ${summary.previousRiskLevel.toUpperCase()}`
-              : undefined
+              : 'No change'
           }
         />
         <StatCard
@@ -189,6 +191,14 @@ const TokenHistory = () => {
               : 'N/A'
           }
           icon={getTrendIcon(summary.priceChange || 0)}
+          trend={
+            summary.priceChange !== null && summary.priceChange !== 0
+              ? {
+                  value: `${Math.abs(summary.priceChange).toFixed(2)}%`,
+                  isPositive: summary.priceChange > 0,
+                }
+              : undefined
+          }
         />
         <StatCard title="Total Analyses" value={totalAnalyses} icon={getTrendIcon(0)} />
       </div>
