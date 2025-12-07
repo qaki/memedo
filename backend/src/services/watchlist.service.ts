@@ -94,7 +94,7 @@ class WatchlistService {
       // Fetch latest analysis for each token
       const itemsWithAnalysis = await Promise.all(
         watchlistItems.map(async (item) => {
-          // Get most recent analysis for this token
+          // Get most recent analysis for this token (by current user)
           const latestAnalyses = await db
             .select({
               safetyScore: analyses.safety_score,
@@ -104,7 +104,11 @@ class WatchlistService {
             })
             .from(analyses)
             .where(
-              and(eq(analyses.token_address, item.tokenAddress), eq(analyses.chain, item.chain))
+              and(
+                eq(analyses.token_address, item.tokenAddress),
+                eq(analyses.chain, item.chain),
+                eq(analyses.user_id, userId)
+              )
             )
             .orderBy(desc(analyses.created_at))
             .limit(1);
