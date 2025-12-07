@@ -97,6 +97,12 @@ class BirdEyeAdapter implements Adapter<MarketHealthMetrics> {
    * Fetches and combines all market health metrics
    */
   async execute(address: string, chain: string): Promise<MarketHealthMetrics> {
+    // ⚠️ CRITICAL: Check if API key is configured
+    if (!API_KEY) {
+      logger.warn(`[BirdEye] ⚠️ BIRDEYE_API_KEY not configured - skipping market data`);
+      throw new Error('BIRDEYE_API_KEY not configured');
+    }
+
     logger.info(`[BirdEye] Fetching market health for ${address} on ${chain}`);
 
     const birdeyeChain = BIRDEYE_CHAIN_MAP[chain.toLowerCase()];
@@ -193,8 +199,13 @@ class BirdEyeAdapter implements Adapter<MarketHealthMetrics> {
       }
 
       return response.data.data as BirdEyeMarketData;
-    } catch (error) {
-      logger.error(`[BirdEye] Market data fetch failed: ${error}`);
+    } catch (error: any) {
+      const status = error.response?.status;
+      const message = error.response?.data?.message || error.message;
+      logger.error(`[BirdEye] Market data fetch failed: ${status} - ${message}`);
+      if (status === 401 || status === 403) {
+        logger.error(`[BirdEye] ❌ Authentication failed - check BIRDEYE_API_KEY`);
+      }
       throw error;
     }
   }
@@ -221,8 +232,13 @@ class BirdEyeAdapter implements Adapter<MarketHealthMetrics> {
       }
 
       return response.data.data as BirdEyeTradeData;
-    } catch (error) {
-      logger.error(`[BirdEye] Trade data fetch failed: ${error}`);
+    } catch (error: any) {
+      const status = error.response?.status;
+      const message = error.response?.data?.message || error.message;
+      logger.error(`[BirdEye] Trade data fetch failed: ${status} - ${message}`);
+      if (status === 401 || status === 403) {
+        logger.error(`[BirdEye] ❌ Authentication failed - check BIRDEYE_API_KEY`);
+      }
       throw error;
     }
   }
@@ -253,8 +269,13 @@ class BirdEyeAdapter implements Adapter<MarketHealthMetrics> {
         items: response.data.data.items,
         total: response.data.data.total,
       };
-    } catch (error) {
-      logger.error(`[BirdEye] Holder data fetch failed: ${error}`);
+    } catch (error: any) {
+      const status = error.response?.status;
+      const message = error.response?.data?.message || error.message;
+      logger.error(`[BirdEye] Holder data fetch failed: ${status} - ${message}`);
+      if (status === 401 || status === 403) {
+        logger.error(`[BirdEye] ❌ Authentication failed - check BIRDEYE_API_KEY`);
+      }
       throw error;
     }
   }
