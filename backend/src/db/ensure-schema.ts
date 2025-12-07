@@ -118,6 +118,19 @@ export async function ensureSchema() {
         AND completeness_score IS NOT NULL
       `;
 
+      // Make old columns nullable so they don't block new inserts
+      await sql`
+        ALTER TABLE analyses 
+        ALTER COLUMN results DROP NOT NULL
+      `.catch(() => console.log("   (results column already nullable or doesn't exist)"));
+
+      await sql`
+        ALTER TABLE analyses 
+        ALTER COLUMN completeness_score DROP NOT NULL
+      `.catch(() =>
+        console.log("   (completeness_score column already nullable or doesn't exist)")
+      );
+
       console.log('✅ Data migration complete');
     } else {
       console.log('✅ No old columns to migrate');
