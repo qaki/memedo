@@ -90,7 +90,27 @@ const AnalyzeToken = () => {
     try {
       await analyzeToken(data.chain, data.tokenAddress.trim());
       toast.success('Token analysis completed!');
-    } catch (error) {
+    } catch (error: any) {
+      // Check if it's a quota exceeded error (429)
+      if (error?.response?.status === 429) {
+        const errorData = error?.response?.data?.error;
+        if (errorData?.code === 'QUOTA_EXCEEDED') {
+          const quotaMessage = errorData.message || 'Monthly analysis limit reached.';
+
+          toast.error(
+            `${quotaMessage} Visit /pricing to upgrade to Premium for unlimited analyses.`,
+            8000
+          );
+
+          // Show upgrade prompt after toast
+          setTimeout(() => {
+            if (window.confirm('Upgrade to Premium for unlimited token analyses?')) {
+              window.location.href = '/pricing';
+            }
+          }, 1000);
+          return;
+        }
+      }
       toast.error('Failed to analyze token. Please try again.');
       console.error('Analysis error:', error);
     }
